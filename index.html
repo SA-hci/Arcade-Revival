@@ -69,7 +69,7 @@ a{color:inherit}
 .sub{max-width:34ch; font-size:clamp(18px, 1.6vw, 22px); margin:26px 0 0; font-variation-settings:"wdth" 90}
 .coin-art{width:100%; max-width:440px; justify-self:center}
 .coin-art svg{width:100%; height:auto; display:block; overflow:visible}
-.coin{transform:translateY(calc(var(--h,0) * 150px)) rotate(calc(var(--h,0) * 40deg)); transform-box:fill-box; transform-origin:center}
+.coin{transform:translateY(calc(var(--h,0) * 235px)) rotate(calc(var(--h,0) * 40deg)); transform-box:fill-box; transform-origin:center}
 .cover-boxes{display:grid; grid-template-columns:repeat(4, 1fr); border-top:var(--rule)}
 .cover-boxes div{padding:16px var(--gutter) 18px; border-right:var(--rule)}
 .cover-boxes div:last-child{border-right:0}
@@ -158,6 +158,27 @@ button.cover-art:hover .playbtn, button.cover-art:focus-visible .playbtn{transfo
 button.cover-art:focus-visible{outline:3px solid var(--ink); outline-offset:-6px}
 .credit{position:absolute; right:8px; bottom:8px; z-index:3; font:500 9px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; background:rgba(22,21,20,.75); color:var(--paper); padding:4px 6px; text-decoration:none}
 a.credit:hover{background:var(--ink)}
+
+/* go further tiles */
+.fest-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; margin-top:32px}
+.fest{display:flex; flex-direction:column; background:var(--paper); color:var(--ink); text-decoration:none; border:2px solid var(--paper); box-shadow:8px 8px 0 var(--c); transition:transform .25s, box-shadow .25s}
+.fest:hover{transform:translate(-3px, -3px); box-shadow:11px 11px 0 var(--c)}
+.fest-logo{position:relative; aspect-ratio:16/6; background:#0d0d0c; display:grid; place-items:center; padding:28px; border-bottom:var(--rule); overflow:hidden}
+.fest-logo::after{content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(242,236,223,.12) 1.2px, transparent 1.5px); background-size:8px 8px; pointer-events:none}
+.fest-logo img{position:relative; max-width:78%; max-height:70%; object-fit:contain}
+.fest-tag{position:absolute; left:14px; top:14px; z-index:1; font:600 12px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; background:var(--c); color:var(--paper); padding:6px 8px}
+.fest-body{padding:20px 22px 22px; display:flex; flex-direction:column; flex:1}
+.fest-kick{margin:0 0 6px; font:500 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+.fest h3{margin:0 0 10px; font-size:clamp(28px, 3vw, 40px); font-weight:900; text-transform:uppercase; line-height:.95; font-variation-settings:"wdth" 72}
+.fest-body p:not(.fest-kick){margin:0 0 18px}
+.fest-go{margin-top:auto; align-self:flex-start; font:600 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; padding:9px 12px; background:var(--ink); color:var(--paper)}
+.fest:hover .fest-go{background:var(--c); color:var(--ink)}
+@media (max-width:760px){ .fest-grid{grid-template-columns:1fr} }
+
+/* hover-to-play figures */
+.fig{cursor:pointer}
+.fig .hint{display:block; margin-bottom:5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:10px; opacity:.6}
+.fig:hover .hint{opacity:1}
 
 /* video player */
 .player{border:3px solid var(--ink); padding:0; background:var(--paper); width:min(1000px, 94vw); box-shadow:10px 10px 0 var(--ink); color:var(--ink)}
@@ -278,10 +299,10 @@ a.credit:hover{background:var(--ink)}
           <clipPath id="aboveSlot"><rect x="-50" y="-60" width="400" height="290"/></clipPath>
         </defs>
         <!-- slot plate -->
-        <rect x="40" y="215" width="220" height="100" rx="6" fill="#161514"/>
-        <rect x="56" y="231" width="188" height="68" rx="3" fill="none" stroke="#f2ecdf" stroke-width="1.5" stroke-dasharray="4 5"/>
-        <rect x="95" y="222" width="110" height="14" rx="7" fill="#f2ecdf"/>
-        <rect x="100" y="226" width="100" height="6" rx="3" fill="#161514"/>
+        <rect x="18" y="215" width="264" height="100" rx="6" fill="#161514"/>
+        <rect x="34" y="245" width="232" height="56" rx="3" fill="none" stroke="#f2ecdf" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <rect x="36" y="221" width="228" height="16" rx="8" fill="#f2ecdf"/>
+        <rect x="42" y="225" width="216" height="8" rx="4" fill="#161514"/>
         <text x="150" y="276" text-anchor="middle" fill="#f4c21b" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" letter-spacing="3">INSERT COIN</text>
         <text x="150" y="292" text-anchor="middle" fill="#f2ecdf" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="2">1 CREDIT = 1 NEW IDEA</text>
         <!-- coin -->
@@ -331,18 +352,31 @@ a.credit:hover{background:var(--ink)}
 <!-- ================= CHAPTERS (generated from data below) ================= -->
 <main id="chapters"></main>
 
-<!-- ================= BRIEF (placeholder) ================= -->
-<section class="brief" id="brief" data-page="Brief">
+<!-- ================= GO FURTHER ================= -->
+<section class="brief" id="more" data-page="Go further">
   <div class="wrap" style="padding:0">
-    <p class="kicker">Mission briefing</p>
-    <h2 class="sec-title">The Brief</h2>
-    <p style="max-width:60ch; margin:0; color:rgba(242,236,223,.8)">The full assignment will be published here. Until then, study the five chapters above and start collecting your own examples.</p>
-    <!-- Replace the slots below with the brief when ready -->
-    <div class="brief-grid">
-      <div class="slot"><h3>The Challenge</h3><p>What you are asked to design.</p><span class="tba">TBA ▮</span></div>
-      <div class="slot"><h3>Deliverables</h3><p>What you hand in, and in what format.</p><span class="tba">TBA ▮</span></div>
-      <div class="slot"><h3>Schedule</h3><p>Milestones, crits and the final show.</p><span class="tba">TBA ▮</span></div>
-      <div class="slot"><h3>Evaluation</h3><p>How the work will be assessed.</p><span class="tba">TBA ▮</span></div>
+    <p class="kicker">Bonus stage</p>
+    <h2 class="sec-title">Go Further</h2>
+    <p style="max-width:60ch; margin:0; color:rgba(242,236,223,.8)">Where new arcades show up every year. Browse the archives of finalists and winners for more examples of everything in this booklet.</p>
+    <div class="fest-grid">
+      <a class="fest reveal" href="https://gdconf.com/alt-ctrl-gdc/" target="_blank" rel="noopener" style="--c:var(--red)">
+        <div class="fest-logo"><img src="https://knect365.imgix.net/uploads/GDC-white-a7871e2b774f7ecda4ee930bd43649c8.png?auto=format&fit=max&h=300" alt="GDC Festival of Gaming" loading="lazy"><span class="fest-tag">alt.ctrl</span></div>
+        <div class="fest-body">
+          <p class="fest-kick">Exhibition · GDC</p>
+          <h3>alt.ctrl.GDC</h3>
+          <p>A yearly GDC exhibit of games played with custom-built alternative controllers, chosen through a free, open submission.</p>
+          <span class="fest-go">Visit ↗</span>
+        </div>
+      </a>
+      <a class="fest reveal" href="https://igf.com/finalists-and-winners/" target="_blank" rel="noopener" style="--c:var(--yellow)">
+        <div class="fest-logo"><img src="https://knect365.imgix.net/uploads/Independent-Games-Festival-05f068665c52e278e2a3b3672e3a5902.png?auto=format&fit=max&h=300" alt="Independent Games Festival" loading="lazy"></div>
+        <div class="fest-body">
+          <p class="fest-kick">Awards · Finalists &amp; winners</p>
+          <h3>Independent Games Festival</h3>
+          <p>The IGF's yearly finalists and winners across all categories. Proyecto EXO won its Alt.Ctrl award in 2026.</p>
+          <span class="fest-go">Visit ↗</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -404,6 +438,14 @@ const PROJECTS = [
     tags:["motion","music","local multiplayer"],
     image:"https://i.ytimg.com/vi/hG5haoDBC28/maxresdefault.jpg", credit:"YouTube",
     video:"https://www.youtube.com/watch?v=hG5haoDBC28", site:"http://www.jsjoust.com/" },
+  { theme:"no-screens", title:"Line Wobbler", short:"LINE",
+    year:"2015", by:"Robin Baumgarten (Wobbly Labs)", platform:"LED strip · spring controller",
+    how:"A one-dimensional dungeon crawler. Bend and flick a door-stopper spring to move your dot along a strip of hundreds of LEDs, attack enemies and dodge lava and force fields.",
+    breaks:"The whole game world is a single line of light that can run along a ceiling or a tree, and the controller is a wobbly spring.",
+    tags:["LED installation","custom controller","1D game"],
+    image:"https://format.creatorcdn.com/b2e49afb-a532-4fb5-b270-d758b808b6fa/0/0/0/0,854,3643,2260,1140,440/0-0-0/40f24cbd-ab3a-44ad-af45-69aa1151d979/1/2/Line+Wobbler+-+Toronto+Kids+2+%28c%29+Robin+Baumgarten+2016.jpg?fjkss=exp=2110250116~hmac=e0014d91b9a73116655ed63c3e83335bc9604e1a92fa1ea88f33b0d4e366c6b4",
+    credit:"Wobbly Labs", creditUrl:"https://www.wobblylabs.com/line-wobbler",
+    video:"https://www.youtube.com/watch?v=UZ_5ol_kyL4&t=25s", site:"https://www.wobblylabs.com/line-wobbler" },
 
   /* ---------- No Limits ---------- */
   { theme:"no-limits", title:"Pokémon Go", short:"GO",
@@ -430,6 +472,13 @@ const PROJECTS = [
     tags:["projection","tangible","sport"],
     image:"https://i.vimeocdn.com/video/336847840-b5197297a0d906eb6ef3d4a5958b9e480df1ef5478bec42c5b7d7ba7ecfa6adb-d_1280x720", credit:"Vimeo",
     video:"https://vimeo.com/48835482", site:"https://tangible.media.mit.edu/project/pingpongplus/" },
+  { theme:"alt-screens", title:"bit.pong", short:"BIT",
+    year:"2020s", by:"Diplik GmbH, Berlin", platform:"Ping-pong table · LED touch surface",
+    how:"Real table tennis with real paddles and balls, on a table whose whole surface is an LED display. It tracks where the ball lands and runs games on the table itself, like Snake, Tic Tac Toe, target practice or Pong with automatic scoring.",
+    breaks:"It picks up where PingPongPlus left off: the playing surface literally is the screen, built as a product for today's entertainment venues.",
+    tags:["LED surface","sport","venue game"],
+    image:"https://cdn.prod.website-files.com/69bad1055d2812d0548bf31b/6a88d5bf4ca82a3303699973_20.JPEG", imagePos:"50% 62%", credit:"bit-pong.com", creditUrl:"https://www.bit-pong.com/",
+    video:"https://www.youtube.com/shorts/McceA2k_VUg", site:"https://www.bit-pong.com/" },
   { theme:"alt-screens", title:"Proyecto EXO", short:"EXO",
     year:"2026", by:"playlab.ditella", platform:"Electromechanical cabinet · projection",
     how:"Two players work together to drive rovers, cranes and turrets across a handcrafted landscape onto which an alien world is projected. They defend extraction rigs from creatures and channel energy back to their ship.",
@@ -483,6 +532,13 @@ const PROJECTS = [
     tags:["asymmetric","co-op","communication"],
     image:"https://i.ytimg.com/vi/DAybre4vLYY/maxresdefault.jpg", credit:"YouTube",
     video:"https://www.youtube.com/watch?v=DAybre4vLYY&t=40s", site:"https://keeptalkinggame.com" },
+  { theme:"play-partners", title:"Fingle", short:"FINGLE",
+    year:"2011", by:"Game Oven", platform:"iPad · two players, one screen",
+    how:"Two players share one iPad and drag glowing buttons onto matching targets with their fingers. As the levels get harder, their hands have to slide over, under and between each other.",
+    breaks:"Awkward, intimate touch between two people becomes the core mechanic. The shared screen is a meeting place for hands.",
+    tags:["touch","shared screen","2 players"],
+    image:"https://i.ytimg.com/vi/0hM0_U7zuQg/maxresdefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=0hM0_U7zuQg", site:"https://apps.apple.com/us/app/fingle/id490109661" },
 
   /* PainStation (//////////fur////, 2001) removed for now; it is still in the first version (index.html) */
 ];
@@ -597,7 +653,7 @@ const themeById = Object.fromEntries(THEMES.map(t => [t.id, t]));
 /* turn a YouTube / Vimeo link into an embeddable player URL */
 function embedOf(u){
   if (!u) return null;
-  let m = u.match(/youtube\.com\/watch\?v=([\w-]{11})/) || u.match(/youtu\.be\/([\w-]{11})/);
+  let m = u.match(/youtube\.com\/watch\?v=([\w-]{11})/) || u.match(/youtube\.com\/shorts\/([\w-]{11})/) || u.match(/youtu\.be\/([\w-]{11})/);
   if (m){
     const t = (u.match(/[?&]t=(\d+)/) || [])[1];
     return { src:`https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0${t ? "&start=" + t : ""}`, host:"YouTube" };
@@ -613,7 +669,7 @@ function card(p, ci, pi, t){
   const also = p.alsoFits && themeById[p.alsoFits]
     ? `<a class="tag x" href="#${p.alsoFits}">Also fits: ${esc(themeById[p.alsoFits].title)}</a>` : "";
   const inner = `
-      ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ""}
+      ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()"${p.imagePos ? ` style="object-position:${esc(p.imagePos)}"` : ""}>` : ""}
       <span class="big">${esc(p.short || p.title.slice(0,3))}</span>
       <span class="no">${ci+1}.${pi+1}</span>
       ${emb ? `<span class="playbtn" aria-hidden="true"></span>` : ""}`;
@@ -662,7 +718,7 @@ THEMES.forEach((t, ci) => {
         <p class="ch-kicker">Chapter ${ci+1} · p. ${page} · ${items.length} ${items.length===1?"project":"projects"}</p>
         <h2>${esc(t.title)}</h2>
         <p class="ch-lede">${esc(t.lede)}</p>
-        <figure class="fig">${FIGS[t.id] || ""}<figcaption><b>Fig. ${ci+1}</b>${esc(t.fig)}</figcaption></figure>
+        <figure class="fig">${FIGS[t.id] || ""}<figcaption><span class="hint">▶ hover to play</span><b>Fig. ${ci+1}</b>${esc(t.fig)}</figcaption></figure>
       </div>
       <div class="cards">${items.map((p, pi) => card(p, ci, pi, t)).join("")}</div>
     </div>
@@ -671,8 +727,8 @@ THEMES.forEach((t, ci) => {
     <li><a href="#${t.id}" style="--c:${t.color}"><span class="n">${pad(ci+1)}</span><span class="t"><i class="sw"></i>${esc(t.title)}</span><span class="dots"></span><span class="p">p. ${page}</span></a></li>`);
   tabs.insertAdjacentHTML("beforeend", `<a href="#${t.id}" style="--c:${t.color};--on:${t.on}" data-for="${t.id}"><b>${pad(ci+1)}</b><span>${esc(t.title)}</span></a>`);
 });
-toc.insertAdjacentHTML("beforeend", `<li><a href="#brief" style="--c:var(--paper)"><span class="n">→</span><span class="t">The Brief</span><span class="dots"></span><span class="p">p. ${pad(4 + THEMES.length*2)}</span></a></li>`);
-tabs.insertAdjacentHTML("beforeend", `<a href="#brief" style="--c:var(--paper);--on:var(--ink)" data-for="brief"><b>★</b><span>The Brief</span></a>`);
+toc.insertAdjacentHTML("beforeend", `<li><a href="#more" style="--c:var(--paper)"><span class="n">→</span><span class="t">Go Further</span><span class="dots"></span><span class="p">p. ${pad(4 + THEMES.length*2)}</span></a></li>`);
+tabs.insertAdjacentHTML("beforeend", `<a href="#more" style="--c:var(--paper);--on:var(--ink)" data-for="more"><b>★</b><span>Go Further</span></a>`);
 $("#chapCount").textContent = THEMES.length;
 
 /* pellets along the Pac path */
@@ -698,6 +754,7 @@ const followers = [...document.querySelectorAll("[data-follow]")].map(el => {
   return { el, path, L: path.getTotalLength(), sec: el.closest(".chapter"), rot: !!el.dataset.rotate };
 });
 const clamp = (v, a=0, b=1) => Math.min(b, Math.max(a, v));
+const anims = new Map();   // chapter section -> hover-animation start time
 let ticking = false;
 
 function update(){
@@ -718,6 +775,15 @@ function update(){
     let p = clamp((vh * .55 - r.top) / (r.height - vh * .25));
     if (narrow){ const f = sec.querySelector(".fig").getBoundingClientRect(); p = clamp((vh * .9 - f.top) / (vh * .6)); }
     if (reduce) p = 1;
+    // hover / tap on the figure: play 0 → 1, hold, then ease back to the scroll position
+    if (anims.has(sec)){
+      const t = (performance.now() - anims.get(sec)) / 3400;
+      const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+      if (t >= 1) anims.delete(sec);
+      else if (t < .65) p = ease(t / .65);
+      else if (t < .8) p = 1;
+      else p = 1 + (p - 1) * ease((t - .8) / .2);
+    }
     sec.style.setProperty("--p", p.toFixed(4));
     sec._p = p;
     sec.querySelectorAll(".pellets circle").forEach(c => c.style.opacity = (+c.dataset.t > p) ? 1 : 0);
@@ -735,9 +801,22 @@ function update(){
   $("#pager").textContent = cur;
   $("#pager").style.opacity = cur === "Cover" ? 0 : 1;
   let active = null;
-  chapters.concat([$("#brief")]).forEach(el => { const r = el.getBoundingClientRect(); if (r.top < vh * .4 && r.bottom > vh * .4) active = el.id; });
+  chapters.concat([$("#more")]).forEach(el => { const r = el.getBoundingClientRect(); if (r.top < vh * .4 && r.bottom > vh * .4) active = el.id; });
   tabs.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.for === active));
 }
+/* play a chapter's figure animation on hover (or tap) */
+function animLoop(){ update(); if (anims.size) requestAnimationFrame(animLoop); }
+document.querySelectorAll(".chapter .fig").forEach(fig => {
+  const sec = fig.closest(".chapter");
+  const play = () => {
+    if (reduce) return;
+    const running = anims.size > 0;
+    if (!anims.has(sec) || performance.now() - anims.get(sec) > 2200) anims.set(sec, performance.now());
+    if (!running) requestAnimationFrame(animLoop);
+  };
+  fig.addEventListener("pointerenter", play);
+  fig.addEventListener("click", play);
+});
 addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, {passive:true});
 addEventListener("resize", update);
 update();
