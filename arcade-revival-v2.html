@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arcade Revival</title>
+<meta name="description" content="Arcade Revival — main project for the Interaction Design course, 2026–27. New interactive experiences that challenge the traditional arcade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f2ecdf; --paper-2:#e7dfcc; --ink:#161514; --muted:#5e584f;
+  --red:#e03a1e; --blue:#1d4bb8; --yellow:#f4c21b; --green:#178a55;
+  --rule:2px solid var(--ink);
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sans:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --gutter:clamp(16px, 4vw, 56px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+/* paper grain */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:100; opacity:.35; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .35 0 0 0 0 .3 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+a{color:inherit}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1320px; margin:0 auto; padding:0 var(--gutter)}
+.halftone{background-image:radial-gradient(rgba(0,0,0,.22) 1.1px, transparent 1.4px); background-size:7px 7px}
+
+/* ---------- progress / page counter ---------- */
+.progress{position:fixed; top:0; left:0; right:0; height:6px; z-index:50; background:transparent}
+.progress i{display:block; height:100%; width:calc(var(--sp,0) * 100%); background:var(--ink)}
+.pager{
+  position:fixed; left:var(--gutter); bottom:16px; z-index:50;
+  font:500 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase;
+  background:var(--ink); color:var(--paper); padding:8px 10px; border-radius:2px;
+}
+
+/* ---------- thumb-index tabs ---------- */
+.tabs{position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; align-items:flex-end; gap:4px}
+.tabs a{
+  display:flex; align-items:center; gap:10px; text-decoration:none;
+  background:var(--c); color:var(--on); font:600 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase;
+  padding:12px 10px; width:42px; overflow:hidden; white-space:nowrap;
+  border-radius:4px 0 0 4px; transition:width .35s cubic-bezier(.2,.8,.2,1);
+  box-shadow:-2px 2px 0 var(--ink);
+}
+.tabs a b{min-width:22px; text-align:center}
+.tabs a.on{width:58px}
+.tabs a:hover{width:200px}
+.tabs a span{opacity:0; transition:opacity .2s}
+.tabs a:hover span{opacity:1}
+
+/* ---------- cover ---------- */
+.cover{min-height:100vh; min-height:100svh; display:flex; flex-direction:column; border-bottom:var(--rule); position:relative; overflow:hidden}
+.cover-top{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:22px var(--gutter); border-bottom:var(--rule); font:500 12px/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase}
+.cover-main{flex:1; display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:24px; padding:40px var(--gutter)}
+.kicker{font:600 13px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; margin:0 0 18px; display:inline-block; background:var(--ink); color:var(--paper); padding:7px 10px}
+.title{margin:0; font-weight:900; line-height:.82; letter-spacing:-.01em; font-size:clamp(64px, 12.4vw, 196px); text-transform:uppercase}
+.title span{display:block; font-variation-settings:"wdth" var(--tw, 62)}
+.title span:nth-child(2){color:var(--red)}
+.sub{max-width:34ch; font-size:clamp(18px, 1.6vw, 22px); margin:26px 0 0; font-variation-settings:"wdth" 90}
+.coin-art{width:100%; max-width:440px; justify-self:center}
+.coin-art svg{width:100%; height:auto; display:block; overflow:visible}
+.coin{transform:translateY(calc(var(--h,0) * 150px)) rotate(calc(var(--h,0) * 40deg)); transform-box:fill-box; transform-origin:center}
+.cover-boxes{display:grid; grid-template-columns:repeat(4, 1fr); border-top:var(--rule)}
+.cover-boxes div{padding:16px var(--gutter) 18px; border-right:var(--rule)}
+.cover-boxes div:last-child{border-right:0}
+.cover-boxes small{display:block; font:500 11px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
+.cover-boxes strong{font-size:22px; font-weight:800; font-variation-settings:"wdth" 75; text-transform:uppercase}
+.cue{position:absolute; right:var(--gutter); bottom:110px; font:600 12px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- warning + contents ---------- */
+.front{display:grid; grid-template-columns:1fr 1.4fr; gap:clamp(24px, 4vw, 64px); padding:clamp(56px, 8vw, 110px) var(--gutter)}
+.warning{border:3px solid var(--ink); padding:26px 26px 22px; align-self:start; background:var(--paper); box-shadow:8px 8px 0 var(--ink)}
+.warning h2{margin:0 0 4px; font-size:30px; font-weight:900; text-transform:uppercase; font-variation-settings:"wdth" 70; display:flex; gap:10px; align-items:center}
+.warning h2::before{content:"!"; display:inline-grid; place-items:center; width:34px; height:34px; background:var(--yellow); border:2px solid var(--ink); font-size:22px; clip-path:polygon(50% 0, 100% 100%, 0 100%); padding-top:8px}
+.warning .mono{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px}
+.warning ul{margin:0; padding-left:18px}
+.warning li{margin:4px 0}
+.contents h2, .sec-title{font-size:clamp(40px, 6vw, 84px); font-weight:900; text-transform:uppercase; margin:0 0 18px; line-height:.9; font-variation-settings:"wdth" 68}
+.toc{list-style:none; margin:0; padding:0; border-top:var(--rule)}
+.toc a{display:grid; grid-template-columns:56px auto 1fr auto; align-items:baseline; gap:14px; padding:14px 0; border-bottom:1px solid var(--ink); text-decoration:none; transition:padding .2s, background .2s}
+.toc a:hover{padding-left:12px; background:var(--paper-2)}
+.toc .n{font:600 14px/1 var(--mono)}
+.toc .t{font-size:clamp(22px, 2.6vw, 34px); font-weight:800; text-transform:uppercase; font-variation-settings:"wdth" 75; line-height:1}
+.toc .dots{border-bottom:2px dotted var(--ink); transform:translateY(-6px)}
+.toc .p{font:500 13px/1 var(--mono)}
+.toc .sw{display:inline-block; width:14px; height:14px; background:var(--c); border:1.5px solid var(--ink); margin-right:6px; vertical-align:-1px}
+
+/* ---------- chapters ---------- */
+.chapter{border-top:var(--rule); position:relative}
+.band{background:var(--c); color:var(--on); border-bottom:var(--rule); overflow:hidden; white-space:nowrap}
+.band div{display:inline-block; font:600 13px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; padding:11px 0; transform:translateX(calc(var(--p,0) * -40%))}
+.ch-grid{display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:clamp(24px, 4vw, 72px); padding:clamp(48px, 6vw, 90px) var(--gutter) clamp(64px, 8vw, 120px)}
+.ch-head{position:sticky; top:40px; align-self:start}
+.ch-num{font-size:clamp(120px, 16vw, 230px); font-weight:900; line-height:.75; color:var(--c); -webkit-text-stroke:2px var(--ink); font-variation-settings:"wdth" calc(62 + var(--p,0) * 50); margin-bottom:14px}
+.ch-kicker{font:500 12px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+.ch-head h2{font-size:clamp(44px, 5.4vw, 80px); font-weight:900; text-transform:uppercase; line-height:.88; margin:0 0 16px; font-variation-settings:"wdth" 70}
+.ch-lede{margin:0 0 24px; max-width:40ch; font-size:18px}
+.fig{margin:0; border:var(--rule); background:var(--paper); position:relative}
+.fig::before{content:""; position:absolute; inset:0; background-image:linear-gradient(var(--paper-2) 1px, transparent 1px), linear-gradient(90deg, var(--paper-2) 1px, transparent 1px); background-size:20px 20px; pointer-events:none}
+.fig svg{position:relative; display:block; width:100%; height:auto}
+.fig figcaption{position:relative; border-top:var(--rule); padding:9px 12px; font:500 12px/1.4 var(--mono)}
+.fig figcaption b{background:var(--ink); color:var(--paper); padding:2px 6px; margin-right:8px; font-weight:600}
+
+/* figure drawing primitives */
+.ln{fill:none; stroke:var(--ink); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+.thin{stroke-width:1.4}
+.dash{stroke-dasharray:5 6}
+.fill-c{fill:var(--c)} .fill-ink{fill:var(--ink)} .fill-paper{fill:var(--paper)}
+.lbl{font:600 10px var(--mono); letter-spacing:.1em; fill:var(--ink)}
+/* fig 1 – no screens */
+.glow{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.jostle{transform-box:fill-box; transform-origin:50% 100%; transform:rotate(calc(var(--p,0) * 34deg - 4deg))}
+.out{opacity:clamp(0, (var(--p,0) - .5) * 5, 1)}
+/* fig 2 – no limits */
+.frame{transform-box:fill-box; transform-origin:center; transform:scale(calc(1 + var(--p,0) * 3.2)); opacity:clamp(0, 1 - var(--p,0) * 1.3, 1)}
+.trail{stroke:var(--c); stroke-width:7; stroke-dasharray:1 1; stroke-dashoffset:calc(1 - var(--p,0)); fill:none; stroke-linecap:round; stroke-linejoin:round}
+/* fig 3 – alt screens */
+.ripple{transform-box:fill-box; transform-origin:center; animation:ripple 2.4s ease-out infinite}
+.ripple.r2{animation-delay:.8s} .ripple.r3{animation-delay:1.6s}
+@keyframes ripple{from{transform:scale(.2); opacity:1} to{transform:scale(2.4); opacity:0}}
+.beam{opacity:calc(.25 + var(--p,0) * .75)}
+/* fig 4 – alt controllers */
+.ico{opacity:clamp(.15, var(--p,0) * 6.5 - var(--i) * 1.2, 1); transition:opacity .15s}
+.ico .fill-c{fill-opacity:clamp(0, var(--p,0) * 6.5 - var(--i) * 1.2 - .4, 1)}
+/* fig 5 – play partners */
+.half-l{transform:translateX(min(0px, calc((var(--p,0) * 1.7 - 1) * 58px)))}
+.half-r{transform:translateX(max(0px, calc((1 - var(--p,0) * 1.7) * 58px)))}
+.joined{opacity:clamp(0, (var(--p,0) - .55) * 6, 1)}
+
+/* ---------- project cards ---------- */
+.cards{display:flex; flex-direction:column; gap:clamp(28px, 3.5vw, 48px)}
+.card{border:var(--rule); background:var(--paper); display:grid; grid-template-columns:minmax(0, 1fr); box-shadow:6px 6px 0 var(--ink); transition:transform .25s, box-shadow .25s}
+.card:hover{transform:translate(-3px, -3px); box-shadow:9px 9px 0 var(--ink)}
+.cover-art{position:relative; aspect-ratio:16/7; background:var(--c); color:var(--on); border-bottom:var(--rule); overflow:hidden; display:flex; align-items:flex-end; justify-content:space-between; padding:14px 18px}
+.cover-art::after{content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(0,0,0,.2) 1.2px, transparent 1.5px); background-size:8px 8px; mask-image:linear-gradient(110deg, transparent 30%, #000 85%); -webkit-mask-image:linear-gradient(110deg, transparent 30%, #000 85%); pointer-events:none}
+.cover-wrap{position:relative}
+button.cover-art{width:100%; border:0; border-bottom:var(--rule); margin:0; font:inherit; text-align:left; cursor:pointer; display:flex}
+.cover-art img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(.9) contrast(1.05); transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.cover-art.has-img .big{opacity:0}
+.cover-art.has-img .no{background:var(--c); color:var(--on); border-color:var(--ink)}
+.cover-art.has-img::after{mask-image:linear-gradient(110deg, transparent 55%, #000 100%); -webkit-mask-image:linear-gradient(110deg, transparent 55%, #000 100%)}
+.card:hover .cover-art img{transform:scale(1.04)}
+.playbtn{position:absolute; z-index:2; left:50%; top:50%; width:68px; height:68px; margin:-34px 0 0 -34px; border-radius:50%; background:var(--c); border:2.5px solid var(--ink); box-shadow:4px 4px 0 var(--ink); transition:transform .2s}
+.playbtn::before{content:""; position:absolute; left:26px; top:20px; border-left:22px solid var(--on); border-top:14px solid transparent; border-bottom:14px solid transparent}
+button.cover-art:hover .playbtn, button.cover-art:focus-visible .playbtn{transform:scale(1.12)}
+button.cover-art:focus-visible{outline:3px solid var(--ink); outline-offset:-6px}
+.credit{position:absolute; right:8px; bottom:8px; z-index:3; font:500 9px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; background:rgba(22,21,20,.75); color:var(--paper); padding:4px 6px; text-decoration:none}
+a.credit:hover{background:var(--ink)}
+
+/* video player */
+.player{border:3px solid var(--ink); padding:0; background:var(--paper); width:min(1000px, 94vw); box-shadow:10px 10px 0 var(--ink); color:var(--ink)}
+.player::backdrop{background:rgba(22,21,20,.82)}
+.player header{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 12px; border-bottom:3px solid var(--ink)}
+.player h4{margin:0; font-size:22px; font-weight:900; text-transform:uppercase; font-variation-settings:"wdth" 72; line-height:1}
+.player .acts{display:flex; gap:8px; flex-shrink:0}
+.player .acts a, .player .acts button{font:600 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; padding:8px 10px; border:1.5px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer; text-decoration:none}
+.player .acts button{background:var(--ink); color:var(--paper)}
+.player .screen{aspect-ratio:16/9; background:#000}
+.player iframe{width:100%; height:100%; border:0; display:block}
+.cover-art .big{position:relative; z-index:1; font-size:clamp(70px, 9vw, 130px); font-weight:900; line-height:.72; text-transform:uppercase; font-variation-settings:"wdth" 62; letter-spacing:-.02em}
+.cover-art .no{position:relative; z-index:1; font:600 12px/1 var(--mono); letter-spacing:.12em; border:1.5px solid currentColor; padding:6px 8px; align-self:flex-start}
+.card-body{padding:22px 24px 24px}
+.card h3{margin:0 0 12px; font-size:clamp(28px, 3vw, 40px); font-weight:900; text-transform:uppercase; line-height:.95; font-variation-settings:"wdth" 72}
+.meta{display:grid; grid-template-columns:auto 1fr 1fr; margin:0 0 16px; border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink)}
+.meta div{padding:8px 14px 8px 0; margin-right:14px; border-right:1px dashed var(--ink)}
+.meta div:last-child{border-right:0; margin-right:0}
+.meta dt{font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.meta dd{margin:0; font-weight:600; font-size:15px; line-height:1.25}
+.how{margin:0 0 14px}
+.how b{font-variation-settings:"wdth" 75; text-transform:uppercase; letter-spacing:.02em}
+.breaks{margin:0 0 16px; padding:12px 14px; background:var(--paper-2); border-left:6px solid var(--c); font-size:16px}
+.breaks span{display:block; font:600 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px}
+.foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{font:500 11px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; border:1.5px solid var(--ink); padding:5px 7px; border-radius:20px}
+.tag.x{background:var(--ink); color:var(--paper); text-decoration:none}
+.links{display:flex; gap:8px; flex-wrap:wrap}
+.links a{font:600 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; text-decoration:none; padding:8px 10px; background:var(--ink); color:var(--paper); border:1.5px solid var(--ink)}
+.links a:nth-child(2){background:transparent; color:var(--ink)}
+.links a:hover{background:var(--c); color:var(--on)}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(40px) rotate(-.6deg)}
+.reveal.in{opacity:1; transform:none; transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1)}
+
+/* ---------- brief ---------- */
+.brief{border-top:var(--rule); background:var(--ink); color:var(--paper); padding:clamp(56px, 8vw, 110px) var(--gutter)}
+.brief .sec-title{color:var(--paper)}
+.brief .kicker{background:var(--yellow); color:var(--ink)}
+.brief-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:28px}
+.slot{border:2px dashed rgba(242,236,223,.5); padding:20px; min-height:200px; display:flex; flex-direction:column}
+.slot h3{margin:0 0 10px; font-size:24px; font-weight:800; text-transform:uppercase; font-variation-settings:"wdth" 75}
+.slot p{margin:0; color:rgba(242,236,223,.7); font-size:15px}
+.slot .tba{margin-top:auto; font:600 12px/1 var(--mono); letter-spacing:.16em; color:var(--yellow); animation:blink 1.4s steps(1) infinite}
+
+/* ---------- back cover ---------- */
+.back{border-top:var(--rule); padding:clamp(56px, 8vw, 100px) var(--gutter) 90px; text-align:center}
+.back h2{font-size:clamp(56px, 11vw, 170px); font-weight:900; text-transform:uppercase; margin:0; line-height:.85; font-variation-settings:"wdth" 62}
+.back h2 em{font-style:normal; color:var(--red)}
+.count{font:600 clamp(18px, 2vw, 24px)/1 var(--mono); letter-spacing:.14em; margin:22px 0 30px}
+.back .btn{display:inline-block; font:600 13px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; padding:14px 18px; border:var(--rule); text-decoration:none; box-shadow:5px 5px 0 var(--ink); background:var(--yellow)}
+.colophon{margin-top:50px; font:500 12px/1.6 var(--mono); color:var(--muted)}
+
+/* keep content clear of the thumb tabs */
+@media (min-width:981px){ .ch-grid, .front, .brief{padding-right:calc(var(--gutter) + 40px)} }
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .cover-main{grid-template-columns:1fr}
+  .coin-art{max-width:300px; order:-1; justify-self:start}
+  .cover-boxes{grid-template-columns:repeat(2, 1fr)}
+  .cover-boxes div:nth-child(2){border-right:0}
+  .cover-boxes div:nth-child(-n+2){border-bottom:var(--rule)}
+  .front{grid-template-columns:1fr}
+  .ch-grid{grid-template-columns:1fr}
+  .ch-head{position:relative; top:0}
+  .fig{max-width:520px}
+  .brief-grid{grid-template-columns:repeat(2, 1fr)}
+  .tabs{display:none}
+  .cue{display:none}
+  .pager{display:none}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .cover-top span:nth-child(3){display:none}
+  .cover-boxes strong{font-size:18px}
+  .meta{grid-template-columns:1fr 1fr}
+  .meta div:first-child{grid-column:1 / -1; border-right:0; border-bottom:1px dashed var(--ink); margin-right:0}
+  .brief-grid{grid-template-columns:1fr}
+  .slot{min-height:150px}
+  .card-body{padding:18px}
+  .toc a{grid-template-columns:40px 1fr auto}
+  .toc .dots{display:none}
+  .warning{box-shadow:5px 5px 0 var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1; transform:none}
+  .glow, .ripple, .cue, .slot .tba{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" aria-hidden="true"><i></i></div>
+<div class="pager" id="pager" aria-hidden="true">Cover</div>
+<nav class="tabs" id="tabs" aria-label="Chapters"></nav>
+
+<!-- ================= COVER ================= -->
+<header class="cover" id="top">
+  <div class="cover-top">
+    <span>Interaction Design</span>
+    <span>Main Project · 2026–27</span>
+    <span>Instruction Booklet No. 01</span>
+  </div>
+  <div class="cover-main">
+    <div>
+      <p class="kicker">Instruction booklet</p>
+      <h1 class="title" id="title"><span>Arcade</span><span>Revival</span></h1>
+      <p class="sub">New interactive experiences that challenge the traditional arcade: what happens when the screen, the cabinet, the joystick and the lonely player are no longer a given?</p>
+    </div>
+    <div class="coin-art" aria-hidden="true">
+      <svg viewBox="0 0 300 330">
+        <defs>
+          <pattern id="dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.4" fill="rgba(0,0,0,.25)"/></pattern>
+          <clipPath id="aboveSlot"><rect x="-50" y="-60" width="400" height="290"/></clipPath>
+        </defs>
+        <!-- slot plate -->
+        <rect x="40" y="215" width="220" height="100" rx="6" fill="#161514"/>
+        <rect x="56" y="231" width="188" height="68" rx="3" fill="none" stroke="#f2ecdf" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <rect x="95" y="222" width="110" height="14" rx="7" fill="#f2ecdf"/>
+        <rect x="100" y="226" width="100" height="6" rx="3" fill="#161514"/>
+        <text x="150" y="276" text-anchor="middle" fill="#f4c21b" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" letter-spacing="3">INSERT COIN</text>
+        <text x="150" y="292" text-anchor="middle" fill="#f2ecdf" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="2">1 CREDIT = 1 NEW IDEA</text>
+        <!-- coin -->
+        <g clip-path="url(#aboveSlot)">
+          <g class="coin">
+            <circle cx="150" cy="105" r="96" fill="#e03a1e" stroke="#161514" stroke-width="3"/>
+            <circle cx="150" cy="105" r="96" fill="url(#dots)"/>
+            <circle cx="150" cy="105" r="76" fill="none" stroke="#161514" stroke-width="2"/>
+            <circle cx="150" cy="105" r="70" fill="none" stroke="#161514" stroke-width="1" stroke-dasharray="2 4"/>
+            <text x="150" y="102" text-anchor="middle" fill="#f2ecdf" font-family="Archivo, sans-serif" font-weight="900" font-size="58" style="font-variation-settings:'wdth' 62">AR</text>
+            <text x="150" y="132" text-anchor="middle" fill="#161514" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="12" letter-spacing="3">2026·27</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="cue">Insert coin ↓ scroll</div>
+  <div class="cover-boxes">
+    <div><small>Players</small><strong>1 – ∞</strong></div>
+    <div><small>Screen</small><strong>Optional</strong></div>
+    <div><small>Controller</small><strong>Anything</strong></div>
+    <div><small>Chapters</small><strong id="chapCount">5</strong></div>
+  </div>
+</header>
+
+<!-- ================= WARNING + CONTENTS ================= -->
+<section class="front wrap" id="contents" data-page="Contents">
+  <aside class="warning reveal">
+    <h2>Warning</h2>
+    <p class="mono">Read before playing</p>
+    <p style="margin:0 0 10px">This project may cause the following side effects:</p>
+    <ul>
+      <li>Standing up and moving around</li>
+      <li>Making eye contact with other players</li>
+      <li>Building controllers out of cardboard, sensors and stubbornness</li>
+      <li>Asking whether a screen is really needed</li>
+      <li>Losing gracefully, laughing loudly</li>
+    </ul>
+  </aside>
+  <div class="contents">
+    <p class="kicker">Table of contents</p>
+    <h2>Contents</h2>
+    <ol class="toc" id="toc"></ol>
+  </div>
+</section>
+
+<!-- ================= CHAPTERS (generated from data below) ================= -->
+<main id="chapters"></main>
+
+<!-- ================= BRIEF (placeholder) ================= -->
+<section class="brief" id="brief" data-page="Brief">
+  <div class="wrap" style="padding:0">
+    <p class="kicker">Mission briefing</p>
+    <h2 class="sec-title">The Brief</h2>
+    <p style="max-width:60ch; margin:0; color:rgba(242,236,223,.8)">The full assignment will be published here. Until then, study the five chapters above and start collecting your own examples.</p>
+    <!-- Replace the slots below with the brief when ready -->
+    <div class="brief-grid">
+      <div class="slot"><h3>The Challenge</h3><p>What you are asked to design.</p><span class="tba">TBA ▮</span></div>
+      <div class="slot"><h3>Deliverables</h3><p>What you hand in, and in what format.</p><span class="tba">TBA ▮</span></div>
+      <div class="slot"><h3>Schedule</h3><p>Milestones, crits and the final show.</p><span class="tba">TBA ▮</span></div>
+      <div class="slot"><h3>Evaluation</h3><p>How the work will be assessed.</p><span class="tba">TBA ▮</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BACK COVER ================= -->
+<footer class="back" id="end" data-page="Back cover">
+  <h2>Game <em>Over?</em></h2>
+  <div class="count" id="count">CONTINUE? 9</div>
+  <a class="btn" href="#top">Press start ▸ back to cover</a>
+  <p class="colophon">Arcade Revival · Interaction Design · 2026–27<br>Project images, videos and names belong to their respective creators and are shown for educational purposes.</p>
+</footer>
+
+<dialog class="player" id="player" aria-label="Video player">
+  <header>
+    <h4 id="playerTitle">Video</h4>
+    <div class="acts"><a id="playerLink" href="#" target="_blank" rel="noopener">Open ↗</a><button type="button" id="playerClose">Close ✕</button></div>
+  </header>
+  <div class="screen"><iframe id="playerFrame" title="Project video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+</dialog>
+
+<script>
+/* =====================================================================
+   CONTENT — edit here.
+   To add a project: copy one object in PROJECTS, change the fields,
+   and set `theme` to one of the theme ids below. That's all.
+   Optional fields:
+     image:   "https://..." or "img/my-photo.jpg"  (cover picture)
+     credit:  "YouTube"            (small image credit; creditUrl:"https://..." to link it)
+     video:   "https://..."        (YouTube or Vimeo link plays inside the page;
+                                    otherwise a YouTube search link is generated)
+     site:    "https://..."        (official website)
+     alsoFits:"no-screens"         (shows a cross-theme tag)
+   ===================================================================== */
+
+const THEMES = [
+  { id:"no-screens",   title:"No Screens",             color:"var(--ink)",    on:"var(--paper)",
+    lede:"The game lives between the players' bodies, not on a display. Eyes leave the monitor and look at each other.",
+    fig:"Keep still when the music slows. Move when it speeds up." },
+  { id:"no-limits",    title:"No Limits",              color:"var(--blue)",   on:"var(--paper)",
+    lede:"The playfield breaks out of the cabinet and spills into streets, parks and whole cities. The world is the level.",
+    fig:"The cabinet frame dissolves; the maze becomes the street grid." },
+  { id:"alt-screens",  title:"Alternative Screens",    color:"var(--yellow)", on:"var(--ink)",
+    lede:"The display isn't a glass rectangle anymore. It is projected onto tables, models and physical worlds you can touch.",
+    fig:"Every bounce on the table is answered by the projection." },
+  { id:"alt-controllers", title:"Alternative Controllers", color:"var(--red)", on:"var(--paper)",
+    lede:"Forget the joystick and the button. Play with your brainwaves, a drum, the sun, or your ears.",
+    fig:"Drum, sun, mind, ears: four inputs the joystick never had." },
+  { id:"play-partners", title:"Play Partners",         color:"var(--green)",  on:"var(--paper)",
+    lede:"The other player is the main mechanic. Trust, coordination and communication become the game.",
+    fig:"Two halves, one game. Neither player can finish alone." },
+];
+
+const PROJECTS = [
+  /* ---------- No Screens ---------- */
+  { theme:"no-screens", title:"Johann Sebastian Joust", short:"JSJ",
+    year:"2011", by:"Die Gute Fabrik (Douglas Wilson)", platform:"PlayStation Move · no display",
+    how:"Each player holds a motion controller while Bach plays. When the music is slow, any sudden move knocks you out; when it speeds up, you can move faster. Try to jostle the others' controllers. The last one standing wins.",
+    breaks:"There's no screen at all. The music and the other players' bodies are the whole interface.",
+    tags:["motion","music","local multiplayer"],
+    image:"https://i.ytimg.com/vi/hG5haoDBC28/maxresdefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=hG5haoDBC28", site:"http://www.jsjoust.com/" },
+
+  /* ---------- No Limits ---------- */
+  { theme:"no-limits", title:"Pokémon Go", short:"GO",
+    year:"2016", by:"Niantic · The Pokémon Company", platform:"Smartphone · GPS · AR",
+    how:"Walk around the real world to find, catch and battle creatures. Landmarks become stops and gyms, so the map on your phone is the city around you.",
+    breaks:"The arcade is a fixed place. Here, play is spread across the whole planet and turns walking into the controller.",
+    tags:["location-based","AR","mass multiplayer"],
+    image:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Pok%C3%A9mon_Go_players_gathering_at_Mr.Mime_spawn_point_in_Pok%C3%A9mon_GO_PARK_%28Yokohama%2C_2017%29.jpg/1280px-Pok%C3%A9mon_Go_players_gathering_at_Mr.Mime_spawn_point_in_Pok%C3%A9mon_GO_PARK_%28Yokohama%2C_2017%29.jpg",
+    credit:"Wikimedia Commons", creditUrl:"https://commons.wikimedia.org/wiki/File:Pok%C3%A9mon_Go_players_gathering_at_Mr.Mime_spawn_point_in_Pok%C3%A9mon_GO_PARK_(Yokohama,_2017).jpg",
+    video:"https://www.youtube.com/watch?v=2sj2iQyBTQs", site:"https://pokemongolive.com" },
+  { theme:"no-limits", title:"Pac-Manhattan", short:"PAC",
+    year:"2004", by:"NYU ITP students", platform:"City streets · phones · control room",
+    how:"A full-size Pac-Man played on the streets around Washington Square Park. Runners play Pac-Man and the ghosts, while teammates in a control room track them on a map and guide them by phone.",
+    breaks:"It takes the most famous arcade maze and turns it into a real city grid at human scale.",
+    tags:["big game","urban play","teams"],
+    image:"https://www.pacmanhattan.com/images/splash_3.jpg", credit:"pacmanhattan.com",
+    site:"https://www.pacmanhattan.com/videos.php" },
+
+  /* ---------- Alternative Screens ---------- */
+  { theme:"alt-screens", title:"PingPongPlus", short:"PP+",
+    year:"1998", by:"MIT Media Lab · Tangible Media Group (Hiroshi Ishii et al.)", platform:"Ping-pong table · sensors · projection",
+    how:"Sensors under a ping-pong table detect where the ball lands, and a projector responds with water ripples, schools of fish or other graphics that react to each hit.",
+    breaks:"The screen becomes a sports table, and a physical game becomes digitally augmented.",
+    tags:["projection","tangible","sport"],
+    image:"https://i.vimeocdn.com/video/336847840-b5197297a0d906eb6ef3d4a5958b9e480df1ef5478bec42c5b7d7ba7ecfa6adb-d_1280x720", credit:"Vimeo",
+    video:"https://vimeo.com/48835482", site:"https://tangible.media.mit.edu/project/pingpongplus/" },
+  { theme:"alt-screens", title:"Proyecto EXO", short:"EXO",
+    year:"2026", by:"playlab.ditella", platform:"Electromechanical cabinet · projection",
+    how:"Two players work together to drive rovers, cranes and turrets across a handcrafted landscape onto which an alien world is projected. They defend extraction rigs from creatures and channel energy back to their ship.",
+    breaks:"The cabinet is rebuilt as a physical diorama, with projection and motorized machines in place of a monitor. It won the IGF Alt.Ctrl award at GDC 2026.",
+    tags:["co-op","projection mapping","physical cabinet"],
+    image:"https://img.itch.zone/aW1hZ2UvNDM0NDYwNy8yNTkzOTM3OC5qcGc=/original/o20Beu.jpg", credit:"itch.io",
+    video:"https://www.youtube.com/watch?v=LPV6X1Cf37c", site:"https://playlabditella.itch.io/proyecto-exo" },
+
+  /* ---------- Alternative Controllers ---------- */
+  { theme:"alt-controllers", title:"Brainball", short:"BB",
+    year:"2000", by:"Interactive Institute, Sweden (Smart Studio)", platform:"EEG headbands · table · ball",
+    how:"Two players sit across a table wearing EEG headbands. The more relaxed player's brain activity pushes a ball toward the opponent. Being competitive makes you lose.",
+    breaks:"It reverses the arcade's adrenaline: calm is the winning skill, and your mind is the controller.",
+    tags:["biofeedback","EEG","2 players"],
+    image:"https://i.ytimg.com/vi/TL9Njg8i_JQ/hqdefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=TL9Njg8i_JQ", site:"https://webarchive.ars.electronica.art/en/center/current_exhibition_detail.asp%3FiProjectID=14370.html" },
+  { theme:"alt-controllers", title:"Taiko no Tatsujin", short:"TAIKO",
+    year:"2001", by:"Namco (Bandai Namco)", platform:"Arcade cabinet · taiko drum",
+    how:"Hit a real taiko drum with wooden sticks in time with the music. Hit the face for a \"don\" and the rim for a \"ka\".",
+    breaks:"This one stays inside the arcade but swaps the joystick for a musical instrument and a full-body performance.",
+    tags:["rhythm","instrument","arcade"],
+    image:"https://i.ytimg.com/vi/Ix6eerZOvuA/maxres2.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=Ix6eerZOvuA" },
+  { theme:"alt-controllers", title:"Boktai", short:"SUN",
+    year:"2003", by:"Konami (Hideo Kojima)", platform:"Game Boy Advance · solar sensor",
+    how:"A light sensor on the cartridge measures real sunlight. Your solar weapon charges only when you play outside in the sun, so the time of day and the weather become part of the game.",
+    breaks:"The environment is the controller. You have to leave the dark arcade to play well.",
+    tags:["sensor","sunlight","handheld"], alsoFits:"no-limits",
+    image:"https://i.ytimg.com/vi/MQ2B8Fysw-s/maxres2.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=MQ2B8Fysw-s" },
+  { theme:"alt-controllers", title:"Papa Sangre", short:"AUDIO",
+    year:"2010", by:"Somethin' Else", platform:"iPhone · binaural audio",
+    how:"An audio-only game with no visuals. Wearing headphones, you walk through a pitch-black underworld by tapping footsteps on the screen and listening to 3D sound to avoid monsters.",
+    breaks:"Sound alone becomes both the screen and the controller.",
+    tags:["audio-only","binaural","accessibility"], alsoFits:"no-screens",
+    image:"https://i.ytimg.com/vi/ehL8v1a6R3c/maxresdefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=ehL8v1a6R3c" },
+
+  /* ---------- Play Partners ---------- */
+  { theme:"play-partners", title:"Bounden", short:"DUO",
+    year:"2014", by:"Game Oven · choreography with Dutch National Ballet", platform:"One smartphone · two players",
+    how:"Two players each hold one end of a single phone and rotate it together to follow a path of rings. Doing it makes them dance, turning under each other's arms.",
+    breaks:"The controller is shared and the body is the output. The game choreographs the relationship between the two players.",
+    tags:["dance","shared device","2 players"],
+    image:"https://i.ytimg.com/vi/QQ3ER4tPdQ4/sddefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=QQ3ER4tPdQ4" },
+  { theme:"play-partners", title:"Keep Talking and Nobody Explodes", short:"BOOM",
+    year:"2015", by:"Steel Crate Games", platform:"PC / console / VR + printed manual",
+    how:"One player sees a bomb and has to defuse it. The others have the defusal manual but can't see the bomb. Only clear, fast talking keeps everyone alive.",
+    breaks:"The information is split unevenly between players, and the communication between them is the gameplay.",
+    tags:["asymmetric","co-op","communication"],
+    image:"https://i.ytimg.com/vi/DAybre4vLYY/maxresdefault.jpg", credit:"YouTube",
+    video:"https://www.youtube.com/watch?v=DAybre4vLYY&t=40s", site:"https://keeptalkinggame.com" },
+
+  /* PainStation (//////////fur////, 2001) removed for now; it is still in the first version (index.html) */
+];
+
+/* ---------------- figure drawings (one per theme) ---------------- */
+const FIGS = {
+"no-screens": `
+<svg viewBox="0 0 300 220" aria-hidden="true">
+  <line class="ln" x1="20" y1="192" x2="280" y2="192"/>
+  <!-- player A -->
+  <circle class="ln" cx="95" cy="62" r="14"/>
+  <path class="ln" d="M95 76 V140 M95 140 L80 190 M95 140 L110 190 M95 96 L128 82 M95 96 L72 120"/>
+  <circle cx="133" cy="79" r="11" fill="#e03a1e" opacity=".25" class="glow"/>
+  <circle cx="133" cy="79" r="6" class="fill-ink"/>
+  <!-- player B (gets jostled) -->
+  <g class="jostle">
+    <circle class="ln" cx="205" cy="62" r="14"/>
+    <path class="ln" d="M205 76 V140 M205 140 L190 190 M205 140 L220 190 M205 96 L172 82 M205 96 L228 120"/>
+    <circle cx="167" cy="79" r="6" class="fill-ink"/>
+    <circle cx="167" cy="79" r="12" fill="#e03a1e" class="out"/>
+  </g>
+  <!-- tempo -->
+  <text class="lbl" x="22" y="24">TEMPO</text>
+  <rect x="70" y="16" width="120" height="10" class="ln thin"/>
+  <rect x="70" y="16" height="10" width="120" fill="#161514" style="transform-box:fill-box;transform-origin:left;transform:scaleX(var(--p,0))"/>
+  <text class="lbl out" x="200" y="25">OUT!</text>
+</svg>`,
+"no-limits": `
+<svg viewBox="0 0 300 220" aria-hidden="true">
+  <g class="ln thin">
+    <path d="M30 40 H290 M30 90 H290 M30 140 H290 M30 190 H290"/>
+    <path d="M30 40 V190 M100 40 V190 M170 40 V190 M240 40 V190 M290 40 V190"/>
+  </g>
+  <g class="pellets"></g>
+  <path id="pacPath" class="trail" pathLength="1" d="M30 190 H100 V140 H170 V90 H240 V40 H290"/>
+  <g class="frame"><rect x="118" y="80" width="64" height="54" rx="4" class="ln" style="fill:#f2ecdf"/><text class="lbl" x="150" y="111" text-anchor="middle">CABINET</text></g>
+  <path data-follow="#pacPath" data-rotate="1" d="M0 0 L10 -6 A11.5 11.5 0 1 0 10 6 Z" fill="#f4c21b" stroke="#161514" stroke-width="2"/>
+  <text class="lbl" x="30" y="24">WASHINGTON SQ. ⟶ THE WORLD</text>
+</svg>`,
+"alt-screens": `
+<svg viewBox="0 0 300 220" aria-hidden="true">
+  <!-- projector -->
+  <rect x="132" y="8" width="36" height="16" class="ln fill-ink"/>
+  <path class="ln thin dash beam" d="M140 24 L52 150 M160 24 L248 150 M150 24 L95 98 M150 24 L205 98"/>
+  <!-- table -->
+  <polygon points="40,150 260,150 222,96 78,96" class="ln fill-c" style="fill-opacity:.9"/>
+  <line class="ln" x1="150" y1="96" x2="150" y2="150"/>
+  <path class="ln" d="M60 150 V196 M240 150 V196 M95 110 V150 M205 110 V150" />
+  <!-- ripples at landing -->
+  <ellipse class="ripple ln thin" cx="205" cy="128" rx="14" ry="5"/>
+  <ellipse class="ripple r2 ln thin" cx="205" cy="128" rx="14" ry="5"/>
+  <ellipse class="ripple r3 ln thin" cx="205" cy="128" rx="14" ry="5"/>
+  <path id="ballArc" class="ln thin dash" d="M88 124 Q150 30 205 128"/>
+  <circle data-follow="#ballArc" r="6" fill="#f2ecdf" stroke="#161514" stroke-width="2"/>
+  <text class="lbl" x="18" y="212">TABLE = SCREEN</text>
+</svg>`,
+"alt-controllers": `
+<svg viewBox="0 0 300 220" aria-hidden="true">
+  <!-- drum -->
+  <g class="ico" style="--i:0">
+    <ellipse cx="75" cy="52" rx="38" ry="12" class="ln fill-c"/>
+    <path class="ln" d="M37 52 V86 Q75 104 113 86 V52"/>
+    <path class="ln" d="M58 16 L76 44 M98 14 L82 44"/>
+    <text class="lbl" x="75" y="116" text-anchor="middle">DRUM</text>
+  </g>
+  <!-- sun -->
+  <g class="ico" style="--i:1">
+    <circle cx="225" cy="58" r="20" class="ln fill-c"/>
+    <path class="ln" d="M225 22 V30 M225 86 V94 M189 58 H197 M253 58 H261 M200 33 L206 39 M244 77 L250 83 M250 33 L244 39 M206 77 L200 83"/>
+    <text class="lbl" x="225" y="116" text-anchor="middle">SUN</text>
+  </g>
+  <!-- mind -->
+  <g class="ico" style="--i:2">
+    <circle cx="75" cy="160" r="26" class="ln fill-c"/>
+    <path class="ln" d="M42 160 H55 L61 146 L69 174 L77 140 L85 172 L91 160 H108"/>
+    <text class="lbl" x="75" y="208" text-anchor="middle">MIND</text>
+  </g>
+  <!-- ears -->
+  <g class="ico" style="--i:3">
+    <path class="ln" d="M196 170 V160 A29 29 0 0 1 254 160 V170"/>
+    <rect x="188" y="160" width="14" height="28" rx="5" class="ln fill-c"/>
+    <rect x="248" y="160" width="14" height="28" rx="5" class="ln fill-c"/>
+    <text class="lbl" x="225" y="208" text-anchor="middle">EARS</text>
+  </g>
+  <line class="ln thin dash" x1="150" y1="14" x2="150" y2="206"/>
+  <line class="ln thin dash" x1="20" y1="126" x2="280" y2="126"/>
+</svg>`,
+"play-partners": `
+<svg viewBox="0 0 300 220" aria-hidden="true">
+  <g class="half-l">
+    <path d="M150 40 A70 70 0 0 0 150 180 Z" class="ln fill-c"/>
+    <text class="lbl" x="112" y="114" text-anchor="middle" style="fill:#f2ecdf;font-size:14px">P1</text>
+  </g>
+  <g class="half-r">
+    <path d="M150 40 A70 70 0 0 1 150 180 Z" class="ln" style="fill:#f2ecdf"/>
+    <text class="lbl" x="188" y="114" text-anchor="middle" style="font-size:14px">P2</text>
+  </g>
+  <g class="joined">
+    <rect x="104" y="192" width="92" height="20" class="fill-ink"/>
+    <text class="lbl" x="150" y="206" text-anchor="middle" style="fill:#f4c21b">= 1 GAME</text>
+  </g>
+  <text class="lbl" x="18" y="24">FIG. ALONE ≠ ENOUGH</text>
+</svg>`
+};
+
+/* ======================= RENDER ======================= */
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+const themeById = Object.fromEntries(THEMES.map(t => [t.id, t]));
+
+/* turn a YouTube / Vimeo link into an embeddable player URL */
+function embedOf(u){
+  if (!u) return null;
+  let m = u.match(/youtube\.com\/watch\?v=([\w-]{11})/) || u.match(/youtu\.be\/([\w-]{11})/);
+  if (m){
+    const t = (u.match(/[?&]t=(\d+)/) || [])[1];
+    return { src:`https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0${t ? "&start=" + t : ""}`, host:"YouTube" };
+  }
+  m = u.match(/vimeo\.com\/(\d+)/);
+  if (m) return { src:`https://player.vimeo.com/video/${m[1]}?autoplay=1`, host:"Vimeo" };
+  return null;
+}
+
+function card(p, ci, pi, t){
+  const video = p.video || "https://www.youtube.com/results?search_query=" + encodeURIComponent(p.title + " " + p.year + " game");
+  const emb = embedOf(p.video);
+  const also = p.alsoFits && themeById[p.alsoFits]
+    ? `<a class="tag x" href="#${p.alsoFits}">Also fits: ${esc(themeById[p.alsoFits].title)}</a>` : "";
+  const inner = `
+      ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ""}
+      <span class="big">${esc(p.short || p.title.slice(0,3))}</span>
+      <span class="no">${ci+1}.${pi+1}</span>
+      ${emb ? `<span class="playbtn" aria-hidden="true"></span>` : ""}`;
+  const credit = p.credit
+    ? (p.creditUrl ? `<a class="credit" href="${esc(p.creditUrl)}" target="_blank" rel="noopener">Image: ${esc(p.credit)}</a>` : `<span class="credit">Image: ${esc(p.credit)}</span>`)
+    : "";
+  return `
+  <article class="card reveal" style="--c:${t.color};--on:${t.on}">
+    <div class="cover-wrap">
+      ${emb
+        ? `<button class="cover-art${p.image ? " has-img" : ""}" type="button" data-embed="${esc(emb.src)}" data-url="${esc(p.video)}" data-host="${emb.host}" data-title="${esc(p.title)}" aria-label="Play video: ${esc(p.title)}">${inner}</button>`
+        : `<div class="cover-art${p.image ? " has-img" : ""}">${inner}</div>`}
+      ${credit}
+    </div>
+    <div class="card-body">
+      <h3>${esc(p.title)}</h3>
+      <dl class="meta">
+        <div><dt>Year</dt><dd>${esc(p.year)}</dd></div>
+        <div><dt>By</dt><dd>${esc(p.by)}</dd></div>
+        <div><dt>Platform</dt><dd>${esc(p.platform)}</dd></div>
+      </dl>
+      <p class="how"><b>How to play.</b> ${esc(p.how)}</p>
+      <p class="breaks"><span>Arcade rule broken</span>${esc(p.breaks)}</p>
+      <div class="foot">
+        <div class="tags">${(p.tags||[]).map(x => `<span class="tag">${esc(x)}</span>`).join("")}${also}</div>
+        <div class="links">
+          <a href="${esc(video)}" target="_blank" rel="noopener">Watch ▸</a>
+          ${p.site ? `<a href="${esc(p.site)}" target="_blank" rel="noopener">Site ↗</a>` : ""}
+        </div>
+      </div>
+    </div>
+  </article>`;
+}
+
+const main = $("#chapters"), toc = $("#toc"), tabs = $("#tabs");
+THEMES.forEach((t, ci) => {
+  const items = PROJECTS.filter(p => p.theme === t.id);
+  const page = pad(4 + ci * 2);
+  const bandText = Array(8).fill(`Chapter ${pad(ci+1)} — ${t.title} — `).join("");
+  main.insertAdjacentHTML("beforeend", `
+  <section class="chapter" id="${t.id}" data-page="Ch. ${pad(ci+1)} · ${esc(t.title)}" style="--c:${t.color};--on:${t.on}">
+    <div class="band" aria-hidden="true"><div>${bandText}</div></div>
+    <div class="ch-grid">
+      <div class="ch-head">
+        <div class="ch-num" aria-hidden="true">${pad(ci+1)}</div>
+        <p class="ch-kicker">Chapter ${ci+1} · p. ${page} · ${items.length} ${items.length===1?"project":"projects"}</p>
+        <h2>${esc(t.title)}</h2>
+        <p class="ch-lede">${esc(t.lede)}</p>
+        <figure class="fig">${FIGS[t.id] || ""}<figcaption><b>Fig. ${ci+1}</b>${esc(t.fig)}</figcaption></figure>
+      </div>
+      <div class="cards">${items.map((p, pi) => card(p, ci, pi, t)).join("")}</div>
+    </div>
+  </section>`);
+  toc.insertAdjacentHTML("beforeend", `
+    <li><a href="#${t.id}" style="--c:${t.color}"><span class="n">${pad(ci+1)}</span><span class="t"><i class="sw"></i>${esc(t.title)}</span><span class="dots"></span><span class="p">p. ${page}</span></a></li>`);
+  tabs.insertAdjacentHTML("beforeend", `<a href="#${t.id}" style="--c:${t.color};--on:${t.on}" data-for="${t.id}"><b>${pad(ci+1)}</b><span>${esc(t.title)}</span></a>`);
+});
+toc.insertAdjacentHTML("beforeend", `<li><a href="#brief" style="--c:var(--paper)"><span class="n">→</span><span class="t">The Brief</span><span class="dots"></span><span class="p">p. ${pad(4 + THEMES.length*2)}</span></a></li>`);
+tabs.insertAdjacentHTML("beforeend", `<a href="#brief" style="--c:var(--paper);--on:var(--ink)" data-for="brief"><b>★</b><span>The Brief</span></a>`);
+$("#chapCount").textContent = THEMES.length;
+
+/* pellets along the Pac path */
+document.querySelectorAll(".pellets").forEach(g => {
+  const path = g.parentNode.querySelector("#pacPath"), L = path.getTotalLength();
+  for (let i = 1; i < 26; i++){
+    const pt = path.getPointAtLength(L * i / 26);
+    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); c.setAttribute("r", i % 8 === 0 ? 5 : 2.6);
+    c.setAttribute("fill", "#161514"); c.dataset.t = i / 26;
+    g.appendChild(c);
+  }
+});
+
+/* ======================= SCROLL ENGINE ======================= */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const root = document.documentElement;
+const cover = $("#top"), titleSpans = [...document.querySelectorAll("#title span")];
+const chapters = [...document.querySelectorAll(".chapter")];
+const pageEls = [...document.querySelectorAll("[data-page]")];
+const followers = [...document.querySelectorAll("[data-follow]")].map(el => {
+  const path = el.closest("svg").querySelector(el.dataset.follow);
+  return { el, path, L: path.getTotalLength(), sec: el.closest(".chapter"), rot: !!el.dataset.rotate };
+});
+const clamp = (v, a=0, b=1) => Math.min(b, Math.max(a, v));
+let ticking = false;
+
+function update(){
+  ticking = false;
+  const vh = innerHeight, sy = scrollY;
+  root.style.setProperty("--sp", clamp(sy / (document.body.scrollHeight - vh)));
+
+  // cover: title widens, coin drops into slot
+  const h = clamp(sy / (cover.offsetHeight * .7));
+  cover.style.setProperty("--h", reduce ? 0 : h);
+  titleSpans.forEach((s, i) => s.style.setProperty("--tw", reduce ? 75 : 62 + h * (i ? 38 : 50)));
+
+  // chapters: p = how much of the section has passed the middle of the screen.
+  // On narrow screens the figure isn't sticky, so p follows the figure itself instead.
+  const narrow = innerWidth <= 980;
+  chapters.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    let p = clamp((vh * .55 - r.top) / (r.height - vh * .25));
+    if (narrow){ const f = sec.querySelector(".fig").getBoundingClientRect(); p = clamp((vh * .9 - f.top) / (vh * .6)); }
+    if (reduce) p = 1;
+    sec.style.setProperty("--p", p.toFixed(4));
+    sec._p = p;
+    sec.querySelectorAll(".pellets circle").forEach(c => c.style.opacity = (+c.dataset.t > p) ? 1 : 0);
+  });
+  followers.forEach(f => {
+    const p = f.sec._p ?? 0, d = f.L * p;
+    const a = f.path.getPointAtLength(d), b = f.path.getPointAtLength(Math.min(f.L, d + 1));
+    const ang = f.rot ? Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI : 0;
+    f.el.setAttribute("transform", `translate(${a.x} ${a.y}) rotate(${ang})`);
+  });
+
+  // page counter + active tab
+  let cur = "Cover";
+  pageEls.forEach(el => { if (el.getBoundingClientRect().top < vh * .4) cur = el.dataset.page; });
+  $("#pager").textContent = cur;
+  $("#pager").style.opacity = cur === "Cover" ? 0 : 1;
+  let active = null;
+  chapters.concat([$("#brief")]).forEach(el => { const r = el.getBoundingClientRect(); if (r.top < vh * .4 && r.bottom > vh * .4) active = el.id; });
+  tabs.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.for === active));
+}
+addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, {passive:true});
+addEventListener("resize", update);
+update();
+
+/* reveal-on-scroll */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.12, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* in-page video player */
+const dlg = $("#player"), frame = $("#playerFrame");
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-embed]");
+  if (!b) return;
+  $("#playerTitle").textContent = b.dataset.title;
+  const link = $("#playerLink");
+  link.href = b.dataset.url; link.textContent = "Open on " + b.dataset.host + " ↗";
+  frame.src = b.dataset.embed;
+  dlg.showModal();
+});
+$("#playerClose").addEventListener("click", () => dlg.close());
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener("close", () => { frame.src = "about:blank"; });
+
+/* back cover countdown */
+let n = 9, timer = null;
+new IntersectionObserver(([e]) => {
+  clearInterval(timer);
+  if (!e.isIntersecting) { n = 9; $("#count").textContent = "CONTINUE? 9"; return; }
+  timer = setInterval(() => {
+    n = n > 0 ? n - 1 : 9;
+    $("#count").textContent = n ? "CONTINUE? " + n : "INSERT NEW IDEA ▮";
+  }, 900);
+}, {threshold:.5}).observe($("#end"));
+</script>
+</body>
+</html>
