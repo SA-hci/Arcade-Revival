@@ -217,6 +217,14 @@ a.credit:hover{background:var(--ink)}
 .fest-go{margin-top:auto; align-self:flex-start; font:600 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; padding:9px 12px; background:var(--ink); color:var(--paper)}
 .fest:hover .fest-go{background:var(--c); color:var(--ink)}
 @media (max-width:760px){ .fest-grid{grid-template-columns:1fr} }
+.parts-cta{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px 24px; margin-top:28px; padding:20px 22px; background:var(--yellow); color:var(--ink); text-decoration:none; border:2px solid var(--paper); box-shadow:8px 8px 0 var(--paper); transition:transform .25s, box-shadow .25s}
+.parts-cta:hover{transform:translate(-3px,-3px); box-shadow:11px 11px 0 var(--paper)}
+.parts-k{font:600 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; grid-column:1 / -1}
+.parts-t{font-size:clamp(34px, 4vw, 56px); font-weight:900; text-transform:uppercase; line-height:.9; font-variation-settings:"wdth" 70}
+.parts-d{font-size:16px; max-width:52ch}
+.parts-cta .fest-go{margin:0}
+.parts-cta:hover .fest-go{background:var(--ink); color:var(--paper)}
+@media (max-width:760px){ .parts-cta{grid-template-columns:1fr} }
 
 /* hover-to-play figures */
 .fig{cursor:pointer}
@@ -314,6 +322,220 @@ a.credit:hover{background:var(--ink)}
   .reveal{opacity:1; transform:none}
   .glow, .ripple, .cue, .slot .tba{animation:none}
 }
+
+/* =====================================================================
+   APPENDIX A · PARTS LIST  (shown instead of the booklet at #parts)
+   ===================================================================== */
+body:not(.show-parts) #parts{display:none}
+body.show-parts > :not(#parts){display:none !important}
+.parts-btn{display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-weight:600; background:var(--yellow); color:var(--ink); border:1.5px solid var(--ink); padding:8px 11px; box-shadow:3px 3px 0 var(--ink); transition:transform .15s, box-shadow .15s}
+.parts-btn:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink)}
+/* progress + thumb tabs (same as the booklet) */
+#parts .pl-progress{position:fixed; top:0; left:0; right:0; height:6px; z-index:50}
+#parts .pl-progress i{display:block; height:100%; width:calc(var(--sp,0) * 100%); background:var(--ink)}
+#parts .pl-tabs{position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; align-items:flex-end; gap:4px}
+#parts .pl-tabs a{display:flex; align-items:center; gap:10px; text-decoration:none; background:var(--c); color:var(--on); font:600 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; padding:12px 10px; width:42px; overflow:hidden; white-space:nowrap; border-radius:4px 0 0 4px; transition:width .35s cubic-bezier(.2,.8,.2,1); box-shadow:-2px 2px 0 var(--ink)}
+#parts .pl-tabs a b{min-width:22px; text-align:center}
+#parts .pl-tabs a.on{width:58px}
+#parts .pl-tabs a:hover{width:220px}
+#parts .pl-tabs a span{opacity:0; transition:opacity .2s}
+#parts .pl-tabs a:hover span{opacity:1}
+
+/* ---------- cover ---------- */
+#parts .pl-cover{border-bottom:var(--rule); position:relative; overflow:hidden}
+#parts .pl-cover-top{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding:18px var(--gutter); border-bottom:var(--rule); font:500 12px/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase}
+#parts .home{display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-weight:600; background:var(--ink); color:var(--paper); padding:8px 10px}
+#parts .home:hover{background:var(--red)}
+#parts .pl-cover-main{display:grid; grid-template-columns:1.3fr 1fr; gap:clamp(24px, 4vw, 64px); align-items:center; padding:clamp(40px, 6vw, 80px) var(--gutter)}
+#parts .pl-title{margin:0; font-weight:900; line-height:.82; letter-spacing:-.01em; font-size:clamp(64px, 12vw, 190px); text-transform:uppercase}
+#parts .pl-title span{display:block; font-variation-settings:"wdth" var(--tw, 62)}
+#parts .pl-title span:nth-child(2){color:var(--red)}
+#parts .pl-sub{max-width:44ch; font-size:clamp(18px, 1.6vw, 21px); margin:24px 0 0; font-variation-settings:"wdth" 90}
+#parts .legend{border:3px solid var(--ink); padding:22px 24px 20px; background:var(--paper); box-shadow:8px 8px 0 var(--ink)}
+#parts .legend h2{margin:0 0 4px; font-size:28px; font-weight:900; text-transform:uppercase; font-variation-settings:"wdth" 70}
+#parts .legend .mono{font:500 12px/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px}
+#parts .legend dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:10px 14px; align-items:center}
+#parts .legend dt{display:flex; justify-content:flex-start}
+#parts .legend dd{margin:0; font-size:15px; line-height:1.35}
+#parts .pl-cover-boxes{display:grid; grid-template-columns:repeat(5, 1fr); border-top:var(--rule)}
+#parts .pl-cover-boxes a{padding:14px var(--gutter) 16px; border-right:var(--rule); text-decoration:none; transition:background .2s}
+#parts .pl-cover-boxes a:hover{background:var(--paper-2)}
+#parts .pl-cover-boxes a:last-child{border-right:0}
+#parts .pl-cover-boxes small{display:block; font:500 11px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
+#parts .pl-cover-boxes strong{font-size:22px; font-weight:800; font-variation-settings:"wdth" 75; text-transform:uppercase}
+#parts .pl-cover-boxes i{display:inline-block; width:12px; height:12px; background:var(--c); border:1.5px solid var(--ink); margin-right:8px; vertical-align:1px}
+
+/* badges + pips */
+#parts .badge{font:600 10px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; padding:5px 7px; border:1.5px solid var(--ink); white-space:nowrap}
+#parts .badge.core{background:var(--ink); color:var(--paper)}
+#parts .badge.sug{background:var(--paper); color:var(--ink); border-style:dashed}
+#parts .pips{display:inline-flex; gap:3px; vertical-align:middle}
+#parts .pips i{width:9px; height:9px; border:1.5px solid var(--ink); border-radius:50%}
+#parts .pips i.on{background:var(--ink)}
+
+/* ---------- filter bar ---------- */
+#parts .filters{position:sticky; top:0; z-index:30; background:var(--paper); border-bottom:var(--rule); padding:12px var(--gutter); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+#parts .chip{font:600 12px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; padding:8px 10px; border:1.5px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; gap:7px}
+#parts .chip i{width:10px; height:10px; background:var(--c); border:1.5px solid var(--ink)}
+#parts .chip[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+#parts .chip:hover{box-shadow:3px 3px 0 var(--ink); transform:translate(-1px,-1px)}
+#parts .filters .sep{flex:1}
+#parts .filters .pl-count{font:500 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+/* core / suggested switch */
+#parts .filters .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%}
+#parts .filters .row + .row{padding-top:10px; border-top:1px dashed var(--ink)}
+#parts .flabel{font:600 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-right:4px}
+#parts .seg{display:inline-flex; border:2.5px solid var(--ink); box-shadow:4px 4px 0 var(--ink); background:var(--paper)}
+#parts .seg button{font:600 13px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; padding:11px 16px; border:0; border-right:2.5px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; gap:9px; transition:background .15s}
+#parts .seg button:last-child{border-right:0}
+#parts .seg button:hover{background:var(--paper-2)}
+#parts .seg button em{font-style:normal; font-weight:500; font-size:11px; padding:3px 6px; border:1.5px solid currentColor; border-radius:10px}
+#parts .seg .mk{width:13px; height:13px; border:2px solid var(--ink); border-radius:50%}
+#parts .seg [data-mode="core"] .mk{background:var(--ink)}
+#parts .seg [data-mode="sug"] .mk{border-style:dashed}
+#parts .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+#parts .seg button[aria-pressed="true"] .mk{border-color:var(--paper)}
+#parts .seg [data-mode="core"][aria-pressed="true"] .mk{background:var(--yellow)}
+#parts .seg [data-mode="sug"][aria-pressed="true"]{background:var(--yellow); color:var(--ink)}
+#parts .seg [data-mode="sug"][aria-pressed="true"] .mk{border-color:var(--ink)}
+#parts .mode-note{font:500 12px/1.3 var(--mono); color:var(--muted); letter-spacing:.04em}
+
+/* ---------- sections ---------- */
+#parts .cat{border-top:var(--rule); scroll-margin-top:120px}
+#parts .cat:first-of-type{border-top:0}
+#parts .band{background:var(--c); color:var(--on); border-bottom:var(--rule); overflow:hidden; white-space:nowrap}
+#parts .band div{display:inline-block; font:600 13px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; padding:11px 0; transform:translateX(calc(var(--p,0) * -40%))}
+#parts .cat-head{display:grid; grid-template-columns:auto 1fr; gap:clamp(18px, 3vw, 40px); align-items:end; padding:clamp(40px, 5vw, 72px) var(--gutter) 28px}
+#parts .cat-letter{font-size:clamp(110px, 14vw, 200px); font-weight:900; line-height:.75; color:var(--c); -webkit-text-stroke:2px var(--ink); font-variation-settings:"wdth" calc(62 + var(--p,0) * 50)}
+#parts .cat-head h2{font-size:clamp(40px, 5.4vw, 80px); font-weight:900; text-transform:uppercase; line-height:.88; margin:0 0 12px; font-variation-settings:"wdth" 70}
+#parts .cat-head p{margin:0; max-width:60ch; font-size:18px}
+#parts .cat-head .n{font:500 12px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 8px}
+#parts .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap:clamp(20px, 2.4vw, 32px); padding:0 var(--gutter) clamp(56px, 7vw, 100px)}
+#parts .grid.big{grid-template-columns:repeat(auto-fill, minmax(min(100%, 420px), 1fr))}
+
+/* ---------- part cards ---------- */
+#parts .part{border:var(--rule); background:var(--paper); display:flex; flex-direction:column; box-shadow:6px 6px 0 var(--ink); transition:transform .25s, box-shadow .25s}
+#parts .part:hover{transform:translate(-3px,-3px); box-shadow:9px 9px 0 var(--ink)}
+#parts .part[hidden]{display:none}
+#parts .part{scroll-margin-top:130px}
+#parts .part-fig{position:relative; border-bottom:var(--rule); background:var(--paper)}
+#parts .part-fig::before{content:""; position:absolute; inset:0; background-image:linear-gradient(var(--paper-2) 1px, transparent 1px), linear-gradient(90deg, var(--paper-2) 1px, transparent 1px); background-size:16px 16px; pointer-events:none}
+#parts .part-fig svg{position:relative; display:block; width:100%; height:auto; overflow:visible}
+#parts .part-top{position:absolute; z-index:1; left:10px; right:10px; top:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+#parts .pid{font:600 13px/1 var(--mono); background:var(--c); color:var(--on); border:1.5px solid var(--ink); padding:5px 7px}
+#parts .part-body{padding:18px 20px 20px; display:flex; flex-direction:column; flex:1}
+#parts .kind{margin:0 0 6px; font:500 11px/1.3 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+#parts .part h3{margin:0 0 10px; font-size:clamp(26px, 2.4vw, 34px); font-weight:900; text-transform:uppercase; line-height:.95; font-variation-settings:"wdth" 72}
+#parts .part .what{margin:0 0 12px; font-size:16px}
+#parts .why{margin:0 0 14px; padding:10px 12px; background:var(--paper-2); border-left:6px solid var(--c); font-size:15px; line-height:1.4}
+#parts .why span{display:block; font:600 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:5px}
+#parts .specs{margin:0 0 14px; border-top:1.5px solid var(--ink)}
+#parts .specs div{display:grid; grid-template-columns:96px 1fr; gap:10px; padding:6px 0; border-bottom:1px dashed var(--ink); font-size:14px; line-height:1.35}
+#parts .specs dt{font:500 10px/1.5 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+#parts .specs dd{margin:0; font-weight:600}
+#parts .part-foot{margin-top:auto; display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:space-between; padding-top:4px}
+#parts .meta-line{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; font:500 11px/1.3 var(--mono); letter-spacing:.06em; text-transform:uppercase}
+#parts .meta-line .code{color:var(--muted)}
+#parts .go{font:600 11px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; text-decoration:none; padding:8px 10px; background:var(--ink); color:var(--paper); border:1.5px solid var(--ink); white-space:nowrap}
+#parts .go:hover{background:var(--c); color:var(--on)}
+
+/* drawing primitives */
+#parts .s{fill:none; stroke:var(--ink); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+#parts .t{stroke-width:1.4}
+#parts .d{stroke-dasharray:5 6}
+#parts .o{fill:var(--paper); stroke:var(--ink); stroke-width:2.5; stroke-linejoin:round}
+#parts .oc{fill:var(--c); stroke:var(--ink); stroke-width:2.5; stroke-linejoin:round}
+#parts .k{fill:var(--ink)} #parts .p{fill:var(--paper)} #parts .fc{fill:var(--c)} #parts .r{fill:var(--red)} #parts .y{fill:var(--yellow)} #parts .b{fill:var(--blue)}
+#parts .lb{font:600 10px var(--mono); letter-spacing:.1em; fill:var(--ink)}
+#parts .lbp{font:600 10px var(--mono); letter-spacing:.1em; fill:var(--paper)}
+/* hover animations on the drawings */
+#parts .part:hover .bl{animation:pl-bl .7s steps(1) infinite; animation-delay:calc(var(--d,0) * 90ms)}
+@keyframes pl-bl{50%{opacity:.15}}
+#parts .part:hover .wv{animation:pl-wv 1.2s ease-out infinite; animation-delay:calc(var(--d,0) * 200ms)}
+@keyframes pl-wv{from{opacity:1} to{opacity:0}}
+#parts .sp{transform-box:fill-box; transform-origin:var(--o, center); transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+#parts .part:hover .sp{transform:rotate(var(--rot, 30deg))}
+#parts .part:hover .sh{animation:pl-sh .12s linear infinite}
+@keyframes pl-sh{50%{transform:translate(1.5px,-1px)}}
+#parts .mv{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+#parts .part:hover .mv{transform:translate(var(--mx,0), var(--my,0))}
+
+/* ---------- board comparison ---------- */
+#parts .pick{padding:0 var(--gutter) clamp(56px, 7vw, 100px)}
+#parts .pick h3{margin:0 0 6px; font-size:clamp(30px, 3.2vw, 46px); font-weight:900; text-transform:uppercase; line-height:.95; font-variation-settings:"wdth" 70}
+#parts .pick > p{margin:0 0 18px; max-width:60ch}
+#parts .table-wrap{overflow-x:auto; border:var(--rule); box-shadow:6px 6px 0 var(--ink); background:var(--paper)}
+#parts table{border-collapse:collapse; width:100%; min-width:860px; font-size:15px}
+#parts th, #parts td{text-align:left; vertical-align:top; padding:10px 12px; border-bottom:1px solid var(--ink)}
+#parts th{font:600 11px/1.2 var(--mono); letter-spacing:.12em; text-transform:uppercase; background:var(--ink); color:var(--paper)}
+#parts td:first-child{font-weight:800; text-transform:uppercase; font-variation-settings:"wdth" 75; white-space:nowrap}
+#parts tr:last-child td{border-bottom:0}
+#parts tbody tr:hover{background:var(--paper-2)}
+#parts .yes{font:600 12px/1 var(--mono)}
+
+/* ---------- starter kits ---------- */
+#parts .kits{border-top:var(--rule); background:var(--ink); color:var(--paper); padding:clamp(56px, 8vw, 110px) var(--gutter); scroll-margin-top:120px}
+#parts .kits .kicker{background:var(--yellow); color:var(--ink)}
+#parts .kits h2{font-size:clamp(40px, 6vw, 84px); font-weight:900; text-transform:uppercase; margin:0 0 14px; line-height:.9; font-variation-settings:"wdth" 68}
+#parts .kits > .wrap > p{max-width:62ch; margin:0; color:rgba(242,236,223,.8)}
+#parts .kit-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:32px}
+#parts .kit{background:var(--paper); color:var(--ink); border:2px solid var(--paper); box-shadow:8px 8px 0 var(--c); display:flex; flex-direction:column}
+#parts .kit-head{background:var(--c); color:var(--on); padding:16px 18px; border-bottom:var(--rule)}
+#parts .kit-head small{display:block; font:600 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:8px}
+#parts .kit-head h3{margin:0; font-size:clamp(26px, 2.6vw, 36px); font-weight:900; text-transform:uppercase; line-height:.95; font-variation-settings:"wdth" 72}
+#parts .kit-body{padding:16px 18px 20px; display:flex; flex-direction:column; flex:1}
+#parts .kit-body > p{margin:0 0 12px; font-size:15px}
+#parts .kit ul{list-style:none; margin:0 0 14px; padding:0; border-top:1.5px solid var(--ink)}
+#parts .kit li{display:grid; grid-template-columns:38px 1fr; gap:8px; padding:7px 0; border-bottom:1px dashed var(--ink); font-size:15px; line-height:1.3}
+#parts .kit li a{font:600 12px/1.3 var(--mono); text-decoration:none; background:var(--ink); color:var(--paper); text-align:center; padding:2px 0; align-self:start}
+#parts .kit li a:hover{background:var(--c); color:var(--on)}
+#parts .kit .fits{margin-top:auto; font:500 11px/1.5 var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+/* ---------- back ---------- */
+#parts .pl-back{border-top:var(--rule); padding:clamp(56px, 8vw, 100px) var(--gutter) 90px; text-align:center}
+#parts .pl-back h2{font-size:clamp(52px, 10vw, 150px); font-weight:900; text-transform:uppercase; margin:0; line-height:.85; font-variation-settings:"wdth" 62}
+#parts .pl-back h2 em{font-style:normal; color:var(--red)}
+#parts .pl-back p.note{max-width:58ch; margin:22px auto 28px; font-size:16px}
+#parts .pl-btn{display:inline-block; font:600 13px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; padding:14px 18px; border:var(--rule); text-decoration:none; box-shadow:5px 5px 0 var(--ink); background:var(--yellow); color:var(--ink)}
+#parts .pl-btn:hover{transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--ink)}
+#parts .pl-colophon{margin-top:50px; font:500 12px/1.6 var(--mono); color:var(--muted)}
+
+#parts .reveal{opacity:0; transform:translateY(40px) rotate(-.6deg)}
+#parts .reveal.in{opacity:1; transform:none; transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1)}
+
+@media (min-width:981px){ #parts .cat, #parts .kits > .wrap, #parts .filters{padding-right:calc(var(--gutter) + 40px)} #parts .grid, #parts .pick, #parts .cat-head{padding-right:calc(var(--gutter) + 40px)} }
+@media (max-width:980px){
+  #parts .pl-cover-main{grid-template-columns:1fr}
+  #parts .pl-cover-boxes{grid-template-columns:repeat(3, 1fr)}
+  #parts .pl-cover-boxes a:nth-child(3){border-right:0}
+  #parts .pl-cover-boxes a:nth-child(-n+3){border-bottom:var(--rule)}
+  #parts .kit-grid{grid-template-columns:1fr}
+  #parts .pl-tabs{display:none}
+}
+@media (max-width:560px){
+  #parts body{font-size:16px}
+  #parts .pl-cover-top span:nth-child(3){display:none}
+  #parts .pl-cover-boxes{grid-template-columns:repeat(2, 1fr)}
+  #parts .pl-cover-boxes a{border-right:var(--rule) !important; border-bottom:var(--rule)}
+  #parts .pl-cover-boxes a:nth-child(even){border-right:0 !important}
+  #parts .pl-cover-boxes strong{font-size:18px}
+  #parts .cat-head{grid-template-columns:1fr}
+  #parts .cat-letter{font-size:96px}
+  #parts .filters .sep{display:none}
+  #parts .filters{position:static}
+  #parts .seg{width:100%}
+  #parts .seg button{flex:1; justify-content:center; padding:10px 6px; font-size:11px; gap:6px; flex-wrap:wrap}
+  #parts .flabel{width:100%}
+  #parts .filters{gap:6px}
+  #parts .chip{padding:7px 8px; font-size:11px}
+  #parts .specs div{grid-template-columns:80px 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  #parts html{scroll-behavior:auto}
+  #parts .reveal{opacity:1; transform:none}
+  #parts .part:hover .bl, #parts .part:hover .wv, #parts .part:hover .sh{animation:none}
+}
+
 </style>
 </head>
 <body>
@@ -328,6 +550,7 @@ a.credit:hover{background:var(--ink)}
     <span>Interaction Design</span>
     <span>Main Project · 2026–27</span>
     <span>Instruction Booklet No. 01</span>
+    <a class="parts-btn" href="#parts">⚙ Parts list</a>
   </div>
   <div class="cover-main">
     <div>
@@ -421,6 +644,12 @@ a.credit:hover{background:var(--ink)}
         </div>
       </a>
     </div>
+    <a class="parts-cta reveal" href="#parts">
+      <span class="parts-k">Appendix A</span>
+      <span class="parts-t">Parts List</span>
+      <span class="parts-d">Proposed boards, shields, sensors and outputs for building your own arcade, with three starter kits.</span>
+      <span class="fest-go">Open the parts list ▸</span>
+    </a>
   </div>
 </section>
 
@@ -429,8 +658,85 @@ a.credit:hover{background:var(--ink)}
   <h2>Game <em>Over?</em></h2>
   <div class="count" id="count">CONTINUE? 9</div>
   <a class="btn" href="#top">Press start ▸ back to cover</a>
+  <a class="btn" href="#parts" style="background:var(--paper); margin-left:10px">Parts list ▸</a>
   <p class="colophon">Arcade Revival · Interaction Design · 2026–27<br>Project images, videos and names belong to their respective creators and are shown for educational purposes.</p>
 </footer>
+
+
+<!-- ================= APPENDIX A · PARTS LIST ================= -->
+<div id="parts">
+
+<div class="pl-progress" aria-hidden="true"><i></i></div>
+<nav class="pl-tabs" id="pl-tabs" aria-label="Sections"></nav>
+
+<!-- ================= COVER ================= -->
+<header class="pl-cover" id="pl-top">
+  <div class="pl-cover-top">
+    <a class="home" href="#booklet">← Back to the booklet</a>
+    <span>Appendix A · Parts List</span>
+    <span>Arcade Revival · 2026–27</span>
+  </div>
+  <div class="pl-cover-main">
+    <div>
+      <p class="kicker">Appendix A</p>
+      <h1 class="pl-title" id="pl-title"><span>Parts</span><span>List</span></h1>
+      <p class="pl-sub">A proposed starter kit for building new arcades: the brains, the boards they plug into, and the sensors, lights, motors and sounds that turn them into games. Not a shopping list yet. Use it to plan what your project needs.</p>
+    </div>
+    <aside class="legend reveal">
+      <h2>How to read this</h2>
+      <p class="mono">Key to the symbols</p>
+      <dl>
+        <dt><span class="badge core">Core</span></dt><dd>On the course list. Expect these in the lab.</dd>
+        <dt><span class="badge sug">Suggested</span></dt><dd>Recommended starter items to add. Not confirmed yet.</dd>
+        <dt><span class="pips"><i class="on"></i><i></i><i></i></span></dt><dd>Level: how much wiring and code it takes to get going (1–3).</dd>
+        <dt><span class="pid" style="--c:var(--blue);--on:var(--paper)">A1</span></dt><dd>Part number. Use it when you list parts in your proposal.</dd>
+      </dl>
+    </aside>
+  </div>
+  <div class="pl-cover-boxes" id="boxes"></div>
+</header>
+
+<!-- ================= FILTERS ================= -->
+<div class="filters" id="filters" role="toolbar" aria-label="Filter parts">
+  <div class="row">
+    <span class="flabel">Show</span>
+    <div class="seg" id="seg" role="group" aria-label="Core or suggested parts">
+      <button type="button" data-mode="all" aria-pressed="true">All parts <em id="nAll"></em></button>
+      <button type="button" data-mode="core" aria-pressed="false"><i class="mk"></i>Core list <em id="nCore"></em></button>
+      <button type="button" data-mode="sug" aria-pressed="false"><i class="mk"></i>Suggested <em id="nSug"></em></button>
+    </div>
+    <span class="mode-note" id="modeNote"></span>
+  </div>
+  <div class="row">
+    <span class="flabel">Section</span>
+    <button class="chip" type="button" data-cat="all" aria-pressed="true">All</button>
+    <span id="catChips" style="display:contents"></span>
+    <span class="sep"></span>
+    <span class="pl-count" id="pl-count"></span>
+  </div>
+</div>
+
+<main id="pl-list"></main>
+
+<!-- ================= STARTER KITS ================= -->
+<section class="kits" id="kits" data-tab="★">
+  <div class="wrap" style="padding:0">
+    <p class="kicker">Bonus stage</p>
+    <h2>Three Starter Kits</h2>
+    <p>Not sure where to begin? Each kit is a combination that already works together. Pick the one closest to your idea, then swap parts in and out. Numbers refer to the list above.</p>
+    <div class="kit-grid" id="kitGrid"></div>
+  </div>
+</section>
+
+<!-- ================= BACK ================= -->
+<footer class="pl-back" id="pl-end">
+  <h2>Ready to <em>Build?</em></h2>
+  <p class="note">This is a proposed list and may change before kits are handed out. Check availability with the lab before you order anything, and always check the voltage: micro:bit, Pico and ESP32 run on 3.3&nbsp;V, the Uno on 5&nbsp;V.</p>
+  <a class="pl-btn" href="#booklet">◂ Back to the booklet</a>
+  <p class="pl-colophon">Arcade Revival · Interaction Design · 2026–27 · Appendix A<br>Product names belong to their manufacturers. Links are for reference only.</p>
+</footer>
+
+</div>
 
 <dialog class="player" id="player" aria-label="Video player">
   <header>
@@ -772,6 +1078,8 @@ THEMES.forEach((t, ci) => {
 });
 toc.insertAdjacentHTML("beforeend", `<li><a href="#more" style="--c:var(--paper)"><span class="n">→</span><span class="t">Go Further</span><span class="dots"></span><span class="p">p. ${pad(4 + THEMES.length*2)}</span></a></li>`);
 tabs.insertAdjacentHTML("beforeend", `<a href="#more" style="--c:var(--paper);--on:var(--ink)" data-for="more"><b>★</b><span>Go Further</span></a>`);
+toc.insertAdjacentHTML("beforeend", `<li><a href="#parts" style="--c:var(--paper)"><span class="n">A</span><span class="t">Parts List</span><span class="dots"></span><span class="p">Appendix</span></a></li>`);
+tabs.insertAdjacentHTML("beforeend", `<a href="#parts" style="--c:var(--yellow);--on:var(--ink)"><b>⚙</b><span>Parts List</span></a>`);
 $("#chapCount").textContent = THEMES.length;
 
 /* pellets along the Pac path */
@@ -1236,6 +1544,527 @@ new IntersectionObserver(([e]) => {
   addEventListener("resize", () => { if (layer){ fit(); if (!S.running) S.x = innerWidth / 2; } });
   addEventListener("pointerup", () => S.firing = false);
   addEventListener("pointercancel", () => S.firing = false);
+})();
+</script>
+
+<script>
+/* ======================= APPENDIX A · PARTS LIST (own scope) ======================= */
+(() => {
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ======================= CATEGORIES ======================= */
+const CATS = [
+  { id:"boards",  letter:"A", title:"Development Boards", short:"Boards",  color:"var(--blue)",   on:"var(--paper)",
+    lede:"The brain of your game. Each one reads inputs, runs your code and drives outputs. Start with the simplest board that does what you need." },
+  { id:"shields", letter:"B", title:"Shields & Expansion", short:"Shields", color:"var(--green)",  on:"var(--paper)",
+    lede:"Boards that plug onto the brain and give every pin a proper connector, so sensors click in without a breadboard or soldering." },
+  { id:"inputs",  letter:"C", title:"Inputs & Sensors",   short:"Inputs",  color:"var(--red)",    on:"var(--paper)",
+    lede:"Everything the player does: pressing, touching, tilting, shouting, stepping closer, or just breathing. This is where alternative controllers start." },
+  { id:"outputs", letter:"D", title:"Outputs",            short:"Outputs", color:"var(--yellow)", on:"var(--ink)",
+    lede:"How the game answers back without a regular screen: light, movement, vibration, sound and projection." },
+  { id:"making",  letter:"E", title:"Wiring, Power & Making", short:"Wiring", color:"var(--ink)", on:"var(--paper)",
+    lede:"The unglamorous parts that every project needs: wires, connectors, power, small components and materials for building the physical game." },
+];
+
+/* ======================= PARTS =======================
+   core:true = on the course list. lvl 1–3. specs only where they help choose. */
+const PARTS = [
+  /* ---------- A. Boards ---------- */
+  { cat:"boards", core:true, name:"micro:bit v2", kind:"Microcontroller · educational", draw:"microbit",
+    what:"A pocket-sized board with almost everything built in: 25 LEDs, two buttons, a touch logo, motion sensor, compass, microphone and speaker.",
+    why:"The fastest way to a working prototype. Built-in radio lets several micro:bits talk to each other, perfect for screenless, multiplayer motion games like J.S. Joust.",
+    specs:[["Chip","nRF52833 · 64 MHz"],["Built in","Accelerometer, compass, mic, speaker, 5×5 LEDs"],["Wireless","Bluetooth LE + micro:bit radio"],["Power","3.3 V · 2×AAA or USB"]],
+    code:"MakeCode blocks · Python", lvl:1, link:"https://microbit.org/" },
+  { cat:"boards", core:true, name:"Arduino Uno R3", kind:"Microcontroller · classic", draw:"uno",
+    what:"The classic Arduino. Simple, tough and documented by thousands of tutorials. Takes most shields, including the DFRobot shield below.",
+    why:"Good for wired installations and cabinets: buttons, sensors, LEDs and motors, all running reliably from one USB cable.",
+    specs:[["Chip","ATmega328P · 16 MHz"],["Pins","14 digital (6 PWM) · 6 analog"],["Wireless","None"],["Power","5 V logic · USB-B or 7–12 V"]],
+    code:"Arduino (C++)", lvl:2, link:"https://store.arduino.cc/products/arduino-uno-rev3" },
+  { cat:"boards", core:false, name:"Arduino Uno R4 WiFi", kind:"Microcontroller · connected", draw:"unor4",
+    what:"The new Uno: same shape and shields as the R3, but faster, with Wi-Fi and Bluetooth, a 12×8 LED matrix on the board and a Qwiic connector.",
+    why:"It can pretend to be a USB keyboard or mouse, so your homemade controller can play any existing game on a computer. Wi-Fi lets a cabinet talk to phones or a web page.",
+    specs:[["Chip","Renesas RA4M1 · 48 MHz + ESP32-S3"],["Built in","12×8 LED matrix · Qwiic (I²C)"],["Wireless","Wi-Fi + Bluetooth LE"],["Power","5 V logic · USB-C or 6–24 V"]],
+    code:"Arduino (C++)", lvl:2, link:"https://store.arduino.cc/products/uno-r4-wifi" },
+  { cat:"boards", core:false, name:"Raspberry Pi 5", kind:"Single-board computer · Linux", draw:"pi5",
+    what:"A full computer the size of a card: desktop Linux, two 4K HDMI outputs, cameras, USB and the 40-pin GPIO header for electronics.",
+    why:"Use it when the game needs real computing: drive a projector for alternative screens (PingPongPlus, Proyecto EXO), track bodies with a camera, or play many sounds at once.",
+    specs:[["Chip","Quad-core Arm A76 · 2.4 GHz"],["Memory","2–16 GB"],["Video","2× micro-HDMI 4K · 2 camera ports"],["Power","Official 27 W USB-C supply + cooler"]],
+    code:"Python · Processing · p5.js · Godot", lvl:3, link:"https://www.raspberrypi.com/products/raspberry-pi-5/" },
+  { cat:"boards", core:false, name:"Raspberry Pi Zero 2 WH", kind:"Single-board computer · tiny", draw:"zero",
+    what:"A tiny Linux computer with Wi-Fi and Bluetooth. The \"H\" means the GPIO header is already soldered on.",
+    why:"Hides inside a controller, a toy or a box. Good for sound-based games like Papa Sangre, a small screen, or a hidden web server players connect to with their phones.",
+    specs:[["Chip","Quad-core Arm A53 · 1 GHz"],["Memory","512 MB"],["Video","Mini-HDMI · camera port"],["Wireless","Wi-Fi 2.4 GHz + Bluetooth 4.2"]],
+    code:"Python · Linux", lvl:3, link:"https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/" },
+  { cat:"boards", core:false, name:"Raspberry Pi Pico", kind:"Microcontroller · low cost", draw:"pico",
+    what:"A cheap, fast microcontroller from Raspberry Pi. Plain Pico has no wireless; Pico W and Pico 2 W add Wi-Fi and Bluetooth.",
+    why:"With CircuitPython it becomes a USB keyboard or gamepad in a few lines, ideal for custom arcade controllers. Cheap enough to build into every player's controller.",
+    specs:[["Chip","RP2040 · dual-core 133 MHz"],["Pins","26 GPIO · 3 analog"],["Wireless","None (W versions: Wi-Fi + BLE)"],["Power","3.3 V logic · micro-USB"]],
+    code:"MicroPython · CircuitPython · Arduino", lvl:2, link:"https://www.raspberrypi.com/products/raspberry-pi-pico/" },
+  { cat:"boards", core:true, name:"ESP32-C3 / ESP32-S3", kind:"Microcontroller · wireless", draw:"esp32",
+    what:"Espressif's Wi-Fi and Bluetooth chips on small dev boards. C-series (C3, C6) are tiny and cheap; S-series (S3) are faster, with native USB and camera-ready versions.",
+    why:"Made for wireless play: controllers that talk to each other with no router (ESP-NOW), game pieces scattered across a room, or a phone browser as the controller.",
+    specs:[["C3","RISC-V · 160 MHz · Wi-Fi + BLE 5"],["S3","Dual-core 240 MHz · USB · Wi-Fi + BLE 5"],["Pins","~15–35 GPIO, depends on board"],["Power","3.3 V logic · USB-C"]],
+    code:"Arduino · MicroPython · ESP-IDF", lvl:2, link:"https://www.espressif.com/en/products/socs/esp32-s3" },
+
+  /* ---------- B. Shields ---------- */
+  { cat:"shields", core:true, name:"Gravity IO Expansion Shield V7.1", kind:"Shield for Arduino Uno · DFRobot DFR0265", draw:"shield",
+    what:"Sits on top of an Arduino Uno (R3 or R4) and turns every pin into a colour-coded 3-pin connector: ground, power and signal.",
+    why:"Sensors plug straight in with one cable. Has a separate servo power input, a 3.3 V/5 V switch and a socket for wireless modules.",
+    specs:[["Fits","Arduino Uno R3 / R4"],["Connectors","3-pin Gravity (G-V-S) · I²C · SPI · UART"],["Power","Servo input 4.8–6 V · 7–12 V in"]],
+    code:"No code of its own", lvl:1, link:"https://www.dfrobot.com/product-1009.html" },
+  { cat:"shields", core:true, name:"micro:bit IO Extender", kind:"Expansion board for micro:bit", draw:"mbshield",
+    what:"The micro:bit slides into an edge connector, and its pins come out as 3-pin connectors and I²C ports. The DFRobot version (MBT0008) also has a buzzer and USB power.",
+    why:"Lets the micro:bit drive more than its own LEDs: external buttons, LED strips, servos and Gravity sensors, with no crocodile clips coming loose mid-game.",
+    specs:[["Fits","micro:bit v1 / v2"],["Connectors","3-pin Gravity · I²C (3.3 V + 5 V)"],["Power","5 V micro-USB"]],
+    code:"No code of its own", lvl:1, link:"https://www.dfrobot.com/product-1867.html" },
+  { cat:"shields", core:true, name:"ESP32 DevKit Expansion Board", kind:"Breakout base for ESP32 dev boards", draw:"espshield",
+    what:"A base board you push an ESP32 DevKit into. It brings every pin out to 3-pin headers or screw terminals and adds a power input.",
+    why:"Makes ESP32 projects sturdy enough for a class exhibition, and lets you power LED strips and servos separately from USB.",
+    specs:[["Fits","ESP32 DevKit (30 or 38 pin). Check the width!"],["Connectors","3-pin headers · screw terminals"],["Power","DC jack or USB · 3.3 V + 5 V rails"]],
+    code:"No code of its own", lvl:1 },
+
+  /* ---------- C. Inputs ---------- */
+  { cat:"inputs", name:"Capacitive Touch Sensor (MPR121)", kind:"12 touch inputs · I²C", draw:"touch",
+    what:"Reads 12 touch pads at once. Connect copper tape, conductive paint, metal objects or fruit, and it senses fingers touching or even coming close.",
+    why:"Turns surfaces, sculptures and costumes into controllers. Good for body-to-body games where touching your partner is the input.",
+    code:"Arduino · CircuitPython · MakeCode extension", lvl:2, link:"https://learn.adafruit.com/adafruit-mpr121-12-key-capacitive-touch-sensor-breakout-tutorial" },
+  { cat:"inputs", name:"Motion Sensor (IMU)", kind:"Accelerometer + gyroscope · e.g. MPU-6050, BNO085", draw:"imu",
+    what:"Measures tilt, rotation, shaking and sudden moves. A cheap MPU-6050 is fine for shakes; a BNO085 gives smooth, ready-made orientation.",
+    why:"For gesture and movement play like J.S. Joust and Bounden. Attach it to a wand, a hat, a ball or a player. The micro:bit already has one built in.",
+    code:"Arduino · MicroPython", lvl:2 },
+  { cat:"inputs", name:"Distance Sensor", kind:"Ultrasonic HC-SR04 · Time-of-flight VL53L0X", draw:"distance",
+    what:"Measures how far away something is: up to about 4 m with ultrasonic pings, or very precisely up close with a tiny laser (time-of-flight).",
+    why:"Control a game by stepping closer, waving a hand like a theremin, or guarding a space. No touching needed.",
+    code:"Arduino · MicroPython · MakeCode", lvl:1 },
+  { cat:"inputs", name:"Force & Knock Sensors", kind:"FSR pressure pad · piezo disc", draw:"force",
+    what:"A force-sensitive resistor (FSR) measures how hard it is pressed. A piezo disc feels hits and vibration on whatever it is glued to.",
+    why:"Drums like Taiko no Tatsujin, stomp pads, squeeze toys, and punching or hitting games. Hide them under fabric, foam or wood.",
+    code:"Any board (analog input)", lvl:1 },
+  { cat:"inputs", name:"Knobs, Sliders & Rotary Encoders", kind:"Potentiometers · encoders", draw:"knob",
+    what:"Turning and sliding controls. A potentiometer gives an exact position; a rotary encoder spins forever and counts clicks.",
+    why:"Paddle games from Pong to bit.pong, steering, tuning a frequency, or a crank the player has to keep turning.",
+    code:"Any board", lvl:1 },
+  { cat:"inputs", name:"Light Sensor", kind:"LDR photoresistor · BH1750 lux sensor", draw:"light",
+    what:"Measures how bright it is. An LDR is a cheap analog part; the BH1750 gives accurate readings over I²C.",
+    why:"Make the environment part of the game, as Boktai did with sunlight. Shadows, flashlights, covering the sensor with a hand, day versus night.",
+    code:"Any board", lvl:1 },
+  { cat:"inputs", name:"Microphone / Sound Sensor", kind:"Sound level module · I²S microphone", draw:"mic",
+    what:"Detects loudness (simple module) or records real audio (I²S digital mic, for ESP32 or Pi).",
+    why:"Shout, clap, blow or sing to play. A strong match for team games where noise and communication are the mechanic.",
+    code:"Any board · Python on Pi", lvl:1 },
+  { cat:"inputs", name:"Biosensors", kind:"Pulse sensor · MyoWare muscle sensor", draw:"bio",
+    what:"Reads the body directly: heartbeat from a fingertip or earlobe, or muscle tension from electrodes on the skin.",
+    why:"Biofeedback games in the spirit of Brainball, where staying calm, or clenching a fist, is the control.",
+    code:"Arduino · MicroPython", lvl:3, link:"https://pulsesensor.com/" },
+  { cat:"inputs", name:"RFID / NFC Reader + Tags", kind:"RC522 · PN532", draw:"rfid",
+    what:"Detects tagged cards, stickers and key fobs when they come within a few centimetres, and reads their unique ID.",
+    why:"Physical tokens as game pieces: cards that cast spells, figures that join the game, stations players have to visit in the right order.",
+    code:"Arduino · MicroPython · Python", lvl:2 },
+  { cat:"inputs", name:"Camera", kind:"Pi Camera Module 3 · HuskyLens AI camera", draw:"camera",
+    what:"The Pi Camera connects to a Raspberry Pi for computer vision. HuskyLens is a standalone AI camera that recognises faces, colours and tags, and tells a micro:bit or Arduino what it sees.",
+    why:"Bodies, faces, colours or hand-drawn markers become the controller, with no wearable needed.",
+    code:"Python + OpenCV · HuskyLens library", lvl:3, link:"https://www.raspberrypi.com/products/camera-module-3/" },
+
+  /* ---------- D. Outputs ---------- */
+  { cat:"outputs", name:"Addressable LED Strip", kind:"WS2812B / NeoPixel · 60 LEDs per metre", draw:"strip",
+    what:"A strip where every LED can be any colour, controlled from one data pin. Cut to length, bend around objects, chain together.",
+    why:"A screen made of light. Line Wobbler is a whole game on a single LED strip. Use them for rings, floors, cabinets and wearables.",
+    code:"Arduino (FastLED) · MicroPython · MakeCode", lvl:2, link:"https://learn.adafruit.com/adafruit-neopixel-uberguide" },
+  { cat:"outputs", name:"LED Matrix", kind:"8×8 MAX7219 modules · RGB panels", draw:"matrix",
+    what:"Grids of LEDs for very low-resolution graphics: arrows, faces, scores and pixel animation. Modules chain together to make bigger displays.",
+    why:"Retro pixel graphics on an object instead of a monitor. The Uno R4 WiFi already has a small 12×8 matrix built in.",
+    code:"Arduino · MicroPython", lvl:2 },
+  { cat:"outputs", name:"Small OLED Display", kind:"0.96″ 128×64 · SSD1306 · I²C", draw:"oled",
+    what:"A small, sharp, high-contrast screen that uses only 4 wires.",
+    why:"For when a little screen helps: a score, a timer, a hint on a controller. A good test of the rule: does this need a screen at all?",
+    code:"Arduino · MicroPython · CircuitPython", lvl:2 },
+  { cat:"outputs", name:"Servo Motors", kind:"SG90 micro servo · MG90S metal gear", draw:"servo",
+    what:"Small motors that turn to a set angle (0–180°) on command. Continuous-rotation versions spin like wheels.",
+    why:"Physical feedback: flags pop up, gates open, targets fall, a mechanical score counter ticks. The first step toward Proyecto EXO-style machines.",
+    code:"Any board", lvl:1 },
+  { cat:"outputs", name:"DC Motor + Driver", kind:"TT gear motor · DRV8833 / TB6612 driver", draw:"dcmotor",
+    what:"A motor that simply spins, faster or slower, forwards or backwards. Small yellow gear motors are cheap and strong. Always use a motor driver board between the motor and your board.",
+    why:"Anything that rolls, spins or races: robot rovers like the machines in Proyecto EXO, turntables, fans, spinning targets and moving obstacles.",
+    specs:[["Voltage","3–6 V (TT gear motor)"],["Control","Speed by PWM · direction by driver"],["Power","Separate battery or 5 V supply"]],
+    code:"Any board + driver", lvl:2 },
+  { cat:"outputs", name:"Stepper Motor + Driver", kind:"28BYJ-48 + ULN2003 · NEMA 17 + A4988 / TMC2209", draw:"stepper",
+    what:"A motor that moves in exact small steps, so it can turn to a precise position, or rotate a set number of times, and hold it there.",
+    why:"Precise physical movement: a rotating game board, a sliding target on a rail, a moving pointer or dial, a conveyor that brings pieces to the players.",
+    specs:[["Small","28BYJ-48 · slow, cheap, 5 V"],["Strong","NEMA 17 · fast, needs 12 V supply"],["Control","Step + direction pins"]],
+    code:"Arduino (AccelStepper) · MicroPython", lvl:3 },
+  { cat:"outputs", name:"Vibration Motor", kind:"Coin-type ERM · with driver board", draw:"vibe",
+    what:"A tiny motor that buzzes, like the one inside a phone. Use a small driver module, not a pin directly.",
+    why:"Haptic feedback in handheld controllers: warnings, heartbeats, secret signals only one player can feel.",
+    code:"Any board", lvl:1 },
+  { cat:"outputs", name:"Sound Module + Speaker", kind:"DFPlayer Mini MP3 · 3 W speaker · buzzer", draw:"speaker",
+    what:"The DFPlayer plays MP3 files from a micro SD card when told to by any board. A piezo buzzer makes simple beeps.",
+    why:"Sound is half of every arcade. Audio-only games like Papa Sangre prove it can be the whole game.",
+    code:"Arduino · MicroPython", lvl:2, link:"https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299" },
+  { cat:"outputs", name:"Mini Projector", kind:"Pico / pocket LED projector (shared lab item)", draw:"projector",
+    what:"A small projector driven by a Raspberry Pi or a laptop over HDMI.",
+    why:"For alternative screens: project onto tables, floors, sand, models or people, like PingPongPlus and Proyecto EXO.",
+    code:"Pi / computer · Processing · p5.js · Godot", lvl:3 },
+
+  /* ---------- E. Wiring, power & making ---------- */
+  { cat:"making", name:"Breadboard & Jumper Wires", kind:"Half/full breadboard · M-M, M-F wires · crocodile clips", draw:"breadboard",
+    what:"For testing circuits without soldering. Crocodile clips connect micro:bits, Makey Makeys and conductive materials.",
+    why:"Every prototype starts here. Once it works, move it to a shield or solder it so it survives players.",
+    code:"—", lvl:1 },
+  { cat:"making", name:"Plug-in Cables", kind:"Gravity 3-pin · Qwiic / STEMMA QT (I²C)", draw:"cables",
+    what:"Standard connector cables that only fit one way round. Qwiic/STEMMA QT sensors can be chained one after another.",
+    why:"Fewer loose wires and wrong connections, so you spend more time testing the game and less time debugging.",
+    code:"—", lvl:1 },
+  { cat:"making", name:"Power", kind:"USB power bank · 5 V 4 A supply · battery packs", draw:"power",
+    what:"Power banks and AA packs make projects portable. LED strips and motors need their own 5 V supply. Never run them from a board's pin.",
+    why:"Screenless and city-wide games need to move. Plan the power from the beginning, not the night before the exhibition.",
+    code:"—", lvl:2 },
+  { cat:"making", name:"Basic Components Pack", kind:"LEDs · resistors · tactile buttons · MOSFETs", draw:"basics",
+    what:"Single LEDs with resistors, small push buttons, switches, and MOSFET transistors to switch strong loads such as motors and solenoids.",
+    why:"The small parts that fill the gaps in any kit. Cheap enough to break.",
+    code:"—", lvl:1 },
+  { cat:"making", name:"Making Materials", kind:"Copper tape · conductive thread · cardboard · hot glue", draw:"materials",
+    what:"Conductive copper tape and thread for touch surfaces and soft circuits, plus cardboard, foam and glue for cabinets and controllers.",
+    why:"The controller is part of the design. Cardboard prototypes let you test how a game feels in your hands before building it properly.",
+    code:"—", lvl:1 },
+];
+
+/* ======================= STARTER KITS ======================= */
+const KITS = [
+  { name:"Plug & Play", tag:"Kit 1 · Easiest start", color:"var(--blue)", on:"var(--paper)",
+    lede:"Built around the micro:bit. Everything clicks together. Good for fast experiments with movement and radio between players.",
+    items:["microbit","mbshield","imu","distance","strip","speaker","cables","power"], fits:"No Screens · Play Partners" },
+  { name:"Custom Controller", tag:"Kit 2 · New input", color:"var(--red)", on:"var(--paper)",
+    lede:"A board that acts as a USB keyboard or gamepad, plus unusual inputs. Build a controller for a game that runs on a computer.",
+    items:["unor4","pico","shield","touch","force","knob","vibe","dcmotor"], fits:"Alternative Controllers" },
+  { name:"Screens & Spaces", tag:"Kit 3 · Most ambitious", color:"var(--yellow)", on:"var(--ink)",
+    lede:"A Raspberry Pi with camera and projector for the main picture, and wireless ESP32 nodes spread around the room.",
+    items:["pi5","esp32","espshield","camera","rfid","projector","stepper","strip"], fits:"Alternative Screens · No Limits" },
+];
+
+/* ======================= DRAWINGS (one small SVG per part) ======================= */
+const pins = (x, y, n, gap = 9, r = 2.2, cls = "p") => Array.from({length:n}, (_, i) => `<circle cx="${x + i*gap}" cy="${y}" r="${r}" class="${cls}"/>`).join("");
+const DRAW = {
+  microbit:`<rect x="55" y="22" width="130" height="102" rx="12" class="oc"/>
+    <rect x="55" y="108" width="130" height="16" class="k"/>${[64,92,120,148,176].map(x=>`<rect x="${x-5}" y="110" width="10" height="12" rx="5" class="y"/>`).join("")}
+    <circle cx="80" cy="64" r="9" class="o"/><circle cx="160" cy="64" r="9" class="o"/>
+    ${Array.from({length:25},(_,i)=>`<rect x="${100+(i%5)*9}" y="${44+Math.floor(i/5)*9}" width="5" height="5" class="k bl" style="--d:${(i*7)%11}"/>`).join("")}
+    <ellipse cx="120" cy="33" rx="9" ry="5" class="o"/><text x="62" y="102" class="lb">A</text><text x="172" y="102" class="lb">B</text>`,
+  uno:`<rect x="30" y="26" width="180" height="100" rx="5" class="oc"/>
+    <rect x="22" y="38" width="30" height="24" class="o"/><rect x="22" y="94" width="26" height="22" class="k"/>
+    <rect x="86" y="30" width="116" height="9" class="k"/>${pins(90,34.5,13,8.6,1.8)}
+    <rect x="104" y="113" width="96" height="9" class="k"/>${pins(108,117.5,11,8.4,1.8)}
+    <rect x="104" y="78" width="78" height="17" class="k"/>${pins(108,75,10,7.8,1.4,"k")}${pins(108,98,10,7.8,1.4,"k")}
+    <circle cx="190" cy="56" r="3.5" class="y bl"/><text x="64" y="76" class="lbp">UNO R3</text>`,
+  unor4:`<rect x="30" y="26" width="180" height="100" rx="5" class="oc"/>
+    <rect x="22" y="40" width="22" height="18" rx="4" class="o"/><rect x="22" y="94" width="26" height="22" class="k"/>
+    <rect x="86" y="30" width="116" height="9" class="k"/>${pins(90,34.5,13,8.6,1.8)}
+    <rect x="104" y="113" width="96" height="9" class="k"/>${pins(108,117.5,11,8.4,1.8)}
+    <rect x="58" y="62" width="28" height="22" class="o"/><text x="61" y="76" class="lb" style="font-size:7px">WIFI</text>
+    <rect x="104" y="50" width="88" height="52" class="k"/>
+    ${Array.from({length:96},(_,i)=>`<circle cx="${110+(i%12)*7}" cy="${56+Math.floor(i/12)*5.8}" r="1.5" class="r ${i%5===0?"bl":""}" style="--d:${i%9}"/>`).join("")}`,
+  pi5:`<rect x="22" y="26" width="196" height="104" rx="8" class="oc"/>
+    <rect x="36" y="31" width="150" height="16" class="k"/>${pins(41,35,17,8.6,1.6)}${pins(41,43,17,8.6,1.6)}
+    <rect x="200" y="54" width="26" height="24" class="o"/><rect x="200" y="86" width="26" height="24" class="o"/>
+    <rect x="48" y="122" width="14" height="10" class="o"/><rect x="72" y="122" width="14" height="10" class="o"/><rect x="104" y="122" width="16" height="10" class="o"/>
+    <circle cx="96" cy="86" r="26" class="o"/><g class="sp" style="--rot:360deg"><path d="M96 86 L96 62 M96 86 L117 98 M96 86 L75 98" class="s"/></g><circle cx="96" cy="86" r="5" class="k"/>
+    <rect x="140" y="64" width="40" height="34" class="k"/><text x="144" y="84" class="lbp" style="font-size:8px">RAM</text>`,
+  zero:`<rect x="18" y="50" width="204" height="60" rx="8" class="oc"/>
+    <rect x="34" y="54" width="150" height="14" class="k"/>${pins(39,58,17,8.6,1.6)}${pins(39,65,17,8.6,1.6)}
+    <rect x="96" y="76" width="26" height="26" class="k"/><rect x="36" y="104" width="16" height="10" class="o"/><rect x="150" y="104" width="12" height="10" class="o"/><rect x="176" y="104" width="12" height="10" class="o"/>
+    <rect x="212" y="70" width="14" height="22" class="o"/><circle cx="190" cy="84" r="3" class="y bl"/>
+    <text x="40" y="96" class="lbp">ZERO 2 W</text>`,
+  pico:`<rect x="40" y="44" width="164" height="62" rx="4" class="oc"/>
+    ${pins(48,49,20,7.9,2.4)}${pins(48,101,20,7.9,2.4)}
+    <rect x="30" y="64" width="18" height="22" rx="3" class="o"/><rect x="112" y="63" width="24" height="24" class="k"/>
+    <circle cx="70" cy="66" r="3.5" class="y bl"/><rect x="66" y="78" width="12" height="9" class="o"/>
+    <text x="150" y="80" class="lbp">PICO</text>`,
+  esp32:`<rect x="34" y="40" width="172" height="72" rx="4" class="oc"/>
+    ${pins(42,46,19,8.6,2)}${pins(42,106,19,8.6,2)}
+    <rect x="22" y="64" width="20" height="22" rx="3" class="o"/>
+    <rect x="112" y="54" width="70" height="44" rx="2" class="o"/><path d="M186 56 v40 M186 60 h10 v8 h-8 v8 h8 v8 h-8 v8 h10" class="s t"/>
+    <text x="118" y="80" class="lb" style="font-size:9px">ESP32</text><circle cx="60" cy="62" r="3" class="y bl"/>
+    <path d="M200 30 a16 16 0 0 1 16 16 M200 20 a26 26 0 0 1 26 26" class="s t wv" style="--d:1"/>`,
+  shield:`<rect x="26" y="24" width="188" height="104" rx="5" class="oc"/>
+    ${[0,1,2].map(r=>`<rect x="${48}" y="${36+r*9}" width="150" height="7" class="${["k","r","b"][r]}"/>`).join("")}
+    ${[0,1,2].map(r=>`<rect x="${70}" y="${96+r*9}" width="128" height="7" class="${["k","r","b"][r]}"/>`).join("")}
+    <rect x="36" y="70" width="52" height="20" rx="3" class="o"/><text x="40" y="84" class="lb" style="font-size:8px">3V3|5V</text>
+    <rect x="128" y="68" width="50" height="22" class="k"/><text x="134" y="83" class="lbp" style="font-size:8px">XBEE</text>
+    <text x="36" y="122" class="lbp" style="font-size:8px">G V S</text>`,
+  mbshield:`<rect x="26" y="34" width="188" height="92" rx="6" class="oc"/>
+    <rect x="58" y="22" width="124" height="22" rx="3" class="k"/>
+    <g class="mv" style="--my:-10px"><rect x="66" y="-6" width="108" height="34" rx="8" class="o d"/><text x="96" y="14" class="lb">micro:bit</text></g>
+    ${[0,1,2].map(r=>`<rect x="44" y="${66+r*9}" width="152" height="7" class="${["k","r","b"][r]}"/>`).join("")}
+    <circle cx="190" cy="112" r="7" class="k"/><rect x="40" y="104" width="34" height="14" class="o"/><text x="44" y="114" class="lb" style="font-size:7px">I²C</text>`,
+  espshield:`<rect x="20" y="30" width="200" height="96" rx="5" class="oc"/>
+    <rect x="58" y="48" width="124" height="58" rx="3" class="o d"/><text x="86" y="81" class="lb">ESP32 DEVKIT</text>
+    ${Array.from({length:12},(_,i)=>`<rect x="${36+i*14.5}" y="34" width="12" height="10" class="y"/><circle cx="${42+i*14.5}" cy="39" r="2.4" class="k"/>`).join("")}
+    ${Array.from({length:12},(_,i)=>`<rect x="${36+i*14.5}" y="111" width="12" height="10" class="y"/><circle cx="${42+i*14.5}" cy="116" r="2.4" class="k"/>`).join("")}
+    <rect x="12" y="68" width="16" height="22" class="k"/>`,
+  touch:`<rect x="24" y="52" width="70" height="52" rx="4" class="oc"/><text x="34" y="82" class="lbp" style="font-size:9px">MPR121</text>
+    ${[0,1,2,3].map(i=>`<path d="M94 ${62+i*11} C130 ${62+i*11} 130 ${34+i*26} 150 ${34+i*26}" class="s t"/><rect x="150" y="${24+i*26}" width="54" height="20" class="y" stroke="#161514" stroke-width="2"/><circle cx="177" cy="${34+i*26}" r="${14}" fill="none" stroke="#161514" stroke-width="1.4" class="wv" style="--d:${i}"/>`).join("")}`,
+  imu:`<rect x="86" y="58" width="68" height="44" rx="4" class="oc"/><rect x="108" y="70" width="24" height="20" class="k"/>
+    <path d="M120 80 L120 20 M114 28 L120 20 L126 28" class="s"/><text x="128" y="26" class="lb">Z</text>
+    <path d="M120 80 L206 80 M198 74 L206 80 L198 86" class="s"/><text x="198" y="100" class="lb">X</text>
+    <path d="M120 80 L60 128 M62 118 L60 128 L70 126" class="s"/><text x="40" y="124" class="lb">Y</text>
+    <path d="M60 40 a40 22 0 1 1 0 0.1" class="s t d sp" style="--rot:180deg"/>`,
+  distance:`<rect x="30" y="52" width="104" height="52" rx="4" class="oc"/>
+    <circle cx="58" cy="78" r="17" class="o"/><circle cx="106" cy="78" r="17" class="o"/><circle cx="58" cy="78" r="7" class="k"/><circle cx="106" cy="78" r="7" class="k"/>
+    ${[0,1,2].map(i=>`<path d="M${150+i*18} ${54-i*6} a${30+i*10} ${30+i*10} 0 0 1 0 ${48+i*12}" class="s wv" style="--d:${i}"/>`).join("")}
+    <rect x="212" y="46" width="10" height="64" class="k"/>`,
+  force:`<circle cx="76" cy="70" r="34" class="oc"/><circle cx="76" cy="70" r="22" fill="none" stroke="#161514" stroke-width="1.4" class="d"/>
+    <rect x="70" y="102" width="12" height="34" class="o"/>
+    <g class="mv" style="--my:8px"><path d="M60 14 v22 M76 8 v28 M92 14 v22" class="s"/></g>
+    <circle cx="170" cy="78" r="36" class="y" stroke="#161514" stroke-width="2.5"/><circle cx="170" cy="78" r="22" class="o"/>
+    <path d="M160 108 L150 134 M180 108 L190 134" class="s"/><g class="sh"><path d="M126 50 l-8 -6 M214 50 l8 -6 M126 106 l-8 6 M214 106 l8 6" class="s"/></g>`,
+  knob:`<circle cx="76" cy="76" r="38" class="o"/><g class="sp" style="--rot:120deg"><circle cx="76" cy="76" r="26" class="oc"/><rect x="73" y="52" width="6" height="18" class="k"/></g>
+    ${Array.from({length:9},(_,i)=>{const a=(135+i*33.75)*Math.PI/180;return `<line x1="${76+Math.cos(a)*44}" y1="${76+Math.sin(a)*44}" x2="${76+Math.cos(a)*50}" y2="${76+Math.sin(a)*50}" class="s t"/>`}).join("")}
+    <rect x="140" y="70" width="84" height="12" rx="6" class="k"/><g class="mv" style="--mx:44px"><rect x="146" y="58" width="16" height="36" rx="3" class="oc"/></g>`,
+  light:`<circle cx="70" cy="62" r="24" class="y" stroke="#161514" stroke-width="2.5"/>
+    <g class="sp" style="--rot:45deg">${Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return `<line x1="${70+Math.cos(a)*32}" y1="${62+Math.sin(a)*32}" x2="${70+Math.cos(a)*44}" y2="${62+Math.sin(a)*44}" class="s"/>`}).join("")}</g>
+    <circle cx="170" cy="80" r="26" class="oc"/><path d="M152 80 h6 l4 -10 l6 20 l6 -20 l6 20 l4 -10 h6" class="s t" stroke="#f2ecdf"/>
+    <path d="M160 106 v28 M180 106 v28" class="s"/><path d="M104 74 l30 4 M104 88 l30 -2" class="s t d"/>`,
+  mic:`<rect x="38" y="56" width="86" height="44" rx="4" class="oc"/><circle cx="64" cy="78" r="14" class="k"/>
+    ${Array.from({length:6},(_,i)=>`<line x1="${58+i*2.5}" y1="70" x2="${58+i*2.5}" y2="86" stroke="#f2ecdf" stroke-width="1"/>`).join("")}
+    <circle cx="104" cy="78" r="7" class="o"/>
+    ${[0,1,2].map(i=>`<path d="M${150+i*20} ${40+i*0} q16 38 0 76" class="s wv" style="--d:${i}" transform="scale(1)"/>`).join("")}
+    <path d="M138 78 h-14" class="s"/>`,
+  bio:`<path d="M78 120 C20 84 30 34 62 34 C74 34 78 44 78 50 C78 44 82 34 94 34 C126 34 136 84 78 120Z" class="oc bl"/>
+    <path d="M120 78 h22 l8 -26 l12 52 l10 -40 l8 14 h40" class="s"/>
+    <circle cx="214" cy="78" r="4" class="k"/>`,
+  rfid:`<rect x="24" y="40" width="96" height="76" rx="5" class="oc"/>
+    <rect x="34" y="50" width="76" height="56" rx="10" fill="none" stroke="#f2ecdf" stroke-width="2"/><rect x="40" y="56" width="64" height="44" rx="8" fill="none" stroke="#f2ecdf" stroke-width="1.4"/>
+    <g class="mv" style="--mx:-26px"><rect x="150" y="34" width="70" height="92" rx="7" class="o" transform="rotate(8 185 80)"/><rect x="166" y="48" width="20" height="16" rx="2" class="y" stroke="#161514" stroke-width="1.5" transform="rotate(8 185 80)"/></g>
+    ${[0,1,2].map(i=>`<path d="M${126+i*8} ${62-i*4} q8 16 0 32" class="s t wv" style="--d:${i}"/>`).join("")}`,
+  camera:`<rect x="40" y="36" width="84" height="84" rx="4" class="oc"/><rect x="62" y="58" width="40" height="40" class="k"/><circle cx="82" cy="78" r="14" class="o"/><circle cx="82" cy="78" r="7" class="k"/>
+    <circle cx="66" cy="50" r="3" class="r bl"/><rect x="66" y="120" width="32" height="18" class="y" stroke="#161514" stroke-width="2"/>
+    <path d="M124 60 L214 34 M124 96 L214 122" class="s t d"/><rect x="164" y="56" width="40" height="44" fill="none" stroke="#161514" stroke-width="2" class="bl"/>
+    <circle cx="184" cy="70" r="6" class="s t"/><path d="M174 92 q10 -12 20 0" class="s t"/>`,
+  strip:`<path d="M14 92 C60 40 110 130 160 70 S220 50 230 60" fill="none" stroke="#161514" stroke-width="18" stroke-linecap="round"/>
+    <path d="M14 92 C60 40 110 130 160 70 S220 50 230 60" fill="none" stroke="#f2ecdf" stroke-width="12" stroke-linecap="round"/>
+    ${Array.from({length:14},(_,i)=>{const t=i/13;const x=14+t*216;const y=[92,70,72,92,96,84,70,60,58,58][Math.min(9,Math.round(t*9))];return `<rect x="${x-4}" y="${y-4}" width="8" height="8" class="${["r","y","b","oc"][i%4]} bl" style="--d:${i}"/>`}).join("")}`,
+  matrix:`<rect x="58" y="22" width="124" height="112" rx="4" class="k"/>
+    ${Array.from({length:64},(_,i)=>{const x=i%8,y=Math.floor(i/8);const on=[[2,1],[5,1],[2,2],[5,2],[1,5],[6,5],[2,6],[3,6],[4,6],[5,6]].some(([a,b])=>a===x&&b===y);return `<circle cx="${74+x*13}" cy="${36+y*12.4}" r="4.4" class="${on?"r bl":"p"}" style="--d:${i%5};${on?"":"opacity:.25"}"/>`}).join("")}`,
+  oled:`<rect x="50" y="34" width="140" height="92" rx="4" class="oc"/>${pins(96,42,4,14,2.6,"y")}
+    <rect x="62" y="52" width="116" height="62" class="k"/>
+    <text x="72" y="76" class="lbp" style="font-size:12px">SCORE</text><text x="72" y="100" class="lbp bl" style="font-size:20px; fill:#f4c21b">042</text>`,
+  servo:`<rect x="58" y="56" width="110" height="56" rx="4" class="oc"/><rect x="44" y="70" width="138" height="10" class="oc"/>
+    <circle cx="140" cy="56" r="14" class="o"/>
+    <g class="sp" style="--rot:-70deg; --o:140px 56px; transform-box:view-box"><rect x="132" y="12" width="16" height="50" rx="8" class="y" stroke="#161514" stroke-width="2.5"/><circle cx="140" cy="20" r="2.5" class="k"/><circle cx="140" cy="32" r="2.5" class="k"/></g>
+    <circle cx="140" cy="56" r="4" class="k"/><path d="M58 100 C30 100 30 130 10 130" class="s"/>`,
+  dcmotor:`<rect x="26" y="58" width="100" height="40" rx="4" class="y" stroke="#161514" stroke-width="2.5"/><rect x="40" y="48" width="56" height="10" class="y" stroke="#161514" stroke-width="2"/>
+    <path d="M26 70 h-10 M26 86 h-10" class="s"/><circle cx="12" cy="70" r="3" class="r"/><circle cx="12" cy="86" r="3" class="k"/>
+    <rect x="126" y="74" width="12" height="8" class="k"/>
+    <g class="sp" style="--rot:540deg"><circle cx="172" cy="78" r="38" class="k"/><circle cx="172" cy="78" r="26" class="o"/>${Array.from({length:6},(_,i)=>{const a=i*Math.PI/3;return `<line x1="${172+Math.cos(a)*6}" y1="${78+Math.sin(a)*6}" x2="${172+Math.cos(a)*24}" y2="${78+Math.sin(a)*24}" class="s"/>`}).join("")}<circle cx="172" cy="78" r="6" class="oc"/></g>
+    <path d="M60 118 h50 M100 112 l10 6 l-10 6" class="s t d"/>`,
+  stepper:`<rect x="40" y="38" width="80" height="80" rx="6" class="oc"/>${[[50,48],[110,48],[50,108],[110,108]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4" class="o"/>`).join("")}
+    <circle cx="80" cy="78" r="24" class="o"/>
+    <g class="sp" style="--rot:90deg"><circle cx="80" cy="78" r="6" class="k"/><rect x="77" y="58" width="6" height="16" class="k"/>
+    ${Array.from({length:12},(_,i)=>{const a=i*Math.PI/6;return `<line x1="${80+Math.cos(a)*16}" y1="${78+Math.sin(a)*16}" x2="${80+Math.cos(a)*22}" y2="${78+Math.sin(a)*22}" class="s t"/>`}).join("")}</g>
+    <path d="M120 70 C140 70 140 56 156 56 M120 86 C140 86 140 100 156 100" class="s"/>
+    <rect x="156" y="44" width="64" height="68" rx="3" class="oc"/><rect x="170" y="56" width="36" height="22" class="k"/>
+    ${[0,1,2,3].map(i=>`<circle cx="${172+i*10}" cy="96" r="3.2" class="r bl" style="--d:${i*2}"/>`).join("")}`,
+  vibe:`<g class="sh"><circle cx="120" cy="78" r="34" class="oc"/><circle cx="120" cy="78" r="20" fill="none" stroke="#f2ecdf" stroke-width="2"/></g>
+    <path d="M78 46 l-12 -8 M162 46 l12 -8 M78 110 l-12 8 M162 110 l12 8 M72 78 h-16 M168 78 h16" class="s wv"/>
+    <path d="M110 112 C100 130 70 130 50 134 M130 112 C140 130 170 130 190 134" class="s t"/>`,
+  speaker:`<rect x="24" y="48" width="64" height="60" rx="4" class="oc"/><rect x="36" y="58" width="40" height="28" class="o"/><text x="40" y="76" class="lb" style="font-size:8px">MP3</text><rect x="40" y="94" width="32" height="8" class="k"/>
+    <path d="M88 78 h18" class="s"/><path d="M106 62 h18 l26 -22 v76 l-26 -22 h-18z" class="o"/>
+    ${[0,1,2].map(i=>`<path d="M${164+i*16} ${56-i*8} q14 22 0 ${44+i*16}" class="s wv" style="--d:${i}"/>`).join("")}`,
+  projector:`<rect x="20" y="62" width="74" height="48" rx="6" class="oc"/><circle cx="94" cy="86" r="14" class="o"/><circle cx="94" cy="86" r="7" class="y" stroke="#161514" stroke-width="1.5"/>
+    <path d="M100 76 L216 34 L216 138 L100 96Z" class="y" opacity=".35"/><path d="M100 76 L216 34 M100 96 L216 138" class="s t d"/>
+    <rect x="212" y="34" width="8" height="104" class="k"/><circle cx="196" cy="70" r="6" class="r bl"/><circle cx="182" cy="104" r="4" class="b bl" style="--d:3"/>`,
+  breadboard:`<rect x="24" y="40" width="192" height="88" rx="4" class="o"/><rect x="24" y="80" width="192" height="8" class="k" opacity=".15"/>
+    ${Array.from({length:4},(_,r)=>pins(36,52+r*8+(r>1?36:0),22,8.2,1.5,"k")).join("")}
+    <path d="M52 52 C52 20 110 20 110 52" class="s" stroke="#e03a1e" stroke-width="3"/><path d="M118 116 C118 140 180 140 180 116" class="s" stroke="#1d4bb8" stroke-width="3"/>
+    <path d="M150 60 C150 30 200 30 200 60" class="s" stroke="#178a55" stroke-width="3"/>`,
+  cables:`<rect x="26" y="58" width="34" height="22" class="k"/><rect x="30" y="80" width="26" height="6" class="o"/>
+    <path d="M43 58 C43 10 140 20 140 60" fill="none" stroke="#161514" stroke-width="3"/><path d="M47 58 C47 16 136 26 136 60" fill="none" stroke="#e03a1e" stroke-width="3"/><path d="M39 58 C39 4 144 14 144 60" fill="none" stroke="#1d4bb8" stroke-width="3"/>
+    <rect x="124" y="60" width="32" height="20" class="k"/>
+    <rect x="164" y="90" width="44" height="34" rx="3" class="oc"/><rect x="172" y="84" width="14" height="8" class="k"/>
+    <path d="M179 84 C179 60 210 50 222 60" fill="none" stroke="#161514" stroke-width="3"/><text x="170" y="112" class="lbp" style="font-size:8px">QWIIC</text>`,
+  power:`<rect x="34" y="46" width="120" height="64" rx="12" class="oc"/>
+    ${[0,1,2,3].map(i=>`<rect x="${46+i*16}" y="58" width="10" height="20" class="y bl" style="--d:${i}"/>`).join("")}
+    <path d="M120 54 l-12 22 h12 l-10 24" class="s" stroke="#f2ecdf"/><rect x="154" y="68" width="12" height="20" class="o"/>
+    <path d="M166 78 C190 78 190 112 218 112" class="s"/><rect x="200" y="30" width="20" height="44" rx="3" class="o"/><rect x="206" y="24" width="8" height="6" class="k"/><text x="203" y="56" class="lb" style="font-size:8px">AA</text>`,
+  basics:`<path d="M14 54 h30 l6 -10 l10 20 l10 -20 l10 20 l10 -20 l6 10 h30" class="s"/>
+    <rect x="60" y="44" width="40" height="20" rx="8" class="y" stroke="#161514" stroke-width="2.5" opacity="0"/>
+    <path d="M160 78 v-26 a16 16 0 0 1 32 0 v26z" class="oc bl"/><rect x="154" y="78" width="44" height="6" class="k"/><path d="M168 84 v40 M184 84 v32" class="s"/>
+    <rect x="34" y="92" width="44" height="44" rx="3" class="o"/><g class="mv" style="--my:3px"><circle cx="56" cy="114" r="12" class="k"/></g>
+    <rect x="98" y="96" width="34" height="26" rx="2" class="k"/><path d="M106 122 v16 M115 122 v16 M124 122 v16" class="s"/><text x="101" y="113" class="lbp" style="font-size:7px">FET</text>`,
+  materials:`<circle cx="70" cy="80" r="42" class="y" stroke="#161514" stroke-width="2.5"/><circle cx="70" cy="80" r="18" class="o"/>
+    <path d="M100 110 L210 128 L214 112 L104 96" class="y" stroke="#161514" stroke-width="2.5"/>
+    <rect x="132" y="26" width="86" height="62" class="o" transform="rotate(-6 175 57)"/><path d="M140 38 h70 M140 50 h70 M140 62 h70 M140 74 h70" class="s t d" transform="rotate(-6 175 57)"/>
+    <path d="M150 30 c10 10 -10 20 0 30 c10 10 -10 20 0 30" class="s t" stroke="#178a55"/>`,
+};
+
+/* ======================= BOARD COMPARISON ======================= */
+const PICK = `
+  <div class="pick reveal">
+    <h3>Which brain?</h3>
+    <p>Choose the simplest board that does the job. You can always combine them, for example ESP32 controllers sending moves to a Raspberry Pi that runs the projector.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Board</th><th>Code in</th><th>Wireless</th><th>USB keyboard / gamepad</th><th>Built in</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td>A1 micro:bit v2</td><td>Blocks, Python</td><td>BLE + radio</td><td class="yes">Limited</td><td>Motion, LEDs, mic, speaker, buttons</td><td>First prototypes, wearables, multiplayer motion</td></tr>
+        <tr><td>A2 Uno R3</td><td>Arduino C++</td><td>—</td><td class="yes">No</td><td>—</td><td>Wired cabinets, shields, many tutorials</td></tr>
+        <tr><td>A3 Uno R4 WiFi</td><td>Arduino C++</td><td>Wi-Fi + BLE</td><td class="yes">Yes</td><td>12×8 LED matrix, Qwiic</td><td>Controllers for PC games, connected cabinets</td></tr>
+        <tr><td>A4 Raspberry Pi 5</td><td>Python, any language</td><td>Wi-Fi + BT</td><td class="yes">—</td><td>Full computer, 2× HDMI, cameras</td><td>Projection, camera tracking, big sound</td></tr>
+        <tr><td>A5 Pi Zero 2 WH</td><td>Python, Linux</td><td>Wi-Fi + BT</td><td class="yes">With setup</td><td>Small Linux computer</td><td>Hidden computer inside an object</td></tr>
+        <tr><td>A6 Pi Pico</td><td>(Micro/Circuit)Python, C</td><td>W versions</td><td class="yes">Yes</td><td>—</td><td>Cheap custom controllers</td></tr>
+        <tr><td>A7 ESP32-C3 / S3</td><td>Arduino, MicroPython</td><td>Wi-Fi + BLE</td><td class="yes">S3: Yes</td><td>—</td><td>Wireless controllers, phone-as-controller, room-scale games</td></tr>
+      </tbody>
+    </table></div>
+  </div>`;
+
+/* ======================= RENDER ======================= */
+const list = $("#pl-list"), tabs = $("#pl-tabs");
+const pad2 = n => String(n).padStart(2, "0");
+const pips = n => `<span class="pips" title="Level ${n} of 3">${[1,2,3].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
+const byId = {};
+
+CATS.forEach(c => {
+  const parts = PARTS.filter(p => p.cat === c.id);
+  parts.forEach((p, i) => { p.id = c.letter + (i + 1); byId[p.id] = p; });
+  const isBoards = c.id === "boards";
+  const cards = parts.map(p => `
+    <article class="part reveal" data-cat="${c.id}" data-core="${p.core ? 1 : 0}" id="${p.id}" style="--c:${c.color};--on:${c.on}">
+      <div class="part-fig">
+        <div class="part-top"><span class="pid">${p.id}</span><span class="badge ${p.core ? "core" : "sug"}">${p.core ? "Core" : "Suggested"}</span></div>
+        <svg viewBox="0 0 240 150" aria-hidden="true">${DRAW[p.draw] || ""}</svg>
+      </div>
+      <div class="part-body">
+        <p class="kind">${esc(p.kind)}</p>
+        <h3>${esc(p.name)}</h3>
+        <p class="what">${esc(p.what)}</p>
+        <p class="why"><span>Why for Arcade Revival</span>${esc(p.why)}</p>
+        ${p.specs ? `<dl class="specs">${p.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
+        <div class="part-foot">
+          <div class="meta-line"><span>Level ${pips(p.lvl)}</span>${p.code && p.code !== "—" ? `<span class="code">${esc(p.code)}</span>` : ""}</div>
+          ${p.link ? `<a class="go" href="${esc(p.link)}" target="_blank" rel="noopener">${p.core || isBoards ? "Product" : "Learn"} ↗</a>` : ""}
+        </div>
+      </div>
+    </article>`).join("");
+
+  list.insertAdjacentHTML("beforeend", `
+  <section class="cat" id="${c.id}" style="--c:${c.color};--on:${c.on}">
+    <div class="band" aria-hidden="true"><div>${Array(10).fill(`${c.letter} · ${esc(c.title)} · ${parts.length} parts ·`).join(" ")}</div></div>
+    <div class="cat-head">
+      <div class="cat-letter" aria-hidden="true">${c.letter}</div>
+      <div><p class="n">Section ${c.letter} · ${parts.length} parts</p><h2>${esc(c.title)}</h2><p>${esc(c.lede)}</p></div>
+    </div>
+    <div class="grid${isBoards ? " big" : ""}">${cards}</div>
+    ${isBoards ? PICK : ""}
+  </section>`);
+
+  tabs.insertAdjacentHTML("beforeend", `<a href="#${c.id}" style="--c:${c.color};--on:${c.on}" data-for="${c.id}"><b>${c.letter}</b><span>${esc(c.title)}</span></a>`);
+  $("#catChips").insertAdjacentHTML("beforeend", `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="false" style="--c:${c.color}"><i></i>${esc(c.short)}</button>`);
+  $("#boxes").insertAdjacentHTML("beforeend", `<a href="#${c.id}" style="--c:${c.color}"><small><i></i>${c.letter} · ${parts.length} ${parts.length===1?"part":"parts"}</small><strong>${esc(c.short)}</strong></a>`);
+});
+tabs.insertAdjacentHTML("beforeend", `<a href="#kits" style="--c:var(--paper);--on:var(--ink)" data-for="kits"><b>★</b><span>Starter kits</span></a>`);
+
+/* starter kits */
+KITS.forEach(k => {
+  $("#kitGrid").insertAdjacentHTML("beforeend", `
+    <article class="kit reveal" style="--c:${k.color};--on:${k.on}">
+      <div class="kit-head"><small>${esc(k.tag)}</small><h3>${esc(k.name)}</h3></div>
+      <div class="kit-body">
+        <p>${esc(k.lede)}</p>
+        <ul>${k.items.map(d => PARTS.find(p => p.draw === d)).map(p => `<li><a href="#${p.id}">${p.id}</a><span>${esc(p.name)}</span></li>`).join("")}</ul>
+        <p class="fits">Good for: ${esc(k.fits)}</p>
+      </div>
+    </article>`);
+});
+
+/* ======================= FILTERS ======================= */
+let cat = "all", mode = "all";
+const NOTES = { all:"", core:"Course list: expect these in the lab.", sug:"Recommended additions, not confirmed yet." };
+const nCore = PARTS.filter(p => p.core).length;
+$("#nAll").textContent = PARTS.length; $("#nCore").textContent = nCore; $("#nSug").textContent = PARTS.length - nCore;
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  mode = b.dataset.mode; applyFilter();
+  if ($("#pl-list").getBoundingClientRect().top < 0) $("#pl-list").scrollIntoView({ block:"start" });
+});
+function applyFilter(){
+  let shown = 0;
+  document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === mode));
+  $("#modeNote").textContent = NOTES[mode];
+  document.querySelectorAll(".part").forEach(el => {
+    const ok = (cat === "all" || el.dataset.cat === cat) && (mode === "all" || (mode === "core") === (el.dataset.core === "1"));
+    el.hidden = !ok; if (ok){ shown++; el.classList.add("in"); }
+  });
+  document.querySelectorAll(".cat").forEach(sec => { sec.hidden = !sec.querySelector(".part:not([hidden])"); });
+  document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === cat));
+  $("#pl-count").textContent = `${shown} of ${PARTS.length} parts`;
+}
+$("#filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  cat = b.dataset.cat; applyFilter();
+  const target = cat === "all" ? $("#pl-list") : $("#" + cat);
+  if (scrollY + 10 < target.getBoundingClientRect().top + scrollY - 60 || cat !== "all") target.scrollIntoView({ block:"start" });
+});
+/* clicking a part number in a kit shows that part even if it's filtered out */
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  const el = document.getElementById(a.getAttribute("href").slice(1));
+  if (el && el.hidden){ cat = "all"; mode = "all"; applyFilter(); }
+  if (el && el.classList.contains("part")){ el.classList.add("in"); el.animate([{ boxShadow:"0 0 0 6px var(--yellow), 6px 6px 0 var(--ink)" }, { boxShadow:"6px 6px 0 var(--ink)" }], { duration:1600, delay:500 }); }
+});
+applyFilter();
+
+/* ======================= SCROLL ======================= */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const root = document.documentElement, cover = $("#pl-top");
+const titleSpans = [...document.querySelectorAll("#pl-title span")];
+const secs = [...document.querySelectorAll(".cat"), $("#kits")];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+let ticking = false;
+function update(){
+  ticking = false;
+  const vh = innerHeight, sy = scrollY;
+  root.style.setProperty("--sp", clamp(sy / (document.body.scrollHeight - vh)));
+  const h = clamp(sy / (cover.offsetHeight * .7));
+  titleSpans.forEach((s, i) => s.style.setProperty("--tw", reduce ? 75 : 62 + h * (i ? 50 : 38)));
+  let active = null;
+  secs.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (!reduce) sec.style.setProperty("--p", clamp((vh * .6 - r.top) / (r.height || 1)).toFixed(4));
+    if (r.top < vh * .4 && r.bottom > vh * .4) active = sec.id;
+  });
+  tabs.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.for === active));
+}
+addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+addEventListener("resize", update);
+update();
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold:.1, rootMargin:"0px 0px -6% 0px" });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ---------- switching between the booklet and the parts list ----------
+   #parts (or any id inside the parts list) shows the list; anything else shows the booklet. */
+let bookletY = 0;
+const TITLES = { book:document.title, parts:"Parts List · Arcade Revival" };
+function route(){
+  const id = decodeURIComponent(location.hash.slice(1));
+  const el = id ? document.getElementById(id) : null;
+  const inParts = id === "parts" || !!(el && el.closest("#parts"));
+  const showing = document.body.classList.contains("show-parts");
+  if (inParts){
+    if (!showing){ bookletY = scrollY; document.body.classList.add("show-parts"); document.title = TITLES.parts; }
+    if (id === "parts" || id === "pl-top") scrollTo({ top:0, behavior:"instant" });
+    else el.scrollIntoView({ block:"start", behavior:"instant" });
+    update();
+  } else if (showing){
+    document.body.classList.remove("show-parts"); document.title = TITLES.book;
+    if (el) el.scrollIntoView({ block:"start", behavior:"instant" });
+    else scrollTo({ top:bookletY, behavior:"instant" });
+    dispatchEvent(new Event("scroll"));
+  }
+}
+addEventListener("hashchange", route);
+route();
 })();
 </script>
 </body>
