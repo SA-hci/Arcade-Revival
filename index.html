@@ -119,6 +119,74 @@ a{color:inherit}
 .egg-msg button{font:600 12px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; padding:13px 16px; border:var(--rule); background:var(--yellow); color:var(--ink); box-shadow:4px 4px 0 var(--ink); cursor:pointer}
 .egg-msg button + button{background:var(--paper)}
 .egg-msg button:active{transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink)}
+
+/* ---------- easter egg 2: race to the top (back cover countdown → PLAY) ---------- */
+.cd-wrap{display:grid; place-items:center; height:90px; margin:10px 0 18px}
+.cd-wrap > *{grid-area:1/1}
+.cd-wrap .count{margin:0; transition:opacity .2s, transform .2s}
+.race-ready .cd-wrap .count{opacity:0; transform:scale(.6)}
+.race-play{display:none; position:relative; width:78px; height:78px; padding:0; border-radius:50%; background:var(--green); color:var(--paper); border:2.5px solid var(--ink); box-shadow:5px 5px 0 var(--ink); cursor:pointer; place-items:center; transition:transform .15s, box-shadow .15s}
+.race-play svg{width:30px; height:30px; margin-left:6px}
+.race-play::after{content:""; position:absolute; inset:-4px; border-radius:50%; border:3px solid var(--green); animation:raceRing 1.6s ease-out infinite; pointer-events:none}
+.race-play:hover{transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--ink)}
+.race-play:active{transform:translate(2px,2px); box-shadow:3px 3px 0 var(--ink)}
+.race-ready .race-play{display:grid; animation:racePop .55s cubic-bezier(.3,1.6,.5,1) backwards}
+@keyframes racePop{from{transform:scale(0) rotate(-120deg)}}
+@keyframes raceRing{from{transform:scale(1); opacity:.9} to{transform:scale(1.7); opacity:0}}
+#race{position:fixed; inset:0; z-index:90; overflow:hidden; touch-action:none; user-select:none; -webkit-user-select:none; transition:opacity .45s}
+#race.out{opacity:0}
+.race-fx{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3}
+.race-kerb{position:absolute; top:0; bottom:0; width:12px; background:repeating-linear-gradient(180deg, var(--car, var(--red)) 0 28px, var(--paper) 28px 56px); border:solid var(--ink); border-width:0 1.5px; transition:transform .5s}
+.race-kerb.l{left:0} .race-kerb.r{right:0}
+#race:not(.in) .race-kerb.l{transform:translateX(-110%)}
+#race:not(.in) .race-kerb.r{transform:translateX(110%)}
+.race-o, .race-fin{position:absolute; left:0; top:0; will-change:transform}
+.race-o svg, .race-car svg{display:block; width:100%; height:100%; overflow:visible}
+.race-bar, .race-slider{background:repeating-linear-gradient(-45deg, var(--yellow) 0 12px, var(--ink) 12px 24px); border:2.5px solid var(--ink); box-shadow:4px 5px 0 rgba(22,21,20,.35); animation:raceStripe .5s linear infinite}
+.race-slider{background-image:repeating-linear-gradient(-45deg, var(--red) 0 12px, var(--paper) 12px 24px)}
+@keyframes raceStripe{to{background-position:33.94px 0}}
+.race-o svg{filter:drop-shadow(3px 5px 0 rgba(22,21,20,.35))}
+.race-cone svg{transform-origin:50% 100%; animation:raceWob .45s ease-in-out infinite alternate}
+@keyframes raceWob{from{transform:rotate(-8deg)} to{transform:rotate(8deg)}}
+.race-oil svg{animation:raceOil 1s ease-in-out infinite alternate}
+@keyframes raceOil{from{transform:scale(.88)} to{transform:scale(1.1)}}
+.race-boost svg{animation:raceBoost .5s steps(1) infinite}
+@keyframes raceBoost{50%{transform:translateY(-4px) scale(1.06)}}
+.race-glitch svg{animation:raceFlap .35s steps(1) infinite}
+@keyframes raceFlap{50%{transform:scale(1.12, .88) translateY(2px)}}
+.race-car .body{fill:var(--car, var(--red)); transition:fill .35s}
+.race-car .stripe{fill:var(--car-s, var(--yellow)); transition:fill .35s}
+.race-car.pop svg{animation:raceCarPop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes raceCarPop{40%{transform:scale(1.4)}}
+.race-say.ch{top:24%; font-size:clamp(32px, 6vw, 72px); color:var(--paper); text-shadow:5px 5px 0 var(--car, var(--ink))}
+.race-fin{right:0; height:28px; background:repeating-conic-gradient(var(--ink) 0 25%, var(--paper) 0 50%) 0 0/28px 28px; border-block:2px solid var(--ink); display:grid; place-items:center}
+.race-fin span{background:var(--paper); border:var(--rule); padding:5px 10px; font:600 12px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase}
+.race-car{position:absolute; left:0; top:0; width:44px; height:76px; margin:-38px 0 0 -22px; z-index:2; will-change:transform; filter:drop-shadow(3px 5px 0 rgba(22,21,20,.3))}
+.race-car.blink{animation:eggBlink .12s steps(1) infinite}
+.race-hud{position:absolute; top:0; left:0; right:0; z-index:4; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px var(--gutter); border-bottom:var(--rule); background:var(--paper); font:600 12px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; transform:translateY(-110%); transition:transform .5s .2s}
+#race.in .race-hud{transform:none}
+.race-hud b{font-weight:600; color:var(--red); font-variant-numeric:tabular-nums}
+.race-hud button{font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; background:none; color:var(--ink); border:1.5px solid var(--ink); padding:7px 9px; cursor:pointer; margin-left:6px}
+.race-hud button:hover{background:var(--ink); color:var(--paper)}
+.race-on .race-play{visibility:hidden}
+.race-meter{flex:1; max-width:280px; height:12px; margin-right:26px; border:1.5px solid var(--ink); position:relative; background:var(--paper)}
+.race-meter i{position:absolute; inset:0; background:var(--green); transform-origin:left; transform:scaleX(var(--p,0))}
+.race-meter::after{content:"🏁"; position:absolute; right:-22px; top:50%; transform:translateY(-50%); font-size:14px; letter-spacing:0}
+.race-light{position:absolute; left:50%; top:40%; z-index:4; display:flex; gap:12px; padding:14px; background:var(--ink); border-radius:18px; box-shadow:8px 8px 0 rgba(22,21,20,.3); transform:translate(-50%,-50%); transition:opacity .4s, transform .4s}
+.race-light i{width:clamp(40px, 8vw, 58px); aspect-ratio:1; border-radius:50%; background:#3a3633; border:2px solid #000; transition:background .1s, box-shadow .1s}
+.race-light i.on:nth-child(1){background:var(--red); box-shadow:0 0 26px var(--red)}
+.race-light i.on:nth-child(2){background:#f28c1c; box-shadow:0 0 26px #f28c1c}
+.race-light i.on:nth-child(3){background:#2fbf63; box-shadow:0 0 26px #2fbf63}
+.race-light.gone{opacity:0; transform:translate(-50%,-80%) scale(.85)}
+.race-say{position:absolute; left:0; right:0; top:58%; z-index:4; text-align:center; font-weight:900; text-transform:uppercase; font-size:clamp(56px, 11vw, 140px); line-height:.85; font-variation-settings:"wdth" 62; -webkit-text-stroke:2px var(--ink); color:var(--paper); text-shadow:6px 6px 0 var(--ink); transition:opacity .4s, transform .4s}
+.race-say.go{color:#2fbf63}
+.race-say.hide{opacity:0; transform:scale(1.4)}
+.race-help{position:absolute; left:50%; bottom:16px; z-index:4; transform:translateX(-50%); margin:0; width:max-content; max-width:calc(100vw - 48px); text-align:center; background:var(--paper); border:var(--rule); padding:8px 12px; font:500 11px/1.4 var(--mono); letter-spacing:.08em; text-transform:uppercase; transition:opacity .5s}
+.race-help.hide{opacity:0}
+.race-msg{top:50%; z-index:5}
+.race-flash{animation:raceFlash .3s steps(1) 10}
+@keyframes raceFlash{50%{color:var(--red); opacity:.25}}
+@media (max-width:640px){ .race-hud .lbl, .race-hud .best{display:none} }
 @media (max-width:560px){ .egg-hud .hi{display:none} .egg-help{font-size:9px} }
 
 /* ---------- warning + contents ---------- */
@@ -656,7 +724,10 @@ body.show-parts > :not(#parts){display:none !important}
 <!-- ================= BACK COVER ================= -->
 <footer class="back" id="end" data-page="Back cover">
   <h2>Game <em>Over?</em></h2>
-  <div class="count" id="count">CONTINUE? 9</div>
+  <div class="cd-wrap">
+    <div class="count" id="count">CONTINUE? 5</div>
+    <button class="race-play" id="racePlay" type="button" aria-label="Play: race back to the top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l16 9-16 9z" fill="currentColor" stroke="#161514" stroke-width="2" stroke-linejoin="round"/></svg></button>
+  </div>
   <a class="btn" href="#top">Press start ▸ back to cover</a>
   <a class="btn" href="#parts" style="background:var(--paper); margin-left:10px">Parts list ▸</a>
   <p class="colophon">Arcade Revival · Interaction Design · 2026–27<br>Project images, videos and names belong to their respective creators and are shown for educational purposes.</p>
@@ -1194,16 +1265,466 @@ $("#playerClose").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 dlg.addEventListener("close", () => { frame.src = "about:blank"; });
 
-/* back cover countdown */
-let n = 9, timer = null;
-new IntersectionObserver(([e]) => {
-  clearInterval(timer);
-  if (!e.isIntersecting) { n = 9; $("#count").textContent = "CONTINUE? 9"; return; }
-  timer = setInterval(() => {
-    n = n > 0 ? n - 1 : 9;
-    $("#count").textContent = n ? "CONTINUE? " + n : "INSERT NEW IDEA ▮";
-  }, 900);
-}, {threshold:.5}).observe($("#end"));
+/* back cover countdown: 5 … 1, then the PLAY button (easter egg 2) takes the counter's
+   place for 2 seconds, then it counts down from 5 again, for as long as it's on screen */
+const cd = { n:5, timer:null };
+const cdShow = () => { $("#count").textContent = "CONTINUE? " + cd.n; };
+cd.stop = () => { clearTimeout(cd.timer); cd.n = 5; cdShow(); $("#end").classList.remove("race-ready"); };
+cd.step = () => {
+  if (cd.n > 1) { cd.n--; cdShow(); cd.timer = setTimeout(cd.step, 900); return; }
+  cd.n = 0; $("#end").classList.add("race-ready");
+  cd.timer = setTimeout(() => { cd.stop(); cd.timer = setTimeout(cd.step, 900); }, 2000);
+};
+const cdIO = new IntersectionObserver(([e]) => {
+  cd.stop();
+  if (e.isIntersecting && !document.body.classList.contains("race-on")) cd.timer = setTimeout(cd.step, 900);
+}, {threshold:.5});
+cdIO.observe($("#end"));
+cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end")); };   // re-check visibility
+
+/* ======================= EASTER EGG 2: race to the top =======================
+   PLAY drops a race car at the bottom of the booklet. After the traffic light
+   (red, orange, green) the clock runs; drive back up to the cover while the page
+   scrolls under you. Cones and barriers crash you, oil spins you, coins knock you
+   sideways, yellow pads boost. Cross the finish line: time flashes, confetti, done. */
+(() => {
+  const play = $("#racePlay");
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ":" + (r < 10 ? "0" : "") + r.toFixed(2); };
+  const store = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+  let best = parseFloat(store("arcade-race-best")) || null;
+  let muted = store("arcade-race-mute") === "1";
+  let ac = null;
+  const beep = (f, d = .12, type = "square", vol = .06, to) => {
+    if (!ac || muted) return;
+    const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (to) o.frequency.exponentialRampToValueAtTime(to, t + d);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + .03);
+  };
+
+  const INK = "#161514";
+  const CAR = `<svg viewBox="0 0 44 76" aria-hidden="true"><g fill="${INK}">
+    <rect x="0" y="12" width="9" height="16" rx="2"/><rect x="35" y="12" width="9" height="16" rx="2"/>
+    <rect x="0" y="50" width="9" height="19" rx="2"/><rect x="35" y="50" width="9" height="19" rx="2"/>
+    <rect x="3" y="2" width="38" height="6" rx="1"/><rect x="2" y="68" width="40" height="7" rx="1"/></g>
+    <path class="body" d="M18 4h8l3 18 6 6v26l-4 14H13L9 54V28l6-6z" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+    <rect class="stripe" x="19.5" y="6" width="5" height="56"/>
+    <ellipse cx="22" cy="40" rx="6" ry="9" fill="${INK}"/><circle cx="22" cy="41" r="4" style="fill:var(--blue)"/></svg>`;
+  const ART = {
+    cone:`<svg viewBox="0 0 28 34"><path d="M14 1L23 29H5z" fill="#f28c1c" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M10.6 12h6.8l1.9 6H8.7z" style="fill:var(--paper)"/><rect x="1" y="28" width="26" height="5" rx="1" fill="${INK}"/></svg>`,
+    oil:`<svg viewBox="0 0 70 36"><path d="M8 18c0-9 10-14 22-13 6-4 18-3 24 3 9 1 14 7 12 13-1 7-10 11-19 10-6 4-17 4-23 0C14 32 8 26 8 18z" fill="${INK}"/><ellipse cx="26" cy="13" rx="8" ry="3" fill="#5a5650"/><ellipse cx="47" cy="22" rx="5" ry="2" fill="#5a5650"/></svg>`,
+    coin:`<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="13.5" style="fill:var(--red)" stroke="${INK}" stroke-width="2"/><circle cx="15" cy="15" r="8.5" fill="none" style="stroke:var(--paper)" stroke-width="2"/><rect x="13.5" y="9" width="3" height="12" style="fill:var(--paper)"/></svg>`,
+    boost:`<svg viewBox="0 0 50 40"><rect x="1" y="1" width="48" height="38" style="fill:var(--yellow)" stroke="${INK}" stroke-width="2"/><path d="M13 21l12-9 12 9M13 31l12-9 12 9" fill="none" stroke="${INK}" stroke-width="4"/></svg>`,
+    glitch:`<svg viewBox="0 0 11 8" shape-rendering="crispEdges"><path fill="currentColor" d="M3 0h5v1H3zM2 1h7v1H2zM1 2h2v1H1zM4 2h3v1H4zM8 2h2v1H8zM1 3h9v1H1zM0 4h11v1H0zM0 5h1v2H0zM2 5h7v1H2zM10 5h1v2h-1zM2 6h1v1H2zM8 6h1v1H8zM3 7h2v1H3zM6 7h2v1H6z"/><path style="fill:var(--paper)" d="M3 2h1v1H3zM7 2h1v1H7z"/></svg>`,
+    bar:"", slider:""
+  };
+  const SIZE = { cone:[38,46], oil:[96,50], coin:[42,42], boost:[62,50], glitch:[55,40] };
+  const GLITCH_COLORS = ["var(--blue)", "var(--green)", "var(--red)", "var(--ink)"];
+
+  let S = null;
+  const keys = { up:0, down:0, left:0, right:0 };
+  const KEYMAP = { ArrowUp:"up", KeyW:"up", Space:"up", ArrowDown:"down", KeyS:"down", ArrowLeft:"left", KeyA:"left", ArrowRight:"right", KeyD:"right" };
+  const BLOCK = ["PageUp", "PageDown", "Home", "End"];
+
+  function start(){
+    if (S || document.body.classList.contains("egg-on")) return;
+    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); ac.resume(); } catch (e) {}
+    const vh = innerHeight, sy = scrollY;
+    const FINISH = document.querySelector(".cover-top").getBoundingClientRect().bottom + sy + 70;
+    const startY = sy + vh * .78;
+    const root = document.createElement("div");
+    root.id = "race";
+    root.innerHTML = `
+      <div class="race-kerb l"></div><div class="race-kerb r"></div>
+      <div class="race-world"><div class="race-fin"><span>Finish</span></div></div>
+      <div class="race-car">${CAR}</div>
+      <canvas class="race-fx"></canvas>
+      <div class="race-hud"><span class="lbl">Race to the top</span><span class="race-meter"><i></i></span>
+        <span>Time <b class="race-time">0:00.00</b></span><span class="best">Best <b>${best ? fmt(best) : "–"}</b></span>
+        <span><button class="race-snd" type="button"></button><button class="race-quit" type="button">Quit · Esc</button></span></div>
+      <div class="race-light"><i></i><i></i><i></i></div>
+      <div class="race-say"></div>
+      <p class="race-help">↑ / W gas · ↓ / S brake · ← → / A D steer · or hold the mouse / finger and drag</p>`;
+    document.body.appendChild(root);
+    document.body.classList.add("race-on");
+    cd.stop();
+    const q = s => root.querySelector(s);
+    // each chapter's colour band, so the car can repaint itself as it drives through
+    const zones = [...document.querySelectorAll("section.chapter")].map(el => {
+      const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+      return { top:r.top + sy, bottom:r.bottom + sy, c:cs.getPropertyValue("--c").trim(), on:cs.getPropertyValue("--on").trim(),
+               name:(el.dataset.page || "").replace(/^Ch\.\s*/, "") };
+    });
+    S = {
+      root, FINISH, startY, mode:"intro", t0:0, time:0, last:performance.now(), timers:[],
+      cx:innerWidth / 2, cy:sy + vh + 60, v:0, vx:0, spin:null, invuln:0, boost:0, shake:0, rough:0,
+      obs:[], puffs:[], conf:[], puffT:0, ptr:{ down:false, x:0 }, zones, zone:-1, spawnT:2.5,
+      car:q(".race-car"), fin:q(".race-fin"), world:q(".race-world"), kerbs:[q(".race-kerb.l"), q(".race-kerb.r")],
+      time$:q(".race-time"), meter:q(".race-meter"), light:q(".race-light"), say:q(".race-say"), help:q(".race-help"),
+      cv:q(".race-fx")
+    };
+    S.ctx = S.cv.getContext("2d");
+    sizeCanvas();
+    buildCourse();
+    const snd = q(".race-snd");
+    const sndLabel = () => { snd.textContent = muted ? "Sound off" : "Sound on"; };
+    sndLabel();
+    snd.addEventListener("click", () => { muted = !muted; store("arcade-race-mute", muted ? "1" : "0"); sndLabel(); engineVol(); });
+    q(".race-quit").addEventListener("click", close);
+    root.addEventListener("pointerdown", onDown);
+    root.addEventListener("pointermove", onMove);
+    root.addEventListener("pointerup", onUp);
+    root.addEventListener("pointercancel", onUp);
+    addEventListener("keydown", onKey, true);
+    addEventListener("keyup", onKeyUp, true);
+    addEventListener("wheel", stopWheel, { passive:false });
+    addEventListener("resize", sizeCanvas);
+    addEventListener("blur", releaseAll);
+    requestAnimationFrame(() => root.classList.add("in"));
+
+    // traffic light: red → orange → green
+    const lamps = S.light.children, say = (t, cls) => { S.say.textContent = t; S.say.className = "race-say " + (cls || ""); };
+    const later = (ms, fn) => S.timers.push(setTimeout(fn, ms));
+    later(700,  () => { lamps[0].classList.add("on"); say("Ready"); beep(440, .18); });
+    later(1500, () => { lamps[1].classList.add("on"); say("Set"); beep(440, .18); });
+    later(2300, () => {
+      lamps[0].classList.remove("on"); lamps[1].classList.remove("on"); lamps[2].classList.add("on");
+      say("Go!", "go"); beep(880, .45, "square", .07);
+      S.mode = "race"; S.t0 = performance.now(); startEngine();
+    });
+    later(3000, () => { S.light.classList.add("gone"); S.say.classList.add("hide"); });
+    later(7000, () => S.help.classList.add("hide"));
+    S.raf = requestAnimationFrame(frame);
+  }
+  play.addEventListener("click", start);
+
+  function addObs(type, x, y, extra = {}){
+    const [w, h] = SIZE[type] || [extra.w, 30];
+    const o = Object.assign({ type, x, y, w, h, rot:0, t:0, dead:false, used:false, shown:null }, extra);
+    o.el = document.createElement("div");
+    o.el.className = "race-o race-" + type;
+    o.el.style.width = o.w + "px"; o.el.style.height = o.h + "px";
+    if (o.color) o.el.style.color = o.color;
+    o.el.innerHTML = ART[type];
+    S.world.appendChild(o.el);
+    S.obs.push(o);
+    return o;
+  }
+  const side = () => (Math.random() < .5 ? -1 : 1);
+  // where to put an obstacle: 70% of the time in the middle third of the road, where the car likes to sit
+  const midX = () => { const W = innerWidth; return Math.random() < .7 ? W / 2 + rnd(-.17, .17) * W : rnd(70, W - 80); };
+  const glitch = (x, y) => addObs("glitch", x, y, { x0:x, amp:rnd(60, 150), f:rnd(1.8, 3.4), vy:rnd(40, 110),
+                                                    color:GLITCH_COLORS[Math.floor(Math.random() * GLITCH_COLORS.length)] });
+  // one obstacle (or a small group) at height y; p = 0 at the start line … 1 at the finish
+  function spawnAt(y, p, x){
+    const W = innerWidth, r = Math.random();
+    x = x ?? midX();
+    if (r < .22){                                    // a cone, or a line of three
+      const n = Math.random() < .5 ? 3 : 1, x0 = clamp(x, 50, W - 60 - (n - 1) * 52);
+      for (let i = 0; i < n; i++) addObs("cone", x0 + i * 52, y);
+    }
+    else if (r < .36) addObs("oil", x, y);
+    else if (r < .50){                               // fixed barrier across one side of the road
+      const w = Math.round(W * rnd(.34, .46));
+      const pos = Math.random();                     // left side, right side, or blocking the middle
+      addObs("bar", pos < .4 ? W / 2 + rnd(-30, 30) : pos < .7 ? 12 + w / 2 : W - 12 - w / 2, y, { w:pos < .4 ? Math.round(w * .8) : w });
+    }
+    else if (r < .62){                               // barrier that slides from side to side
+      const w = Math.round(W * rnd(.26, .36));
+      addObs("slider", rnd(12 + w / 2, W - 12 - w / 2), y, { w, vx:side() * rnd(130, 240) * (1 + p) });
+    }
+    else if (r < .76) addObs("coin", x, y, { vx:side() * rnd(150, 280) * (1 + p * .6) });
+    else if (r < .90) glitch(x, y);
+    else addObs("boost", x, y);
+  }
+  function buildCourse(){
+    const W = innerWidth, len = S.startY - S.FINISH;
+    let y = S.startY - 620;
+    while (y > S.FINISH + 380){
+      const p = (S.startY - y) / len;
+      spawnAt(y, p);
+      // further up the page: more often two things side by side
+      if (Math.random() < .15 + p * .45) spawnAt(y - rnd(-40, 60), p, Math.random() < .5 ? rnd(60, W * .4) : rnd(W * .6, W - 70));
+      y -= rnd(440, 560) - p * 230;                  // gaps shrink from ~500px to ~270px
+    }
+  }
+
+  function sizeCanvas(){
+    if (!S) return;
+    const d = Math.min(2, devicePixelRatio || 1);
+    S.cv.width = innerWidth * d; S.cv.height = innerHeight * d;
+    S.ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+
+  /* ---------- engine hum that follows the speed ---------- */
+  function startEngine(){
+    if (!ac) return;
+    try {
+      const o = ac.createOscillator(), f = ac.createBiquadFilter(), g = ac.createGain();
+      o.type = "sawtooth"; o.frequency.value = 50; f.type = "lowpass"; f.frequency.value = 600;
+      o.connect(f).connect(g).connect(ac.destination); o.start();
+      S.eng = { o, g }; engineVol();
+    } catch (e) {}
+  }
+  function engineVol(){ if (S && S.eng) S.eng.g.gain.setTargetAtTime(muted ? 0 : .035, ac.currentTime, .05); }
+  function stopEngine(){
+    if (!S || !S.eng) return;
+    const { o, g } = S.eng; S.eng = null;
+    g.gain.setTargetAtTime(0, ac.currentTime, .08); setTimeout(() => { try { o.stop(); } catch (e) {} }, 400);
+  }
+
+  /* ---------- input ---------- */
+  function onKey(e){
+    if (!S) return;
+    if (e.key === "Escape"){ e.preventDefault(); close(); return; }
+    if (S.mode === "done" && (e.key === "Enter" || e.code === "Space")){ e.preventDefault(); close(); return; }
+    const k = KEYMAP[e.code];
+    if (k){ keys[k] = 1; e.preventDefault(); }
+    else if (BLOCK.includes(e.key)) e.preventDefault();
+  }
+  function onKeyUp(e){ const k = KEYMAP[e.code]; if (k) keys[k] = 0; }
+  function releaseAll(){ for (const k in keys) keys[k] = 0; if (S) S.ptr.down = false; }
+  function stopWheel(e){ e.preventDefault(); }
+  function onDown(e){
+    if (e.target.closest("button")) return;
+    if (S.mode === "done"){ close(); return; }
+    S.ptr.down = true; S.ptr.x = e.clientX;
+    try { S.root.setPointerCapture(e.pointerId); } catch (err) {}
+  }
+  function onMove(e){ if (S) S.ptr.x = e.clientX; }
+  function onUp(){ if (S) S.ptr.down = false; }
+
+  /* ---------- the loop ---------- */
+  function frame(now){
+    if (!S) return;
+    const dt = Math.min(.05, (now - S.last) / 1000);
+    S.last = now;
+    const W = innerWidth, vh = innerHeight;
+    const maxScroll = document.documentElement.scrollHeight - vh;
+    const MAX = clamp((S.startY - S.FINISH) / 16, 950, 1900);   // top speed grows with the page length
+
+    if (S.mode === "intro"){
+      S.cy += (S.startY - S.cy) * Math.min(1, dt * 4);
+    }
+    else if (S.mode === "race"){
+      S.time = (now - S.t0) / 1000;
+      const gas = keys.up || S.ptr.down, brake = keys.down;
+      const spinning = S.spin && S.spin.t < S.spin.T;
+      const top = MAX * (S.boost > 0 ? 1.5 : 1);
+      if (!spinning){
+        if (gas) S.v += 1150 * dt;
+        if (brake) S.v -= 1900 * dt;
+      } else S.v *= Math.pow(.3, dt);
+      if (!gas) S.v -= Math.sign(S.v) * Math.min(Math.abs(S.v), 420 * dt);
+      if (S.v > top) S.v = Math.max(top, S.v - 1400 * dt);
+      S.v = Math.max(S.v, -320);
+
+      let tx = 0;
+      if (!spinning) tx = S.ptr.down ? clamp((S.ptr.x - S.cx) * 6, -600, 600) : (keys.right - keys.left) * 600;
+      S.vx += (tx - S.vx) * Math.min(1, dt * 9);
+      S.cx += S.vx * dt;
+      const lo = 36, hi = W - 36;
+      if (S.cx < lo || S.cx > hi){ S.cx = clamp(S.cx, lo, hi); S.vx *= -.3; S.v *= Math.pow(.25, dt); S.rough = .1; }
+      S.cy -= S.v * dt;
+      if (S.cy > S.startY){ S.cy = S.startY; S.v = Math.max(0, S.v); }
+
+      S.invuln = Math.max(0, S.invuln - dt);
+      S.boost = Math.max(0, S.boost - dt);
+      if (S.spin) S.spin.t += dt;
+      collide(dt);
+
+      // new obstacles keep appearing just above the screen as you drive, faster near the top
+      const p = clamp((S.startY - S.cy) / (S.startY - S.FINISH), 0, 1);
+      S.spawnT -= dt;
+      if (S.spawnT <= 0 && S.cy - S.FINISH > vh * .9){
+        S.spawnT = rnd(1.1, 2) - p * .6;
+        const y = scrollY - 70, x = midX();
+        if (Math.random() < .55) glitch(x, y);
+        else addObs("coin", x, y, { vx:side() * rnd(170, 300) });
+      }
+
+      if (S.cy - 30 <= S.FINISH) finish();
+    }
+    else if (S.mode === "done"){
+      S.v *= Math.pow(.02, dt);
+      S.cy = Math.max(S.FINISH - 60, S.cy - S.v * dt);   // roll to a stop just past the line
+    }
+
+    // moving obstacles: coins roll, sliders slide, glitches zig-zag down towards you
+    const moving = S.mode !== "intro";
+    for (const o of S.obs){
+      if (o.dead){ o.rot += o.spinV * dt; o.y -= 260 * dt; o.x += o.flyX * dt; o.scale += dt * 1.4; continue; }
+      if (!moving) continue;
+      if (o.type === "coin"){
+        o.x += o.vx * dt; o.rot += o.vx * dt * 3;
+        if (o.x < 40 || o.x > W - 40){ o.vx *= -1; o.x = clamp(o.x, 40, W - 40); }
+      } else if (o.type === "slider"){
+        o.x += o.vx * dt;
+        const a = 12 + o.w / 2, b = W - 12 - o.w / 2;
+        if (o.x < a || o.x > b){ o.vx *= -1; o.x = clamp(o.x, a, b); }
+      } else if (o.type === "glitch" && o.shown){
+        o.t += dt;
+        o.x = clamp(o.x0 + Math.sin(o.t * o.f) * o.amp, 40, W - 40);
+        o.y += o.vy * dt;
+      }
+    }
+
+    // repaint the car (and kerbs) in the colour of the chapter it is driving through
+    let z = -1;
+    for (let i = 0; i < S.zones.length; i++) if (S.cy >= S.zones[i].top && S.cy < S.zones[i].bottom){ z = i; break; }
+    if (z !== S.zone){
+      S.zone = z;
+      const Z = S.zones[z];
+      S.root.style.setProperty("--car", Z ? Z.c : "var(--red)");
+      S.root.style.setProperty("--car-s", Z ? Z.on : "var(--yellow)");
+      S.car.classList.remove("pop"); void S.car.offsetWidth; S.car.classList.add("pop");
+      if (Z && S.mode === "race"){
+        clearTimeout(S.sayT);
+        S.say.textContent = Z.name; S.say.className = "race-say ch";
+        S.sayT = setTimeout(() => S.say.classList.add("hide"), 1200);
+        beep(660, .07); setTimeout(() => beep(990, .1), 60);
+      }
+    }
+
+    // camera: keep the car low on the screen, the page scrolls under it
+    const want = clamp(S.cy - vh * .66, 0, maxScroll);
+    if (Math.abs(want - scrollY) > .5) scrollTo({ top:want, behavior:"instant" });
+
+    if (S.eng){ S.eng.o.frequency.setTargetAtTime(48 + Math.abs(S.v) * .085 + (S.boost > 0 ? 30 : 0), ac.currentTime, .05); }
+    render(dt, now);
+    S.raf = requestAnimationFrame(frame);
+  }
+
+  function collide(){
+    const CW = 30, CH = 62;
+    for (const o of S.obs){
+      if (o.dead || o.used) continue;
+      if (Math.abs(S.cx - o.x) > (CW + o.w * .82) / 2 || Math.abs(S.cy - o.y) > (CH + o.h * .82) / 2) continue;
+      if (o.type === "boost"){
+        o.used = true; o.el.style.opacity = .35;
+        S.boost = 1.4; S.v = Math.max(S.v, 1900);
+        beep(420, .3, "square", .05, 1300); continue;
+      }
+      if (S.invuln > 0) continue;
+      if (o.type === "cone" || o.type === "bar" || o.type === "slider" || o.type === "glitch"){
+        S.v = -260; S.vx *= .3; S.spin = { t:0, T:.5, kind:"wobble" }; S.invuln = 1.2; S.shake = .35;
+        if (o.type === "cone" || o.type === "glitch") knock(o);
+        else S.cy = Math.max(S.cy, o.y + o.h / 2 + 34);            // bounce back off the barrier
+        beep(140, .3, "sawtooth", .09, 40);
+      } else if (o.type === "oil"){
+        S.spin = { t:0, T:.9, kind:"spin", dir:Math.random() < .5 ? -1 : 1 }; S.v *= .55; S.invuln = 1; S.shake = .15;
+        beep(700, .5, "triangle", .07, 120);
+      } else if (o.type === "coin"){
+        S.vx = Math.sign(S.cx - o.x || 1) * 750; S.v *= .65; S.invuln = .5; S.shake = .2;
+        knock(o); beep(988, .08); setTimeout(() => beep(1319, .12), 70);
+      }
+    }
+  }
+  function knock(o){ o.dead = true; o.spinV = rnd(-900, 900); o.flyX = rnd(-260, 260); o.scale = 1; o.el.style.transition = "opacity .5s"; o.el.style.opacity = 0; }
+
+  function render(dt, now){
+    const sy = scrollY, vh = innerHeight;
+    // car
+    let ang = clamp(S.vx / 600, -1, 1) * 14;
+    if (S.spin && S.spin.t < S.spin.T){
+      const p = S.spin.t / S.spin.T;
+      ang += S.spin.kind === "spin" ? S.spin.dir * 360 * (1 - Math.pow(1 - p, 2)) : Math.sin(p * Math.PI * 5) * 28 * (1 - p);
+    }
+    let shx = 0, shy = 0;
+    if (S.shake > 0){ S.shake -= dt; shx = rnd(-5, 5); shy = rnd(-4, 4); }
+    if (S.rough > 0){ S.rough -= dt; shx += rnd(-1.5, 1.5); }
+    S.root.style.transform = shx || shy ? `translate(${shx}px,${shy}px)` : "";
+    S.car.style.transform = `translate(${S.cx}px,${S.cy - sy}px) rotate(${ang}deg)`;
+    S.car.classList.toggle("blink", S.invuln > 0 && S.mode === "race");
+    // obstacles + finish line
+    for (const o of S.obs){
+      const y = o.y - sy, show = y > -120 && y < vh + 120;
+      if (show !== o.shown){ o.el.style.display = show ? "" : "none"; o.shown = show; }
+      if (show) o.el.style.transform = `translate(${o.x - o.w / 2}px,${y - o.h / 2}px) rotate(${o.rot}deg)` + (o.dead ? ` scale(${o.scale})` : "");
+    }
+    S.fin.style.transform = `translateY(${S.FINISH - 14 - sy}px)`;
+    for (const k of S.kerbs) k.style.backgroundPositionY = (-sy) + "px";
+    // HUD
+    S.time$.textContent = fmt(S.time);
+    S.meter.style.setProperty("--p", clamp((S.startY - S.cy) / (S.startY - S.FINISH), 0, 1).toFixed(3));
+    drawFx(dt, sy);
+  }
+
+  /* ---------- exhaust puffs + confetti on one canvas ---------- */
+  function drawFx(dt, sy){
+    const c = S.ctx, W = innerWidth, H = innerHeight;
+    c.clearRect(0, 0, W, H);
+    if (S.mode === "race" && (keys.up || S.ptr.down) && S.v > 50){
+      S.puffT -= dt;
+      if (S.puffT <= 0){ S.puffT = .035; S.puffs.push({ x:S.cx + rnd(-8, 8), y:S.cy + 40, r:3, a:.35, life:.55, boost:S.boost > 0 }); }
+    }
+    S.puffs = S.puffs.filter(p => (p.life -= dt) > 0);
+    for (const p of S.puffs){
+      p.r += dt * 26; p.y += dt * 40;
+      c.globalAlpha = Math.max(0, p.life / .55) * p.a;
+      c.fillStyle = p.boost ? "#f2c230" : INK;
+      c.beginPath(); c.arc(p.x, p.y - sy, p.r, 0, 7); c.fill();
+    }
+    c.globalAlpha = 1;
+    S.conf = S.conf.filter(p => (p.life -= dt) > 0 && p.y < H + 40);
+    for (const p of S.conf){
+      p.vy += 900 * dt * p.g; p.vx *= Math.pow(p.drag, dt); p.vy = Math.min(p.vy, p.term);
+      p.x += (p.vx + Math.sin(p.life * 6 + p.ph) * 40) * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+      c.save(); c.translate(p.x, p.y); c.rotate(p.rot); c.scale(1, Math.cos(p.rot * 2));
+      c.fillStyle = p.col; c.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); c.restore();
+    }
+  }
+  function confetti(){
+    const cs = getComputedStyle(document.documentElement);
+    const cols = ["--red", "--blue", "--yellow", "--green", "--ink"].map(v => cs.getPropertyValue(v).trim() || "#d8341f");
+    const W = innerWidth, H = innerHeight, pick = () => cols[Math.floor(Math.random() * cols.length)];
+    for (let i = 0; i < 170; i++) S.conf.push({ x:rnd(0, W), y:rnd(-H * .6, -10), vx:rnd(-40, 40), vy:rnd(60, 200), g:.25, drag:.6, term:240,
+      rot:rnd(0, 6), vr:rnd(-8, 8), w:rnd(6, 11), h:rnd(10, 17), col:pick(), ph:rnd(0, 6), life:6 });
+    const bx = S.cx, by = S.cy - scrollY;
+    for (let i = 0; i < 90; i++){ const a = rnd(-Math.PI * .95, -Math.PI * .05), sp = rnd(350, 950);
+      S.conf.push({ x:bx, y:by, vx:Math.cos(a) * sp, vy:Math.sin(a) * sp, g:1, drag:.35, term:420,
+        rot:rnd(0, 6), vr:rnd(-12, 12), w:rnd(6, 10), h:rnd(9, 15), col:pick(), ph:rnd(0, 6), life:5 }); }
+  }
+
+  function finish(){
+    S.mode = "done";
+    const t = S.time, rec = !best || t < best;
+    if (rec){ best = t; store("arcade-race-best", t.toFixed(2)); }
+    stopEngine(); releaseAll();
+    S.time$.textContent = fmt(t);
+    S.time$.classList.add("race-flash");
+    S.root.querySelector(".best b").textContent = fmt(best);
+    [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, i === 3 ? .5 : .14, "square", .06), i * 120));
+    const m = document.createElement("div");
+    m.className = "egg-msg race-msg";
+    m.innerHTML = `<p class="kicker">Finish</p><h2 class="race-flash">${fmt(t)}</h2><p>${rec ? "New best time!" : "Best: " + fmt(best)}</p>`;
+    S.root.appendChild(m);
+    confetti();
+    S.timers.push(setTimeout(close, 4500));
+  }
+
+  function close(){
+    if (!S || S.closing) return;
+    S.closing = true;
+    S.timers.forEach(clearTimeout);
+    stopEngine(); releaseAll();
+    removeEventListener("keydown", onKey, true);
+    removeEventListener("keyup", onKeyUp, true);
+    removeEventListener("wheel", stopWheel, { passive:false });
+    removeEventListener("resize", sizeCanvas);
+    removeEventListener("blur", releaseAll);
+    S.root.classList.add("out");
+    const st = S;
+    setTimeout(() => {
+      cancelAnimationFrame(st.raf); st.root.remove();
+      document.body.classList.remove("race-on");
+      S = null; cd.reset();
+    }, 450);
+  }
+})();
 
 /* ======================= EASTER EGG: click the coin =======================
    The coin drops into the slot, the title flies to the middle of the screen,
@@ -1234,7 +1755,9 @@ new IntersectionObserver(([e]) => {
     } catch (e) {}
   }
 
-  let hi = 0; try { hi = +localStorage.getItem("arcade-revival-hi") || 0; } catch (e) {}
+  // best clear time in seconds (lower is better); only a won round counts
+  let hi = 0; try { hi = +localStorage.getItem("arcade-revival-best-time") || 0; } catch (e) {}
+  const clock = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ":" + (r < 10 ? "0" : "") + r.toFixed(2); };
   let layer, rowsEl, ship, msg, fs = 100, letters = [], S = { keys:{}, parts:[] };
 
   coin.addEventListener("click", start);
@@ -1265,8 +1788,8 @@ new IntersectionObserver(([e]) => {
     layer.innerHTML = `
       <div class="egg-bg"></div>
       <div class="egg-hud">
-        <span>Score <b id="eScore">0000</b></span>
-        <span class="hi">Hi <b id="eHi">${pad(hi)}</b></span>
+        <span>Time <b id="eScore" style="font-variant-numeric:tabular-nums">0:00.00</b></span>
+        <span class="hi">Best <b id="eHi">${hi ? clock(hi) : "–"}</b></span>
         <span>Lives <b id="eLives">▲▲▲</b></span>
         <span><button type="button" data-k="mute">Sound on</button><button type="button" data-k="exit">✕ Exit</button></span>
       </div>
@@ -1366,14 +1889,15 @@ new IntersectionObserver(([e]) => {
   }
 
   function hud(){
-    $("#eScore").textContent = pad(S.score);
-    $("#eHi").textContent = pad(Math.max(hi, S.score));
+    $("#eScore").textContent = clock(S.time || 0);
+    $("#eHi").textContent = hi ? clock(hi) : "–";
     $("#eLives").textContent = "▲".repeat(S.lives) + "△".repeat(3 - S.lives);
   }
 
   function play(){
     Object.assign(S, { running:true, bullets:[], bombs:[], ox:0, oy:0, dir:1, lastStep:0, lastShot:0,
-                       lastBomb:performance.now(), lives:3, score:0, inv:0, note:0, t:0, firing:false, target:null });
+                       lastBomb:performance.now(), lives:3, score:0, inv:0, note:0, t:0, firing:false, target:null,
+                       t0:performance.now(), time:0 });
     ship.classList.add("in");
     hud();
     requestAnimationFrame(loop);
@@ -1400,7 +1924,7 @@ new IntersectionObserver(([e]) => {
 
   function kill(l, r){
     l.alive = false; l.el.classList.add("dead");
-    S.score += l.row === 0 ? 20 : 10; hud();
+    S.score++;
     beep(520, .18, .05, 60);
     const color = l.row ? "#e03a1e" : "#161514";
     for (let i = 0; i < 16; i++){
@@ -1433,10 +1957,13 @@ new IntersectionObserver(([e]) => {
       S.x = clamp(S.x, 30, vw - 30);
       ship.style.transform = `translateX(${S.x - 28}px)`;
       if (S.firing || S.keys.fire) shoot(now);
+      S.time = (now - S.t0) / 1000;
+      $("#eScore").textContent = clock(S.time);
 
       // the formation marches, faster as letters disappear
       let alive = letters.filter(l => l.alive);
-      const interval = 60 + 460 * Math.pow(alive.length / letters.length, 1.3);
+      const frac = alive.length / letters.length;            // 1 at the start … 0 when cleared
+      const interval = 45 + 330 * Math.pow(frac, 1.3);
       if (now - S.lastStep > interval){ S.lastStep = now; step(alive); }
       rowsEl.style.transform = `translate(${S.ox}px, ${S.oy}px)`;
       const rects = alive.map(l => ({ l, r:l.el.getBoundingClientRect() }));
@@ -1455,16 +1982,21 @@ new IntersectionObserver(([e]) => {
       // letters drop ink
       alive = letters.filter(l => l.alive);
       const sr = ship.getBoundingClientRect();
-      if (alive.length && now - S.lastBomb > 450 + 1100 * (alive.length / letters.length)){
+      // more often than before, and every other drop is aimed at the letter right above the ship
+      if (alive.length && now - S.lastBomb > 260 + 560 * frac){
         S.lastBomb = now;
-        const o = rects.filter(o => o.l.alive)[Math.random() * alive.length | 0];
-        if (o){
+        const live = rects.filter(o => o.l.alive);
+        const drop = o => {
           const el = document.createElement("i"); el.className = "egg-bomb"; layer.appendChild(el);
           S.bombs.push({ el, x:o.r.left + o.r.width / 2, y:o.r.bottom - o.r.height * .15 });
-        }
+        };
+        const aimed = live.reduce((a, o) => Math.abs(o.r.left + o.r.width / 2 - S.x) < Math.abs(a.r.left + a.r.width / 2 - S.x) ? o : a, live[0]);
+        drop(Math.random() < .5 ? aimed : live[Math.random() * live.length | 0]);
+        if (frac < .6 && Math.random() < .35) drop(live[Math.random() * live.length | 0]);   // double drops later on
       }
+      const bombV = vh * (.5 + .22 * (1 - frac));
       S.bombs = S.bombs.filter(b => {
-        b.y += vh * .42 * dt;
+        b.y += bombV * dt;
         b.el.style.transform = `translate(${b.x - 3}px, ${b.y}px)`;
         if (now > S.inv && b.x > sr.left + 6 && b.x < sr.right - 6 && b.y + 14 > sr.top + 8 && b.y < sr.bottom){
           b.el.remove(); hitShip(now); return false;
@@ -1492,15 +2024,17 @@ new IntersectionObserver(([e]) => {
     S.running = false; S.firing = false; S.keys = {};
     (S.bullets || []).concat(S.bombs || []).forEach(b => b.el.remove());
     S.bullets = []; S.bombs = [];
-    if (S.score > hi){ hi = S.score; try { localStorage.setItem("arcade-revival-hi", hi); } catch (e) {} }
+    const rec = win && (!hi || S.time < hi);
+    if (rec){ hi = S.time; try { localStorage.setItem("arcade-revival-best-time", hi.toFixed(2)); } catch (e) {} }
     hud();
     const buttons = `<div class="row"><button type="button" data-k="again">Insert coin again</button><button type="button" data-k="exit">Back to the booklet</button></div>`;
     if (win){
       [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, .16), i * 120));
-      showMsg(`<p class="kicker">Score ${pad(S.score)}</p><h2>Stage clear</h2><p>Arcade revived. Now go and build a new one.</p>${buttons}`);
+      showMsg(`<p class="kicker">Cleared in ${clock(S.time)}</p><h2>Stage clear</h2><p>${rec ? "New best time! " : "Best: " + clock(hi) + ". "}Arcade revived. Now go and build a new one.</p>${buttons}`);
     } else {
+      const left = letters.filter(l => l.alive).length;
       [392, 330, 262, 196].forEach((f, i) => setTimeout(() => beep(f, .22, .05, 0, "triangle"), i * 180));
-      showMsg(`<p class="kicker">Score ${pad(S.score)}</p><h2>Game over</h2><p>The old arcade wins this round.</p>${buttons}`);
+      showMsg(`<p class="kicker">${left} ${left === 1 ? "letter" : "letters"} left · ${clock(S.time)}</p><h2>Game over</h2><p>The old arcade wins this round.</p>${buttons}`);
     }
     msg.querySelector("button").focus();
   }
