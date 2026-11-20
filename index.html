@@ -187,6 +187,24 @@ a{color:inherit}
 .race-flash{animation:raceFlash .3s steps(1) 10}
 @keyframes raceFlash{50%{color:var(--red); opacity:.25}}
 @media (max-width:640px){ .race-hud .lbl, .race-hud .best{display:none} }
+@media (max-width:900px){ .race-hud .rec, .egg-hud .rec{display:none} }
+
+/* ---------- class leaderboard (finish screens of both easter eggs) ---------- */
+.egg-msg:has(.lboard){top:50%; max-height:94vh; overflow:auto}
+.lboard{margin:18px auto 0; width:min(340px, 78vw); text-align:left; font:500 13px/1.3 var(--mono)}
+.lboard .lb-h{margin:0 0 8px; font:600 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); text-align:center}
+.lboard .lb-wait, .lboard .lb-empty{margin:8px 0; text-align:center; color:var(--muted); font:500 12px/1.4 var(--mono)}
+.lb-list{list-style:none; margin:0; padding:0; border-top:var(--rule)}
+.lb-list li{display:grid; grid-template-columns:2em 1fr auto; gap:8px; padding:5px 6px; border-bottom:1px dashed rgba(22,21,20,.3)}
+.lb-list li span{color:var(--muted)}
+.lb-list li b{font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.lb-list li i{font-style:normal; font-variant-numeric:tabular-nums}
+.lb-list li:first-child b, .lb-list li:first-child i{color:var(--red)}
+.lb-list li.me{background:var(--yellow)}
+.lb-form{display:flex; gap:8px; align-items:flex-end; justify-content:center; flex-wrap:wrap; margin:0 0 14px}
+.lb-form label{display:flex; flex-direction:column; gap:7px; font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; text-align:left}
+.lb-form input{font:500 15px/1 var(--mono); padding:10px; border:var(--rule); background:var(--paper); color:var(--ink); width:12em; max-width:60vw}
+.egg-msg .lb-form button{padding:11px 14px}
 @media (max-width:560px){ .egg-hud .hi{display:none} .egg-help{font-size:9px} }
 
 /* ---------- warning + contents ---------- */
@@ -1282,6 +1300,74 @@ const cdIO = new IntersectionObserver(([e]) => {
 cdIO.observe($("#end"));
 cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end")); };   // re-check visibility
 
+/* ======================= CLASS LEADERBOARD (both easter eggs) =======================
+   Times live in a Google Sheet, reached through a small Apps Script web app
+   (the script is in leaderboard/Code.gs). Paste its /exec address below.
+   While LB_URL is empty the games work exactly as before, with no board. */
+const LB_URL = "https://script.google.com/macros/s/AKfycbwWo_ZAVY8Q6YupvAEk7gGm2EDvac3sIJK8zxOXi6G0Z_bSia1bp1m9e4RPoxsqwVs/exec";
+const LB = (() => {
+  const on = /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(LB_URL);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+  const clock = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ":" + (r < 10 ? "0" : "") + r.toFixed(2); };
+  const getName = () => { try { return localStorage.getItem("arcade-lb-name") || ""; } catch (e) { return ""; } };
+  const setName = v => { try { localStorage.setItem("arcade-lb-name", v); } catch (e) {} };
+  async function call(opts, qs = ""){
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 9000);
+    try { const r = await fetch(LB_URL + qs, Object.assign({ signal:ctl.signal }, opts)); const j = await r.json(); return j && j.ok ? j : null; }
+    catch (e) { return null; }
+    finally { clearTimeout(t); }
+  }
+  const top = async game => { if (!on) return null; const j = await call({}, "?game=" + game + "&t=" + Date.now()); return j ? j.top : null; };
+  const save = (game, name, time) => call({ method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" },
+                                             body:JSON.stringify({ game, name, time:+time.toFixed(2) }) });
+  const table = (list, me) => !list.length ? `<p class="lb-empty">No times yet. Be the first!</p>` :
+    `<ol class="lb-list">${list.map((r, i) => `<li class="${me && r.name === me.name && Math.abs(r.time - me.time) < .006 ? "me" : ""}"><span>${i + 1}</span><b dir="auto">${esc(r.name)}</b><i>${clock(r.time)}</i></li>`).join("")}</ol>`;
+  const HEAD = `<p class="lb-h">Class top 10</p>`;
+
+  // "Class top 10" box for a finish screen. time = this run's time if it may go on the board, else null.
+  function panel(host, game, time){
+    if (!on || !host) return;
+    const box = document.createElement("div");
+    box.className = "lboard";
+    box.innerHTML = HEAD + `<p class="lb-wait">Loading scores…</p>`;
+    host.appendChild(box);
+    top(game).then(list => {
+      if (!box.isConnected) return;
+      if (!list){ box.innerHTML = HEAD + `<p class="lb-empty">Scoreboard offline right now.</p>`; return; }
+      const fits = time != null && (list.length < 10 || time < list[list.length - 1].time);
+      box.innerHTML = HEAD + (fits ? `<form class="lb-form"><label>You made the board! Your name
+          <input name="n" maxlength="16" autocomplete="off" placeholder="Name or nickname" value="${esc(getName())}" dir="auto"></label>
+          <button type="submit">Save</button></form>` : "") + `<div class="lb-t">${table(list)}</div>`;
+      if (!fits) return;
+      const f = box.querySelector("form"), inp = f.querySelector("input");
+      setTimeout(() => inp.focus(), 60);
+      f.addEventListener("submit", async e => {
+        e.preventDefault();
+        const name = inp.value.replace(/\s+/g, " ").trim().slice(0, 16);
+        if (!name){ inp.focus(); return; }
+        setName(name);
+        f.innerHTML = `<p class="lb-wait">Saving…</p>`;
+        const r = await save(game, name, time);
+        if (!box.isConnected) return;
+        if (!r){ f.innerHTML = `<p class="lb-empty">Couldn't save right now. Try again later.</p>`; return; }
+        f.remove();
+        box.querySelector(".lb-t").innerHTML = table(r.top, r.saved);
+        const first = r.top[0];
+        if (first) document.querySelectorAll(".egg-hud .rec, .race-hud .rec").forEach(el => {
+          el.innerHTML = `Record <b dir="auto">${esc(first.name)} ${clock(first.time)}</b>`; el.hidden = false;
+        });
+      });
+    });
+  }
+  // "Record Maya 0:07.82" in a game's top bar
+  async function record(el, game){
+    if (!on || !el) return;
+    const l = await top(game);
+    if (l && l.length && el.isConnected){ el.innerHTML = `Record <b dir="auto">${esc(l[0].name)} ${clock(l[0].time)}</b>`; el.hidden = false; }
+  }
+  return { on, panel, record };
+})();
+
 /* ======================= EASTER EGG 2: race to the top =======================
    PLAY drops a race car at the bottom of the booklet. After the traffic light
    (red, orange, green) the clock runs; drive back up to the cover while the page
@@ -1343,7 +1429,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
       <div class="race-car">${CAR}</div>
       <canvas class="race-fx"></canvas>
       <div class="race-hud"><span class="lbl">Race to the top</span><span class="race-meter"><i></i></span>
-        <span>Time <b class="race-time">0:00.00</b></span><span class="best">Best <b>${best ? fmt(best) : "–"}</b></span>
+        <span>Time <b class="race-time">0:00.00</b></span><span class="best">Best <b>${best ? fmt(best) : "–"}</b></span><span class="rec" hidden></span>
         <span><button class="race-snd" type="button"></button><button class="race-quit" type="button">Quit · Esc</button></span></div>
       <div class="race-light"><i></i><i></i><i></i></div>
       <div class="race-say"></div>
@@ -1374,6 +1460,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
     sndLabel();
     snd.addEventListener("click", () => { muted = !muted; store("arcade-race-mute", muted ? "1" : "0"); sndLabel(); engineVol(); });
     q(".race-quit").addEventListener("click", close);
+    LB.record(q(".race-hud .rec"), "race");
     root.addEventListener("pointerdown", onDown);
     root.addEventListener("pointermove", onMove);
     root.addEventListener("pointerup", onUp);
@@ -1480,6 +1567,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
   function onKey(e){
     if (!S) return;
     if (e.key === "Escape"){ e.preventDefault(); close(); return; }
+    if (e.target.closest && e.target.closest("input")) return;      // typing a name for the leaderboard
     if (S.mode === "done" && (e.key === "Enter" || e.code === "Space")){ e.preventDefault(); close(); return; }
     const k = KEYMAP[e.code];
     if (k){ keys[k] = 1; e.preventDefault(); }
@@ -1489,7 +1577,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
   function releaseAll(){ for (const k in keys) keys[k] = 0; if (S) S.ptr.down = false; }
   function stopWheel(e){ e.preventDefault(); }
   function onDown(e){
-    if (e.target.closest("button")) return;
+    if (e.target.closest("button, .egg-msg")) return;
     if (S.mode === "done"){ close(); return; }
     S.ptr.down = true; S.ptr.x = e.clientX;
     try { S.root.setPointerCapture(e.pointerId); } catch (err) {}
@@ -1703,7 +1791,12 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
     m.innerHTML = `<p class="kicker">Finish</p><h2 class="race-flash">${fmt(t)}</h2><p>${rec ? "New best time!" : "Best: " + fmt(best)}</p>`;
     S.root.appendChild(m);
     confetti();
-    S.timers.push(setTimeout(close, 4500));
+    if (LB.on){
+      // with the class board on, stay until the player is done (they may be typing a name)
+      LB.panel(m, "race", t);
+      m.insertAdjacentHTML("beforeend", `<div class="row"><button type="button">Back to the booklet</button></div>`);
+      m.querySelector(".row button").addEventListener("click", close);
+    } else S.timers.push(setTimeout(close, 4500));
   }
 
   function close(){
@@ -1790,6 +1883,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
       <div class="egg-hud">
         <span>Time <b id="eScore" style="font-variant-numeric:tabular-nums">0:00.00</b></span>
         <span class="hi">Best <b id="eHi">${hi ? clock(hi) : "–"}</b></span>
+        <span class="rec" hidden></span>
         <span>Lives <b id="eLives">▲▲▲</b></span>
         <span><button type="button" data-k="mute">Sound on</button><button type="button" data-k="exit">✕ Exit</button></span>
       </div>
@@ -1806,6 +1900,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
     rowsEl = layer.querySelector(".egg-rows");
     ship = layer.querySelector(".egg-ship");
     msg = layer.querySelector(".egg-msg");
+    LB.record(layer.querySelector(".egg-hud .rec"), "coin");
     S.x = innerWidth / 2;
     ship.style.transform = `translateX(${S.x - 28}px)`;
 
@@ -2036,6 +2131,10 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
       [392, 330, 262, 196].forEach((f, i) => setTimeout(() => beep(f, .22, .05, 0, "triangle"), i * 180));
       showMsg(`<p class="kicker">${left} ${left === 1 ? "letter" : "letters"} left · ${clock(S.time)}</p><h2>Game over</h2><p>The old arcade wins this round.</p>${buttons}`);
     }
+    // class top 10 above the buttons; only a cleared round can be saved to it
+    const slot = document.createElement("div");
+    msg.insertBefore(slot, msg.querySelector(".row"));
+    LB.panel(slot, "coin", win ? S.time : null);
     msg.querySelector("button").focus();
   }
 
@@ -2068,6 +2167,7 @@ cd.reset = () => { cd.stop(); cdIO.unobserve($("#end")); cdIO.observe($("#end"))
   addEventListener("keydown", e => {
     if (!layer) return;
     if (e.key === "Escape"){ exit(); return; }
+    if (e.target.closest && e.target.closest("input")) return;      // typing a name for the leaderboard
     if (e.key === "m" || e.key === "M"){ layer.querySelector('[data-k="mute"]').click(); return; }
     if (S.running && KEYS[e.key]){
       if (KEYS[e.key] === "fire" && !e.repeat) shoot(performance.now());
